@@ -4,37 +4,12 @@
       <ul class="content">
         <li>
           <div class="icon"><img src="../../static/icon/touxiang.png" height="30" width="30" alt=""></div>
-          <div class="name">周雪儿</div>
+          <div class="name">王力宏</div>
           <div class="idcard">452725**************2188</div>
         </li>
-        <li>
-          <div class="icon"><img src="../../static/icon/liushui.png" height="22" width="22" alt=""></div>
-          <div class="text">流水记录</div>
-          <div class="into"><img src="../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
-        </li>
-        <li>
-           <div class="icon"><img src="../../static/icon/canyu.png" height="22" width="22" alt=""></div>
-          <div class="text">我参与的</div>
-          <div class="into"><img src="../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
-        </li>
-        <li>
-           <div class="icon"><img src="../../static/icon/collect.png" height="22" width="22" alt=""></div>
-          <div class="text">我的收藏</div>
-          <div class="into"><img src="../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
-        </li>
-        <li>
-           <div class="icon"><img src="../../static/icon/tixian.png" height="22" width="22" alt=""></div>
-          <div class="text">提现</div>
-          <div class="into"><img src="../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
-        </li>
-        <li>
-           <div class="icon"><img src="../../static/icon/set.png" height="22" width="22" alt=""></div>
-          <div class="text">设置</div>
-          <div class="into"><img src="../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
-        </li>
-        <li>
-           <div class="icon"><img src="../../static/icon/my.png" height="22" width="22" alt=""></div>
-          <div class="text">联系客服</div>
+        <li v-for="item in common" @click="step(item.route)">
+          <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div>
+          <div class="text">{{item.text}}</div>
           <div class="into"><img src="../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
         </li>
       </ul>
@@ -43,10 +18,45 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      common:[
+      {
+        icon:'../../static/icon/liushui.png',
+        text:'流水记录',
+         route:'business'
+      },
+      {
+        icon:'../../static/icon/canyu.png',
+        text:'我参加的',
+        route:'join'
+      },
+      {
+        icon:'../../static/icon/collect.png',
+        text:'我收藏的'
+      },
+      {
+        icon:'../../static/icon/tixian.png',
+        text:'提现',
+        route:'tixian'
+      },
+      {
+        icon:'../../static/icon/set.png',
+        text:'设置'
+      },
+      {
+        icon:'../../static/icon/my.png',
+        text:'联系客服',
+        route:'connect'
+      },
+      ]
+    }
+  },
+  methods: {
+    step(route) {
+      this.$router.push({
+        name:route,
+      })
     }
   }
 }
@@ -60,6 +70,7 @@ export default {
   .contain{
     position:relative;
     .content{
+      margin-top:1.2rem;
         li{
           border:1px solid #ccc;
           height:1.2rem;

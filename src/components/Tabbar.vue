@@ -46,7 +46,7 @@ export default {
           this.img1="static/icon/index.png"
         }
         if (this.selected == "市场预测") {
-          this.$router.push('/brandsale')
+          this.$router.push('/vote')
           this.img2="static/icon/toupiao.png"
         } else {
           this.img2="static/icon/toupiao.png"

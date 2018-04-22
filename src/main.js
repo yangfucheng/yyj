@@ -8,11 +8,15 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import './common/iconfont/iconfont.css'
 import store from './store/index.js'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+
 
 Vue.config.productionTip = false
 global.storage = window.localStorage
-Vue.use(MintUI)
-
+Vue.use(MintUI);
+Vue.use(ElementUI);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -15,10 +15,6 @@
       <mt-tab-item :id="1">专家</mt-tab-item>
       <mt-tab-item :id="2">推荐</mt-tab-item>
       <mt-tab-item :id="3">金融</mt-tab-item>
-      <mt-tab-item :id="4">体育</mt-tab-item>
-      <mt-tab-item :id="5">游戏</mt-tab-item>
-      <mt-tab-item :id="6">我的</mt-tab-item>
-      <mt-tab-item :id="7">已结束</mt-tab-item>
     </mt-navbar>
     <mt-tab-container v-model="selected">
       <mt-tab-container-item v-for="n in 7" :id="n">
