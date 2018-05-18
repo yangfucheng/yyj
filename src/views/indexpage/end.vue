@@ -1,31 +1,31 @@
 <template>
-	<div class="contain" @click="setp()">
+	<div class="contain" >
 		<div class="cell">
 			<div class="title">
 				<img src="../../../static/icon/hot.png" height="15" width="15" alt="">
-				<span class="title-contont">预测BTC 2018年3月7号24点的价格,是否会跌破7000人民币,以币安网的价格为准</span>
+				<span class="title-contont">{{dataArray.title}}</span>
 			</div>
 			<div class="content">
 				<div class="hint">
 					<div class="hint-time">已经结束</div>
-					<div class="token">交易代币:&nbsp GXS</div>
+					<div class="token">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
 				</div>
 				<div class="option">
 					<div class="option-font-two">
-					    <div>结果:选项A:不会跌破</div>
+					    <div>结果:选项{{dataArray.result}}:{{dataArray.resultMemo}}</div>
 					    <!-- <div>C:不会跌破</div> -->
 					</div>
 					<div class="average-cent-three flexed-two">
 						<div>
-							<div><i class="iconfont icon-renshutongji"></i>12.321</div>
+							<div><i class="iconfont icon-renshutongji"></i>&nbsp{{dataArray.betNumber}}</div>
 							<div>参与人数</div>
 						</div>
 						<div>
-							<div>27%</div>
+							<div>{{dataArray.ratio}}%</div>
 							<div>选项比例</div>
 						</div>
 						<div>
-							<div><i class="iconfont icon-29"></i>17.322</div>
+							<div><i class="iconfont icon-29"></i>{{dataArray.capitalPool}}</div>
 							<div>奖金池</div>
 						</div>
 					</div>
@@ -40,27 +40,38 @@
 <script type="text/javascript">
 	export default {
 		props: {
-			cell: {
-				type: Number
+			dataProp: {
+				type: Object
 			}
 		},
 		data() {
 			return {
 				proValue:'',
-				item:[]
+				dataArray:[],
 			}
 		},
-		 methods: {
-    		setp() {
+		methods: {
+			setp() {
 		      this.$router.push({
 		        name:'details',
 		        params:{
-		          id:5
+		          dataArray:this.dataArray
 		        }
 		      })
 		    }
   		},
+  		watch: {
+  			"dataProp"(){
+  				// alert(JSON.stringify(this.dataProp))
+  				this.dataArray =this.dataProp
+  			}
+  		},
+  		created() {
+  			this.dataArray = this.dataProp;
+  			this.endTime =this.dataProp.betEndTime;
+  		},
 		mounted() {
+			this.dataArray = this.dataProp;
 			// alert(this.cell);
 		},
 	}

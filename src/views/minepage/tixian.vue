@@ -12,7 +12,7 @@
           <el-option
             v-for="item in options"
             :label="item.label"
-            :value="item.value">
+            :value="item.label">
           </el-option>
         </el-select>
         <div class="num">
@@ -60,7 +60,7 @@ export default {
   },
   watch:{
     'count'(){
-      if(this.count < this.num){
+      if(parseFloat(this.count)< parseFloat(this.num)){
         this.disabled = false;
       }else{
         this.disabled = true;

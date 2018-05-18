@@ -16,7 +16,7 @@
       <mt-tab-item :id="2">推荐</mt-tab-item>
       <mt-tab-item :id="3">金融</mt-tab-item>
     </mt-navbar>
-    <mt-tab-container v-model="selected">
+   <!--  <mt-tab-container v-model="selected">
       <mt-tab-container-item v-for="n in 7" :id="n">
         <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange">
           <carousel  v-show="pageArray[0]" v-for="x in 4"></carousel>
@@ -28,7 +28,7 @@
           <span v-show="topStatus === 'loading'">Loading...</span>
         </div>
       </mt-tab-container-item>
-    </mt-tab-container>
+    </mt-tab-container> -->
   </div>
 </template>
 

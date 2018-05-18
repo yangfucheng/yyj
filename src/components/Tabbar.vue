@@ -26,12 +26,10 @@ export default {
   },
   computed: {
     otherSelect () {
-      alert(this.$store.state.selectTab)
       return this.$store.state.selectTab
     }
   },
   watch: {
-    // 监听 是否从其他的页面跳转过来的数据
     "otherSelect" () {
       this.selected = this.otherSelect
     },

@@ -21,16 +21,18 @@
        },
        props : {
            endTime : {
-               type : String
+               type : Number
+           },
+           type : {
+             type : Boolean
            }
        },
        methods : {
            timeDown () {
-               const endTime = this.endTime;
+               const endTime = new Date(this.endTime)
                const nowTime = new Date();
-               // alert(endTime.getTime());
-               let leftTime = parseInt((endTime-nowTime.getTime())/1000)
-               let d = parseInt(leftTime/(24*60*60))
+               let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000)
+               let d = this.formate(parseInt(leftTime/(24*60*60)))
                let h = this.formate(parseInt(leftTime/(60*60)%24))
                let m = this.formate(parseInt(leftTime/60%60))
                let s = this.formate(parseInt(leftTime%60))
@@ -38,17 +40,16 @@
                    this.flag = true
                    this.$emit('time-end')
                }
-               if(leftTime >= 0){
-                this.time = `${d}天${h}小时${m}分${s}秒`
-              }else{
-                this.time ='已经结束'
-              }
-               
-
+               this.time = `${d}天${h}小时${m}分${s}秒`
+               if(this.type==false){
+                  this.time = `${d}天${h}小时`
+               }
            },
            formate (time) {
                if(time>=10){
                    return time
+               }else if(time < 0 || !time){
+                  return '0'
                }else{
                    return `0${time}`
                }

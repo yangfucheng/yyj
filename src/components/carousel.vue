@@ -1,42 +1,50 @@
 <template>
-	<div class="contain" @click="setp()">
+	<div class="contain" @click="setp(dataArray)" >
 		<div class="cell">
 			<div class="title">
 				<img src="../../static/icon/hot.png" height="15" width="15" alt="">
-				<span class="title-contont">预测BTC 2018年3月7号24点的价格,是否会跌破7000人民币,以币安网的价格为准</span>
+				<span class="title-contont">{{dataArray.title}}</span>
 			</div>
 			<div class="content">
 				<div class="hint">
-					<div class="hint-time">剩余时间 &nbsp  0天15时</div>
-					<div class="per-num"><i class="iconfont icon-wode"></i>15678</div>
-					<div class="token">交易代币:&nbsp GXS</div>
+					 <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="false" class="hint-time"></zk-time-down>
+					<!-- <div class="hint-time">剩余时间 &nbsp  0天15时</div> -->
+					<div class="per-num"><i class="iconfont icon-wode"></i>{{dataArray.betNumber}}</div>
+					<div class="token">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
+				</div>
+				<div class="option">
+					<div :class="(!dataArray.optionC)?'option-font-two flexed-two':'option-font-three flexed-three'">
+					    <div><span v-if="!dataArray.optionC">选项</span>A:{{dataArray.optionA}}</div>
+					    <div><span v-if="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
+					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div>
+					</div>
 				</div>
 				<div class="progress" ref="progress">
 					<div></div>
 					<div></div>
-					<div></div>
+					<div v-show="dataArray.optionC"></div>
 				</div>
 				<div class="option">
-					<div class="option-font-two flexed-two">
-					    <div>选项A:不会跌破</div>
-					    <div>选项B:不会跌破</div>
-					    <!-- <div>C:不会跌破</div> -->
+					<div :class="(!dataArray.optionC)?'now-cent-three flexed-two':'option-font-three flexed-three'" >
+						<div>{{dataArray.optionAOdds}}</div>
+						<!-- <div>VS</div> -->
+						<div>{{dataArray.optionBOdds}}</div>
+						<div v-show="dataArray.optionC">{{dataArray.optionCOdds}}</div>
 					</div>
-					<div class="now-cent-three flexed-two" >
-						<div>3.6</div>
-						<div>3.6</div>
-						<!-- <div>3.6</div> -->
+					<div :class="(!dataArray.optionC)?'flexed-two':'flexed-three'" style="color:#CCCCC">
+						<div>预计实现概率</div>
+						<div>预计实现概率</div>
+						<div v-show="dataArray.optionC">预计实现概率</div>
 					</div>
-					<div class="now-title-two flexed-two">
-						<div v-for="x in 2">当前获胜倍数</div>
-					</div>
-					<div class="average-cent-three flexed-two">
-						<div>3.6 &nbsp<i class="iconfont icon-tubiaoshangshengqushi" style="color:red"></i></div>
-						<div>3.6&nbsp<i class="iconfont icon-tubiaoshangshengqushi" style="color:red"></i></div>
+					<div class="average-cent-three flexed-two" v-show="false">
+						<div>3.6 &nbsp<i class="iconfont icon-tubiaoshangshengqushi"></i></div>
+						<div>3.6&nbsp<i class="iconfont icon-tubiaoxiajiangqushi" ></i></div>
 						<!-- <div>3.6&nbsp<i class="iconfont icon-tubiaoshangshengqushi" style="color:red"></i></div> -->
 					</div>
-					<div class="average-three flexed-two">
-						<div v-for="x in 2">平均获胜倍数</div>
+					<div class="average-three flexed-two" v-show="false">
+						<div>平均获胜倍数</div>
+						<div>平均获胜倍数</div>
+						<div v-show="dataArray.optionC">平均获胜倍数</div>
 					</div>
 				</div>
 				<div class="describe"></div>
@@ -47,16 +55,22 @@
 
 
 <script type="text/javascript">
+import zkTimeDown from '../components/Countdown.vue'
 	export default {
+		components : {
+      		zkTimeDown
+  		},
 		props: {
-			cell: {
-				type: Number
+			dataProp: {
+				type: Object
 			}
 		},
 		data() {
 			return {
 				proValue:'',
-				item:[]
+				dataArray:[],
+				message : '正在倒计时',
+      			endTime : 0,
 			}
 		},
 		 methods: {
@@ -64,31 +78,87 @@
 		      this.$router.push({
 		        name:'details',
 		        params:{
-		          id:5
+		          dataArray:this.dataArray
 		        }
 		      })
 		    }
   		},
+  		created() {
+  			 this.dataArray = this.dataProp;
+  			 this.endTime =this.dataProp.betEndTime;
+
+  		},
+  		watch: {
+  			"dataProp"(){
+  				// alert(JSON.stringify(this.dataProp))
+  				this.dataArray =this.dataProp
+  			}
+  		},
 		mounted() {
-			// alert(this.cell);
+			
 			var proDom =this.$refs.progress;
 			var divArray =proDom.getElementsByTagName('div');
-			divArray[0].style.width ="33%";
-			divArray[1].style.width ="33%";
-			divArray[2].style.width ="35%";
+			// let scaleA = 0.95 / this.dataArray.optionAOdds;
+		 //    let scaleB = 0.95 / this.dataArray.optionBOdds;
+		 //    let scaleC = 0.95 / (this.dataArray.optionCOdds);
+		 //    if(scaleC==Infinity){
+		 //      scaleC=0;
+		 //    }
+		 //    // alert(scaleC)
+		 	let optionAQuantity = this.dataArray.optionAQuantity || 0;
+		    let optionBQuantity = this.dataArray.optionBQuantity || 0;
+		    let optionCQuantity = this.dataArray.optionCQuantity || 0;
+		    let optionAll = optionAQuantity + optionBQuantity +optionCQuantity || 0;
+		    let scaleA = optionAQuantity/optionAll;
+		    let scaleB = optionBQuantity/optionAll;
+		    let scaleC = optionCQuantity/optionAll;
+		    divArray[0].style.width =toPercent(scaleA);
+		    divArray[1].style.width =toPercent(fomat(scaleA,scaleB,scaleC,1));
+		    divArray[2].style.width =toPercent(fomat(scaleA,scaleB,scaleC,2));
+		    function toPercent(point){  
+		      var str=Number(point*100).toFixed(1);
+		        str+="%";
+		        return str;
+		    }
+
+		    function fomat(scaleA,scaleB,scaleC,num){
+
+		      if(!scaleC&&num==1){
+
+		        if(scaleA+scaleB!=1){
+		          return 1-scaleA;
+		        }else{
+		          return scaleB;
+		        }
+		      }
+		      else if(scaleC&&num==2){ 
+		        if(scaleA+scaleB+scaleC!=1){
+		          return 1-(scaleA+scaleB)
+		        }else{
+		          return scaleC;
+		        }
+		      }else if(!scaleC&&num==2){
+		        return 0;
+		      }
+		      else{
+		        return scaleB;
+		      }
+		    }
 		},
+
 	}
 </script>
 <style lang="scss" scoped>
 	
 	.contain{
 		width:96%;
-		height:7rem;
+		// height:6rem;
 		margin:0 auto;
 		margin-top:.15rem;
 		border:1px solid #CCC;
 		border-radius:5px;
 		box-shadow: -2px -2px 1px 10px #F0F0F0;
+		padding-bottom:.5rem;
 		.cell {
 			width:90%;
 			margin:0 auto;
@@ -97,7 +167,7 @@
 				.hint {
 					display:flex;
 					justify-content:space-between;
-					margin-top:.8rem;
+					margin-top:.5rem;
 					img {
 						vertical-align:text-bottom ;
 					}
@@ -109,7 +179,7 @@
 					width:90%;
 					height:.25rem;
 					border-radius:5px;
-					background-color:red;
+					background-color:#fff;
 					display:flex;
 					div:nth-child(1) {
 						border-radius:5px;
@@ -147,9 +217,18 @@
 						display:flex;
 						text-align: center;
 						align-items: center;
-						div:nth-child(1){
-							border-right:1px solid #ccc;
+						// div:nth-child(1){
+						// 	border-right:1px solid #ccc;
+						// }
+						& > div{
+							width:50%;
 						}
+					}
+					.flexed-three{
+						justify-content:space-between;
+						display:flex;
+						text-align: center;
+						align-items: center;
 						& > div{
 							width:50%;
 						}

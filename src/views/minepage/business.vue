@@ -6,16 +6,28 @@
           <span class="nav-title">流水记录</span>
         </div>
       </div>
+      <div class="header">
+        <div>
+          <div style="font-size:.4rem;margin-bottom:.1rem;">结算货币</div>
+          <div >
+              <el-select v-model="value" style="width:2.5rem;">
+                <el-option label="GXS" value="GXS"></el-option>
+                <el-option label="FPS" value="FPS"></el-option>
+              </el-select>
+          </div>
+        </div>
+        <div style="font-size:.5rem;margin-top:.8rem;">筛选<span style="align-self:center"><i class="iconfont icon-shaixuan1"></i></span></div>
+      </div>
       <ul class="content">
         <li v-for="x in items">
           <div>
             <div class="way">
-              <div>{{x.label}}</div>
-              <div>{{x.text}}</div>
+              <div>下注支付</div>
+              <div>{{x.createTime | changeTime}}</div>
             </div>
             <div class="price">
-              <div>#{{x.label}}#</div>
-              <div>{{x.text}}</div>
+              <div>#比特币价格#</div>
+              <div>{{x.amount}}</div>
             </div>
           </div>
         </li>
@@ -24,30 +36,35 @@
 </template>
 
 <script>
+import { record } from '../../api/api.js'
+import {timestampToTime} from '../../untils/enums.js'
 export default {
   data () {
     return {
       items:[
-        {
-          label:'官方邮箱',
-          text:'yuyanjia_prophet@163.com'
-        },
-        {
-          label:'客服QQ',
-          text:'2139258026'
-        },
-        {
-          label:'客服电话',
-          text:'123'
-        },
-        {
-          label:'微信公众号',
-          text:'预言家Prophet'
-        },
-      ]
+      ],
+      value:'GXS'
+
+    }
+  },
+  created() {
+    this.fetch();
+  },
+  filters: {
+    changeTime(value){
+      return timestampToTime(value);
     }
   },
   methods: {
+    fetch(){
+      var params={
+          coin:"",
+          page:this.page
+       }
+      record(params).then(response => {
+        this.items = response.body.result;
+      })
+    },
     step(route) {
       this.$router.push({
         name:route,
@@ -61,9 +78,15 @@ export default {
 <style lang="scss" scoped>
   @import "../../common/mixin.scss";
   @import "../../common/style.scss";
-
   .contain{
     position:relative;
+    .header{
+      border-bottom:1px solid #ccc;
+      // padding:.5rem 0;
+      padding:.2rem .5rem;
+      display:flex;
+      justify-content:space-between;
+    }
     .content{
       width:100%;
       li{
@@ -102,7 +125,6 @@ export default {
       }
     }
     
-  }
-  
+  } 
 
 </style>

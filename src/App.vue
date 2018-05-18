@@ -15,7 +15,7 @@ export default {
   },
   created () {
     // this.$router.push('views/index.vue');
-    this.$router.push('/')
+    // this.$router.push('/')
   },
   computed: {
     isTab () {

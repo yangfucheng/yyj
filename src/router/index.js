@@ -8,6 +8,7 @@ import tixian from '@/views/minepage/tixian.vue'
 import connect from '@/views/minepage/connect.vue'
 import business from '@/views/minepage/business.vue'
 import details from '../components/details.vue'
+import login from '../views/login/login.vue'
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/',
       name: 'index',
       component: index
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     },
     //
     {
