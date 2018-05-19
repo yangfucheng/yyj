@@ -2,7 +2,9 @@
    <div class="contain">
      <div class="back-nav-bar">
         <div class="nav-container">
-          <i class="iconfont icon-huitui"></i>
+          <router-link to="/myself">
+            <i class="iconfont icon-huitui"></i>
+          </router-link>
           <span class="nav-title">流水记录</span>
         </div>
       </div>
@@ -16,22 +18,27 @@
               </el-select>
           </div>
         </div>
-        <div style="font-size:.5rem;margin-top:.8rem;">筛选<span style="align-self:center"><i class="iconfont icon-shaixuan1"></i></span></div>
+        <div style="font-size:.5rem;margin-top:.8rem;">
+          <span>筛选</span>
+          <span style="align-self:center"><i class="iconfont icon-shaixuan1"></i></span>
+        </div>
       </div>
-      <ul class="content">
-        <li v-for="x in items">
-          <div>
-            <div class="way">
-              <div>下注支付</div>
-              <div>{{x.createTime | changeTime}}</div>
+      <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
+        <ul class="content">
+          <li v-for="x in items">
+            <div>
+              <div class="way">
+                <div>下注支付</div>
+                <div>{{x.createTime | changeTime}}</div>
+              </div>
+              <div class="price">
+                <div>#比特币价格#</div>
+                <div>{{x.amount}}</div>
+              </div>
             </div>
-            <div class="price">
-              <div>#比特币价格#</div>
-              <div>{{x.amount}}</div>
-            </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </mt-loadmore>
    </div>
 </template>
 
@@ -43,11 +50,16 @@ export default {
     return {
       items:[
       ],
-      value:'GXS'
+      value:'GXS',
+      allLoaded:true,
+      page:''
 
     }
   },
   created() {
+    if(this.$store.state.tabHidden) {
+      this.$store.dispatch('tabHidden')
+    }
     this.fetch();
   },
   filters: {
@@ -64,6 +76,12 @@ export default {
       record(params).then(response => {
         this.items = response.body.result;
       })
+    },
+    loadTop(){
+
+    },
+    loadBottom(){
+
     },
     step(route) {
       this.$router.push({

@@ -21,7 +21,7 @@
 				</div>
 				<div class="progress" ref="progress">
 					<div></div>
-					<div></div>
+					<div :class="(!dataArray.optionC)?'noC':'isC'"></div>
 					<div v-show="dataArray.optionC"></div>
 				</div>
 				<div class="option">
@@ -162,7 +162,7 @@ import zkTimeDown from '../components/Countdown.vue'
 		.cell {
 			width:90%;
 			margin:0 auto;
-			margin-top:.3rem;
+			margin-top:.3rem 0;
 			.content {
 				.hint {
 					display:flex;
@@ -182,17 +182,23 @@ import zkTimeDown from '../components/Countdown.vue'
 					background-color:#fff;
 					display:flex;
 					div:nth-child(1) {
-						border-radius:5px;
-						background-color:red;
+						border-radius:5px 0px 0px 5px;
+						background-color:#FA3E55;
 						height:.25rem;
 					}
-					div:nth-child(2) {
-						background-color:yellow;
+					.noC {
+						border-radius:0px 5px 5px 0px;
+						background-color:#1AC5BB;
+						height:.25rem;
+					}
+					.isC {
+						// border-radius:0px 0px 0px 5px;
+						background-color:#1AC5BB;
 						height:.25rem;
 					}
 					div:nth-child(3) {
-						border-radius:5px;
-						background-color:green;
+						border-radius:0px 5px 5px 0px;
+						background-color:#6CA6CD;
 						height:.25rem;
 					}
 				}

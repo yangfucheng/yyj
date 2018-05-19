@@ -2,7 +2,9 @@
    <div class="contain">
      <div class="back-nav-bar">
         <div class="nav-container">
-          <i class="iconfont icon-huitui"></i>
+          <router-link to="/myself">
+            <i class="iconfont icon-huitui"></i>
+          </router-link>
           <span class="nav-title">联系客服</span>
         </div>
       </div>

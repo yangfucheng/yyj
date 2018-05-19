@@ -69,7 +69,7 @@ export default {
 				smsCode:this.smsCode
 			}
 			var self =this;
-			login(qs.stringify(params)).then(response=>{
+			login(params).then(response=>{
 				let token = response.body;
 				alert(token)
 				localStorage.setItem('yyj', token);

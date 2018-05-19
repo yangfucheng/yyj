@@ -2,84 +2,88 @@
    <div class="contianer">
       <div class="back-nav-bar">
         <div class="nav-container">
-          <i class="iconfont icon-huitui"></i>
+          <router-link to="/">
+            <i class="iconfont icon-huitui"></i>
+          </router-link>
           <span class="nav-title">详情</span>
         </div>
       </div>
-      <div class="title-content">
-        <div class="title"><img src="../../static/icon/hot.png" height="14" width="14" alt="">{{dataArray.title}}</div>
-        <div class="start-time">开始时间: {{dataArray.betStartTime | changeTime}}</div> 
-        <!-- <div class="end-time">剩余时间: 03:24:14 18</div> -->
-        <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="true" class="end-time"></zk-time-down>
-      </div>
-      <div class="describe" v-show="false">
-        <div class="situation">
-          <div>
-            <div class="name">BTC/CNY</div>
-            <div class="prodution-name">币种</div>
-          </div>
-          <div>
-            <div class="name">71029.82</div>
-            <div class="prodution-name">最新价</div>
-          </div>
-          <div>
-             <div class="name">-1.8%</div>
-            <div class="prodution-name">涨跌幅</div>
-          </div>
+      <mt-loadmore :top-method="loadTop" ref="loadmore" @top-status-change="handleTopChange">
+        <div class="title-content">
+          <div class="title"><img src="../../static/icon/hot.png" height="14" width="14" alt="">{{dataArray.title}}</div>
+          <div class="start-time">开始时间: {{dataArray.betStartTime | changeTime}}</div> 
+          <!-- <div class="end-time">剩余时间: 03:24:14 18</div> -->
+          <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="true" class="end-time"></zk-time-down>
         </div>
-        <div class="prodution"><span class="label">数据来源:网易&nbsp&nbsp&nbsp</span><a>http://www.baidu.com</a></div>
-      </div>
-      <div class="notice">
-        <span><i class="iconfont icon-xinxi"></i>比特币一直在跌,大神预言zhe</span>
-      </div>
-      <div class="bet">
-        <div class="title">投注</div>
-        <div class="content">
-          <div class="option-font-three flexed">
-              <div @click="choose('A',dataArray.optionA,dataArray.optionAOdds)"><span v-show="!dataArray.optionC">选项</span>A:{{dataArray.optionA}}</div>
-              <div @click="choose('B',dataArray.optionB,dataArray.optionBOdds)"><span v-show="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
-              <div v-if="dataArray.optionC" @click="choose('C',dataArray.optionC,dataArray.optionCOdds)">C:{{dataArray.optionC}}</div>
+        <div class="describe" v-show="false">
+          <div class="situation">
+            <div>
+              <div class="name">BTC/CNY</div>
+              <div class="prodution-name">币种</div>
+            </div>
+            <div>
+              <div class="name">71029.82</div>
+              <div class="prodution-name">最新价</div>
+            </div>
+            <div>
+               <div class="name">-1.8%</div>
+              <div class="prodution-name">涨跌幅</div>
+            </div>
           </div>
-          <div class="progress" ref="progress"> 
-            <div></div> 
-            <div></div>
-            <div v-show="dataArray.optionC"></div>  
-          </div>
+          <div class="prodution"><span class="label">数据来源:网易&nbsp&nbsp&nbsp</span><a>http://www.baidu.com</a></div>
+        </div>
+        <div class="notice">
+          <span><i class="iconfont icon-xinxi"></i>比特币一直在跌,大神预言zhe</span>
+        </div>
+        <div class="bet">
+          <div class="title">投注</div>
+          <div class="content">
+            <div class="option-font-three flexed">
+                <div @click="choose('A',dataArray.optionA,dataArray.optionAOdds)"><span v-show="!dataArray.optionC">选项</span>A:{{dataArray.optionA}}</div>
+                <div @click="choose('B',dataArray.optionB,dataArray.optionBOdds)"><span v-show="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
+                <div v-if="dataArray.optionC" @click="choose('C',dataArray.optionC,dataArray.optionCOdds)">C:{{dataArray.optionC}}</div>
+            </div>
+            <div class="progress" ref="progress"> 
+              <div></div> 
+              <div></div>
+              <div v-show="dataArray.optionC"></div>  
+            </div>
 
-         <div :class="(!dataArray.optionC)?'now-cent-two flexed':'now-cent-three flexed'" >
-            <div>{{dataArray.optionAOdds}}</div>
-            <div>{{dataArray.optionBOdds}}</div>
-            <div v-if="dataArray.optionC">{{dataArray.optionCOdds}}</div>
-          </div>
-          <div :class="(!dataArray.optionC)?'now-title-two flexed':'now-title-three flexed'">
-            <div>获胜倍数/份</div>
-            <div>获胜倍数/份</div>
-            <div v-if="dataArray.optionC">获胜倍数/份</div>
-          </div>
-          <div :class="(!dataArray.optionC)?'average-two flexed':'average-three flexed'">
-            <div><i class="iconfont icon-29"></i>{{dataArray.optionAQuantity}}{{dataArray.tradeCoin}}</div>
-             <div><i class="iconfont icon-29"></i>{{dataArray.optionBQuantity}}{{dataArray.tradeCoin}}</div>
-              <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i>{{dataArray.optionCQuantity}}{{dataArray.tradeCoin}}</div>
+           <div :class="(!dataArray.optionC)?'now-cent-two flexed':'now-cent-three flexed'" >
+              <div>{{dataArray.optionAOdds}}</div>
+              <div>{{dataArray.optionBOdds}}</div>
+              <div v-if="dataArray.optionC">{{dataArray.optionCOdds}}</div>
+            </div>
+            <div :class="(!dataArray.optionC)?'now-title-two flexed':'now-title-three flexed'">
+              <div>获胜倍数/份</div>
+              <div>获胜倍数/份</div>
+              <div v-if="dataArray.optionC">获胜倍数/份</div>
+            </div>
+            <div :class="(!dataArray.optionC)?'average-two flexed':'average-three flexed'">
+              <div><i class="iconfont icon-29"></i>{{dataArray.optionAQuantity}}{{dataArray.tradeCoin}}</div>
+               <div><i class="iconfont icon-29"></i>{{dataArray.optionBQuantity}}{{dataArray.tradeCoin}}</div>
+                <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i>{{dataArray.optionCQuantity}}{{dataArray.tradeCoin}}</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="history">
-        <div class="title">历史投注记录</div>
-        <table>
-          <tr>
-            <th>投入选项</th>
-            <th>投入份数</th>
-            <th>获胜倍数</th>
-            <th>投注时间</th>
-          </tr>
-          <tr v-for="item in dataArray.history">
-            <td>{{item.betResult}}</td>
-            <td>{{item.betQuantity}}</td>
-            <td>{{item.betOdds}}</td>
-            <td>{{item.createTime | changeTime}}</td>
-          </tr>
-        </table>
-      </div>
+        <div class="history">
+          <div class="title">历史投注记录</div>
+          <table>
+            <tr>
+              <th>投入选项</th>
+              <th>投入份数</th>
+              <th>获胜倍数</th>
+              <th>投注时间</th>
+            </tr>
+            <tr v-for="item in dataArray.history">
+              <td>{{item.betResult}}</td>
+              <td>{{item.betQuantity}}</td>
+              <td>{{item.betOdds}}</td>
+              <td>{{item.createTime | changeTime}}</td>
+            </tr>
+          </table>
+        </div>
+      </mt-loadmore>
       <mt-popup v-model="popupVisible" position="bottom">
         <div class="name-wrap">
           <div>
@@ -222,7 +226,16 @@ export default {
       }
       getDetial(params).then(response=>{
         this.dataArray = response.body;
+        this.endTime =response.body.betEndTime || '';
+        this.maxValue = response.body.maxBet;
       })
+    },
+    handleTopChange(){
+      
+    },
+    loadTop(){
+      this.fetch()
+      this.$refs.loadmore.onBottomLoaded();
     },
     initTime(){
       // self =this;
