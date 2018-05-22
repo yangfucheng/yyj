@@ -1,9 +1,9 @@
 <template>
   <div class="contain">
-    <div class="nav-bar">首页</div>
-    <div class="search">
+  <!--   <div class="nav-bar">首页</div> -->
+   <!--  <div class="search">
       <span class="text"><i class="iconfont icon-sousuo"></i>搜索商品 分类 功效 用户</span>
-    </div>
+    </div> -->
     <div class="wrapper"  ref="viewBox" >
       <div class="swiper"  v-show="isSwiper" ref="swiper">
         <mt-swipe   :show-indicators="false" :auto="200000"> 
@@ -30,16 +30,23 @@
                    <ul><li> <carousel  v-for="item in dataArray" :dataProp='item' ></carousel></li> </ul>
                 </mt-loadmore>
               </mt-tab-container-item>
-        
+              
               <mt-tab-container-item :id="2"  :class="isSwiper==false?'Hidden':'content'">
                 <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" :bottom-all-loaded="allLoaded"         :auto-fill="false" ref="loadmore2"  :bottom-method='loadBottom'>
-                   <ul><li><end v-for="item in dataArray" :dataProp='item'></end></li> </ul>
+                   <ul>
+                    <li>
+                      <end v-for="item in dataArray" :dataProp='item'></end>
+                    </li> 
+                  </ul>
                 </mt-loadmore>
               </mt-tab-container-item>
-
+              
                <mt-tab-container-item :id="3"  :class="isSwiper==false?'Hidden':'content'">
                   <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" :bottom-all-loaded="allLoaded"         :auto-fill="false" ref="loadmore3"  :bottom-method='loadBottom'>
-                     <ul><li><my v-for="item in dataArray" :dataProp='item'></my></li> </ul>
+                     <ul><li>
+                      <my v-for="item in dataArray" :dataProp='item' v-show="item.result"></my>
+                      <alend v-for="item in dataArray" :dataProp='item' v-show="!item.result"></alend>
+                    </li> </ul>
                   </mt-loadmore>
                 </mt-tab-container-item>
                <router-view></router-view>
@@ -54,6 +61,7 @@
 import carousel from "../components/carousel.vue";
 import my from "../views/indexpage/my.vue";
 import end from "../views/indexpage/end.vue";
+import alend from "../views/indexpage/alreadEnd.vue";
 import { getList,getImage } from '../api/api.js'
 import { Loadmore } from 'mint-ui';
 import { Indicator } from 'mint-ui';
@@ -90,7 +98,15 @@ export default {
         {
           id:5,
           name:"已结束"
-        }
+        },
+        {
+          id:6,
+          name:"金融"
+        },
+        {
+          id:7,
+          name:"哈哈"
+        },
         ],
       dataArray:[],
       topStatus:'',
@@ -114,7 +130,7 @@ export default {
     // this.$refs.viewBox.scrollTop = -100;
     this.box.addEventListener('scroll', () => {
       // console.log(" scroll " + this.$refs.viewBox.scrollTop)
-      // this.$refs.viewBox.scrollTop = 0;
+      // this.$refs.viewBox.scrollTop ;
       
       //以下是我自己的需求，向下滚动的时候显示“我是有底线的（类似支付宝）”
       this.handleScroll(this.$refs.viewBox.scrollTop);
@@ -135,9 +151,6 @@ export default {
        getList(params).then(response => {
            this.dataArray = response.body.result;
            this.totalPage = response.body.totalPage;
-            // this.$nextTick(() => {
-            //   this._initScroll();
-            // })
             if(this.totalPage == 1){
               this.bottomAllLoaded =true;
             }
@@ -158,13 +171,18 @@ export default {
       console.log(scrollTop)
       var swiperDom = this.$refs.swiper;
       var navDom = this.$refs.navbar;
-      var swiperH = swiperDom.clientHeight;
+      var swiperH = 0;
+      if(swiperDom){
+        swiperH = swiperDom.clientHeight;
+      }
       if(scrollTop > swiperH){
         this.isSwiper =false;
-        navDom.style.width='100%';
-        navDom.style.position = 'fixed';
-        navDom.style.zIndex  = '1';
-        navDom.style.backgroundColor = '#FFF'
+        if(navDom){
+            navDom.style.width='100%';
+            navDom.style.position = 'fixed';
+            navDom.style.zIndex  = '1';
+            navDom.style.backgroundColor = '#FFF'
+        }
         // this.$refs.content.style.color  = '1.5rem'
       }
     },
@@ -190,7 +208,9 @@ export default {
     }
   },
   watch: {
+    
     "selected"() {
+      // this.startTop = 0;
         var num =this.selected-1;
         var tagArray =['eq','code','code'];
         var typeArray =['tag','end','mine']
@@ -213,7 +233,8 @@ export default {
   components:{
       carousel,
       my,
-      end
+      end,
+      alend
   }
 }
 
@@ -230,9 +251,8 @@ export default {
   
   .contain {
     margin-bottom:1.5rem;
-    margin-top:1.3rem;
- 
-    
+    // margin-top:1.3rem;
+
     // .search{
     //   width:95%;
     //   margin:0 auto;
@@ -250,10 +270,11 @@ export default {
       .wrapper{
           position:absolute;
           width: 100%;
-          top: 1.3rem;
-          bottom: 1.5rem;
-          overflow: auto;
-          z-index: 0;
+          height:100%;
+          top: 0;
+          // bottom: 2rem;
+          // overflow: auto;
+          // z-index: 0;
           .swiper{
             background-color:#FFF;
             height:5rem;
@@ -274,8 +295,8 @@ export default {
 
       // }
       .nav{
-        border-top:1px solid #e0e0e0;
-        border-bottom:1px solid #e0e0e0;
+        border-top:1px solid #ccc;
+        border-bottom:1px solid #ccc;
         .is-selected{
         }
         li{
@@ -286,6 +307,9 @@ export default {
           text-decoration: none;
       }
   }
-    
-
+  .mint-navbar .mint-tab-item.is-selected{
+    border-bottom:3px solid red;
+    color:red;
+  }
+  
 </style>
