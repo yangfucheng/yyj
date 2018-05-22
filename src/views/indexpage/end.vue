@@ -12,7 +12,7 @@
 				</div>
 				<div class="option">
 					<div class="option-font-two">
-					    <div>结果:选项{{dataArray.result}}:{{dataArray.resultMemo}}</div>
+					    <div>结果: <span style="color:#000">选项{{dataArray.result}}:{{dataArray.resultMemo}}</span>	 </div>
 					    <!-- <div>C:不会跌破</div> -->
 					</div>
 					<div class="average-cent-three flexed-two">
@@ -21,7 +21,7 @@
 							<div>参与人数</div>
 						</div>
 						<div>
-							<div>{{dataArray.ratio}}%</div>
+							<div>{{ratio * 100}}%</div>
 							<div>选项比例</div>
 						</div>
 						<div>
@@ -48,6 +48,7 @@
 			return {
 				proValue:'',
 				dataArray:[],
+				ratio:0
 			}
 		},
 		methods: {
@@ -62,16 +63,21 @@
   		},
   		watch: {
   			"dataProp"(){
-  				// alert(JSON.stringify(this.dataProp))
   				this.dataArray =this.dataProp
+  				if(this.dataArray.ratio){
+  					let ratio = this.dataArray.ratio;
+  					this.ratio = ratio.toFixed(2);
+  				}
   			}
   		},
   		created() {
-  			this.dataArray = this.dataProp;
-  			this.endTime =this.dataProp.betEndTime;
+  			
+  			
   		},
 		mounted() {
 			this.dataArray = this.dataProp;
+			this.dataArray = this.dataProp;
+  			this.endTime =this.dataProp.betEndTime;  			
 			// alert(this.cell);
 		},
 	}
@@ -94,7 +100,7 @@
 				.hint {
 					display:flex;
 					justify-content:space-between;
-					margin-top:.1rem;
+					margin:.2rem 0;
 					color:#6E6E6E;
 					img {
 						vertical-align:text-bottom ;
@@ -145,7 +151,7 @@
 					}
 					.option-font-two{
 						font-weight:700;
-						font-size:.5rem;
+						font-size:.4rem;
 						margin-bottom:.3rem;
 						color:#6E6E6E;
 					}

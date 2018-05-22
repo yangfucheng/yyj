@@ -1,16 +1,19 @@
 <template>
    <div class="contianer">
-      <div class="back-nav-bar">
+     <!--  <div class="back-nav-bar">
         <div class="nav-container">
           <router-link to="/">
             <i class="iconfont icon-huitui"></i>
           </router-link>
           <span class="nav-title">详情</span>
         </div>
-      </div>
+      </div> -->
       <mt-loadmore :top-method="loadTop" ref="loadmore" @top-status-change="handleTopChange">
         <div class="title-content">
-          <div class="title"><img src="../../static/icon/hot.png" height="14" width="14" alt="">{{dataArray.title}}</div>
+          <div class="title">
+            <img src="../../static/icon/hot.png" height="14" width="14" alt="">
+            <span style="margin-top:.2rem;">{{dataArray.title}}</span>
+          </div>
           <div class="start-time">开始时间: {{dataArray.betStartTime | changeTime}}</div> 
           <!-- <div class="end-time">剩余时间: 03:24:14 18</div> -->
           <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="true" class="end-time"></zk-time-down>
@@ -39,30 +42,43 @@
           <div class="title">投注</div>
           <div class="content">
             <div class="option-font-three flexed">
-                <div @click="choose('A',dataArray.optionA,dataArray.optionAOdds)"><span v-show="!dataArray.optionC">选项</span>A:{{dataArray.optionA}}</div>
-                <div @click="choose('B',dataArray.optionB,dataArray.optionBOdds)"><span v-show="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
-                <div v-if="dataArray.optionC" @click="choose('C',dataArray.optionC,dataArray.optionCOdds)">C:{{dataArray.optionC}}</div>
+                <div @click="choose('A',dataArray.optionA,dataArray.optionAOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;;">选项A:</span>{{dataArray.optionA}}</div>
+                <div @click="choose('B',dataArray.optionB,dataArray.optionBOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;;">选项B:</span>{{dataArray.optionB}}</div>
+                <div v-if="dataArray.optionC" @click="choose('C',dataArray.optionC,dataArray.optionCOdds)" ><span style="margin-right:.1rem;">C:</span>{{dataArray.optionC}}</div>
             </div>
             <div class="progress" ref="progress"> 
               <div></div> 
-              <div></div>
-              <div v-show="dataArray.optionC"></div>  
+              <div :class="(!dataArray.optionC)?'noC':'isC'"></div>
+              <div v-show="dataArray.optionC"></div>
             </div>
-
-           <div :class="(!dataArray.optionC)?'now-cent-two flexed':'now-cent-three flexed'" >
-              <div>{{dataArray.optionAOdds}}</div>
-              <div>{{dataArray.optionBOdds}}</div>
-              <div v-if="dataArray.optionC">{{dataArray.optionCOdds}}</div>
+           <div :class="(!dataArray.optionC)?'now-cent-three flexed-two':'now-cent-three flexed'" >
+             <div style="color:#FA3E55">
+              <span>{{dataArray.optionAOdds}}</span>
+              <span style="font-size:.3rem;color:#000">{{scaleA}}</span>
+            </div>
+            <div style="color:#1AC5BB">
+              <span>{{dataArray.optionBOdds}}</span>
+              <span style="font-size:.3rem;color:#000">{{scaleB}}</span>
+            </div>
+            <div v-show="dataArray.optionC" style="color:#6CA6CD">
+              <span>{{dataArray.optionCOdds}}</span>
+              <span style="font-size:.3rem;color:#000">{{scaleC}}</span>
+            </div>
             </div>
             <div :class="(!dataArray.optionC)?'now-title-two flexed':'now-title-three flexed'">
-              <div>获胜倍数/份</div>
-              <div>获胜倍数/份</div>
-              <div v-if="dataArray.optionC">获胜倍数/份</div>
+              <div>获胜倍数/概率</div>
+              <div>获胜倍数/概率</div>
+              <div v-if="dataArray.optionC">获胜倍数/概率</div>
             </div>
             <div :class="(!dataArray.optionC)?'average-two flexed':'average-three flexed'">
-              <div><i class="iconfont icon-29"></i>{{dataArray.optionAQuantity}}{{dataArray.tradeCoin}}</div>
-               <div><i class="iconfont icon-29"></i>{{dataArray.optionBQuantity}}{{dataArray.tradeCoin}}</div>
-                <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i>{{dataArray.optionCQuantity}}{{dataArray.tradeCoin}}</div>
+              <div><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionAQuantity}}{{dataArray.tradeCoin}}</span></div>
+               <div><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionBQuantity}}{{dataArray.tradeCoin}}</span></div>
+                <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionCQuantity}}{{dataArray.tradeCoin}}</span></div>
+            </div>
+            <div class="single">
+              
+              <span>单次最高投注:&nbsp&nbsp <span style="color:#000"> <span>{{dataArray.maxBet}}</span>&nbsp {{dataArray.tradeCoin}}</span></span>
+              <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{dataArray.betNumber}}</span>
             </div>
           </div>
         </div>
@@ -87,12 +103,16 @@
       <mt-popup v-model="popupVisible" position="bottom">
         <div class="name-wrap">
           <div>
-            <div class="option"> {{optOrder}}:{{option}}</div>
-            <div class="label">请选择投入代币的数量:</div>
+            <div class="option"> 选项{{optOrder}}:{{option}}</div>
+            <div class="label">请选择投入代币的数量:
+              <span style="color:red;margin-left:.2rem">{{allMoney*dataArray.minBet}}</span>
+              <span style="color:red;margin-left:0rem">({{dataArray.minBet}}{{dataArray.tradeCoin}}/份)</span>
+            </div>
+            
           </div>
           <div>
-             <div class="now-money">当前投入:{{allMoney}}</div>
-             <div class="lab">账户余额:66gxs</div>
+             <!-- <div class="now-money">当前投入:{{allMoney}}</div> -->
+             <!-- <div class="lab">账户余额:66gxs</div> -->
           </div>
         </div>
          <div class="range">
@@ -145,7 +165,10 @@ export default {
       optOrder:'',
       option:'',
       nowOdd:'',
-      maxValue:''
+      maxValue:'',
+      scaleA:0,
+      scaleB:0,
+      scaleC:0
     }
   },
   mounted() {
@@ -162,6 +185,9 @@ export default {
     let scaleA = optionAQuantity/optionAll;
     let scaleB = optionBQuantity/optionAll;
     let scaleC = optionCQuantity/optionAll;
+    this.scaleA = toPercent(scaleA);
+    this.scaleB = toPercent(scaleB);
+    this.scaleC = toPercent(scaleC);
     // divArray[0].style.width =toPercent(scaleA);
     // divArray[1].style.width =toPercent(fomat(scaleA,scaleB,scaleC,1));
     // divArray[2].style.width =toPercent(fomat(scaleA,scaleB,scaleC,2));
@@ -301,14 +327,21 @@ export default {
 .contianer {
   width:100%;
   margin:0 auto;
+  position:absolute;
+  top:0;
+  height:100%;
+  background-color:#FFF;
   .title-content{
     width:98%;
     margin:0 auto;
-    border:1px solid ;
+    box-shadow: 2px 2px 10px #cccccc;
+    margin-bottom:.3rem;
+    // border:1px solid #777777;
     .title{
       font-size:.4rem;
       font-weight:700;
-      margin:.1rem .2rem .4rem .2rem;
+      margin:.2rem .2rem .4rem .2rem;
+      padding-top:.2rem;
     }
     .start-time {
       font-size:.3rem;
@@ -318,9 +351,10 @@ export default {
       border-bottom:1px solid #C0C0C0;
     }
     .end-time {
-      font-size:.4rem;
-      font-weight:700;
-      margin-left:38%;
+      font-size:.35rem;
+      // font-weight:400;
+      margin-left:48%;
+      padding:.2rem 0;
     }
   }
   .describe{
@@ -357,7 +391,8 @@ export default {
     border-top:1px solid #ccc;
     padding:.3rem .6rem;
     font-size:.35rem;
-    color:rgb(77, 94, 187)
+    color:rgb(77, 94, 187);
+    box-shadow: 2px 2px 10px #cccccc;
   }
   .bet{
     .title{
@@ -370,6 +405,10 @@ export default {
       border:1px solid #ccc;
       padding-bottom:.3rem;
       box-shadow:0 -1px 10px #ccc;
+      .single{
+        margin:.3rem auto;
+        width:90%;
+      }
       .flexed {
         display:flex;
         justify-content:space-between;
@@ -384,9 +423,9 @@ export default {
         display:flex;
         text-align: center;
         align-items: center;
-        div:nth-child(1){
-          border-right:1px solid #ccc;
-        }
+        // div:nth-child(1){
+        //   border-right:1px solid #ccc;
+        // }
         & > div{
           width:50%;
         }
@@ -396,47 +435,57 @@ export default {
         font-size:.5rem;
       }
       .progress {
-        margin:0 auto;
-        margin-top:.1rem;
-        margin-bottom:.2rem;
+        // margin:0 auto;
+        margin:.3rem auto;
         width:90%;
         height:.25rem;
         border-radius:5px;
         background-color:#FFF;
         display:flex;
         div:nth-child(1) {
-          border-radius:5px;
-          background-color:red;
-          height:.25rem;
-        }
-        div:nth-child(2) {
-          background-color:yellow;
-          height:.25rem;
-        }
-        div:nth-child(3) {
-          border-radius:5px;
-          background-color:#1AC6BC;
-          height:.25rem;
-        }
+            border-radius:5px 0px 0px 5px;
+            background-color:#FA3E55;
+            height:.25rem;
+          }
+          .noC {
+            border-radius:0px 5px 5px 0px;
+            background-color:#1AC5BB;
+            height:.25rem;
+          }
+          .isC {
+            // border-radius:0px 0px 0px 5px;
+            background-color:#1AC5BB;
+            height:.25rem;
+          }
+          div:nth-child(3) {
+            border-radius:0px 5px 5px 0px;
+            background-color:#6CA6CD;
+            height:.25rem;
+          }
       }
       .option-font-three{
-        font-weight:700;
-        font-size:.4rem;
+        // font-weight:700;
+        font-size:.35rem;
         padding:.1rem;
         & > div {
-          border:1px solid #1AC6BC;
-          padding:.1rem;
+          box-shadow: 2px 2px 0px #777777;
+          border-radius:5px;
+          border:1px solid #cccccc;
+          padding:.2rem;
+          width:100%;
           margin:.3rem .3rem .1rem .3rem;
         }
       }
       .now-cent-three{
+        width:90%;
+        margin:.1rem auto;
         font-weight:700;
-        font-size:.7rem;
+        font-size:.6rem;
       }
 
       .now-cent-two{
         font-weight:700;
-        font-size:1rem;
+        font-size:.8rem;
         width:70%;
         margin:0 auto;
         & > div:nth-child(2){
@@ -445,19 +494,23 @@ export default {
         }
       }
       .now-title-three{
-        font-size:.4rem;
+        font-size:.3rem;
+        color:#ccc;
+        margin:.1rem 0;
       }
       .now-title-two{
-        font-size:.4rem;
+        font-size:.3rem;
         width:70%;
-        margin:0 auto;
+        margin:.1rem auto;
+        color:#ccc;
       }
       .average-three{
-        font-size:.4rem;
+        font-size:.3rem;
+        margin:.2rem auto;
         color:#000;
       }
       .average-two{
-        font-size:.4rem;
+        font-size:.3rem;
         color:#000;
         width:70%;
         margin:0 auto;
@@ -496,20 +549,24 @@ export default {
     height:8rem;
     .name-wrap{
       margin-top:.2rem;
-      display:flex;
-      margin-left:.7rem;
-      margin-bottom:.2rem;
+      // display:flex;
+      // margin-left:.7rem;
+      // margin-bottom:.2rem;
       .option{
-        text-align: center;
         font-size:.5rem;
         font-weight:700;
-        padding:.3rem;
-        border:1px solid #1AC6BC;
+        width:100%;
+        border-bottom:1px solid #ccc;
+        padding:.2rem;
+        padding-left:.7rem;
+        // border:1px solid #1AC6BC;
       }
       .label{
-        text-align: center;
-        margin-top:.2rem;
+        // text-align: center;
+        margin:.2rem 0;
+        padding-left:.7rem;
         font-size:.35rem;
+        font-weight:400;
       }
       //凌晨两点的布局,蒙圈了,有时间优化记得修改.
       .lab{ 
@@ -532,6 +589,7 @@ export default {
       justify-content:space-between;
       width:80%;
       margin:0 auto;
+      margin-left:.7rem;
       & > div{
         border:1px solid #1AC6BC;
         border-radius:.3rem;
@@ -543,9 +601,10 @@ export default {
     }
     .range{
       width:7rem;
-      margin:.2rem auto;
+      margin:.5rem auto;
       .input{
         width:7rem;
+        margin-left:-.8rem;
       }
     }
     .award{
@@ -553,6 +612,7 @@ export default {
       justify-content:space-around;
       margin-top:.2rem;
       font-size:.35rem;
+      margin-left:-.7rem;
       margin-bottom:.4rem;
       .label-red{
         color:red;
@@ -561,11 +621,12 @@ export default {
     }
     .footer{
       display:flex;
-      width:90%;
+      justify-content:space-between;
+      width:88%;
       margin:0 auto;
       .text{
-        width:56%;
-        font-size:.45rem;
+        width:50%;
+        font-size:.35rem;
       }
       .button{
          width:45%;
@@ -587,12 +648,12 @@ export default {
   }
 }
 .el-input-number{
-  width:7rem;
+  width:8rem;
   line-height:1rem;
 }
 
 .el-input__inner{
-  width:7rem;
+  width:8rem;
   line-height:.5rem;
 }
 </style>

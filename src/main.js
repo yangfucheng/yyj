@@ -11,6 +11,8 @@ import store from './store/index.js'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './permission.js'
+import VueWechatTitle from 'vue-wechat-title'
+
 
 
 
@@ -18,6 +20,7 @@ Vue.config.productionTip = false
 global.storage = window.localStorage
 Vue.use(MintUI);
 Vue.use(ElementUI);
+Vue.use(VueWechatTitle)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

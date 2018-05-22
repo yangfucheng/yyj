@@ -8,7 +8,7 @@
         <img :src="img2" slot="icon">市场预测
       </mt-tab-item>
       <mt-tab-item id="我的">
-        <img :src="img3" slot="icon">我的
+        <img :src="img3" slot="icon" width="48" height="48">我的
       </mt-tab-item>
     </mt-tabbar>
   </div>
@@ -19,8 +19,8 @@ export default {
   data () {
     return {
       selected: "首页",
-      img1: "static/icon/indexchoose.png",
-      img2: "static/icon/toupiao.png",
+      img1: "static/icon/yucec.png",
+      img2: "static/icon/indexchoose.png",
       img3: "static/icon/me.png",
     }
   },
@@ -37,17 +37,17 @@ export default {
     // 固定的书写 ""双引号里面是要监听的数据 handler是处理数据改变的函数 deep是否深度监听
     "selected": {
       handler (val,oldval) { //多看文档 handler
+        if (this.selected == "市场预测") {
+          // this.$router.push('/')
+          this.img2="static/icon/index.png"
+        } else {
+          this.img2="static/icon/indexchoose.png"
+        }
         if (this.selected == "首页") {
           this.$router.push('/')
-          this.img1="static/icon/indexchoose.png"
-        } else {
-          this.img1="static/icon/index.png"
-        }
-        if (this.selected == "市场预测") {
-          this.$router.push('/vote')
-          this.img2="static/icon/toupiao.png"
-        } else {
-          this.img2="static/icon/toupiao.png"
+          this.img1="static/icon/yucec.png"
+        }else{
+          this.img1="static/icon/yuce.png"
         }
         if (this.selected == "我的") {
           this.$router.push('/myself')
@@ -69,6 +69,7 @@ export default {
   background:#fff;
   height: 1.3rem;
   padding-top:-.4rem;
+  padding:.1rem 0;
 }
 .is-selected{
     color :#FE4070;

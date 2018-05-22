@@ -13,14 +13,19 @@ export function getTextById(obj,value){
 
 export function timestampToTime(timestamp) {
 	if(timestamp){
-        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        var D = date.getDate() + ' ';
-        var h = date.getHours() + ':';
-        var m = date.getMinutes() + ':';
-        var s = date.getSeconds();
-        return Y+M+D+h+m+s;
+        let date = new Date(timestamp);  
+        let y = date.getFullYear();  
+        let MM = date.getMonth() + 1;  
+        MM = MM < 10 ? ('0' + MM) : MM;  
+        let d = date.getDate();  
+        d = d < 10 ? ('0' + d) : d;  
+        let h = date.getHours();  
+        h = h < 10 ? ('0' + h) : h;  
+        let m = date.getMinutes();  
+        m = m < 10 ? ('0' + m) : m;  
+        let s = date.getSeconds();  
+        s = s < 10 ? ('0' + s) : s;  
+        return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s; 
     }else{
     	return ''
     }

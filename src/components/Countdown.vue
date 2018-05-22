@@ -36,12 +36,14 @@
                let h = this.formate(parseInt(leftTime/(60*60)%24))
                let m = this.formate(parseInt(leftTime/60%60))
                let s = this.formate(parseInt(leftTime%60))
-               if(leftTime <= 0){
-                   this.flag = true
-                   this.$emit('time-end')
-               }
+               
                this.time = `${d}天${h}小时${m}分${s}秒`
-               if(this.type==false){
+               if(leftTime <= 0){
+                   // this.flag = true
+                   // this.$emit('time-end')
+                   this.time="已结束"
+               }
+               if(this.type==false && leftTime > 0){
                   this.time = `${d}天${h}小时`
                }
            },

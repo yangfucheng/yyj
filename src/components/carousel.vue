@@ -12,40 +12,49 @@
 					<div class="per-num"><i class="iconfont icon-wode"></i>{{dataArray.betNumber}}</div>
 					<div class="token">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
 				</div>
-				<div class="option">
-					<div :class="(!dataArray.optionC)?'option-font-two flexed-two':'option-font-three flexed-three'">
-					    <div><span v-if="!dataArray.optionC">选项</span>A:{{dataArray.optionA}}</div>
-					    <div><span v-if="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
-					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div>
-					</div>
-				</div>
+			<!-- 	<div class="option">
+					
+				</div> -->
 				<div class="progress" ref="progress">
 					<div></div>
 					<div :class="(!dataArray.optionC)?'noC':'isC'"></div>
 					<div v-show="dataArray.optionC"></div>
 				</div>
 				<div class="option">
-					<div :class="(!dataArray.optionC)?'now-cent-three flexed-two':'option-font-three flexed-three'" >
-						<div>{{dataArray.optionAOdds}}</div>
-						<!-- <div>VS</div> -->
-						<div>{{dataArray.optionBOdds}}</div>
-						<div v-show="dataArray.optionC">{{dataArray.optionCOdds}}</div>
+					<div :class="(!dataArray.optionC)?'option-font-three flexed-two':'option-font-three flexed-three'">
+					    <div><span v-if="!dataArray.optionC">选项</span>A:{{dataArray.optionA}}</div>
+					    <div><span v-if="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
+					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div>
 					</div>
-					<div :class="(!dataArray.optionC)?'flexed-two':'flexed-three'" style="color:#CCCCC">
-						<div>预计实现概率</div>
-						<div>预计实现概率</div>
-						<div v-show="dataArray.optionC">预计实现概率</div>
+					<div :class="(!dataArray.optionC)?'now-cent-two flexed-two':'now-cent-three flexed-three'" >
+						<div style="color:#FA3E55">
+							<span>{{dataArray.optionAOdds}}</span>/
+							<span style="font-size:.35rem;">{{scaleA}}</span>
+						</div>
+						<div style="color:#1AC5BB">
+							<span>{{dataArray.optionBOdds}}</span>/
+							<span style="font-size:.35rem;">{{scaleB}}</span>
+						</div>
+						<div v-show="dataArray.optionC" style="color:#6CA6CD">
+							<span>{{dataArray.optionCOdds}}</span>/
+							<span style="font-size:.35rem;">{{scaleC}}</span>
+						</div>
 					</div>
-					<div class="average-cent-three flexed-two" v-show="false">
+					<div :class="(!dataArray.optionC)?'flexed-two':'flexed-three'" >
+						<div  style="color:#CCC">获胜倍数/概率</div>
+						<div  style="color:#CCC">获胜倍数/概率</div>
+						<div v-show="dataArray.optionC"  style="color:#CCC">获胜倍数/概率</div>
+					</div>
+					<!-- <div class="average-cent-three flexed-two" v-show="true">
 						<div>3.6 &nbsp<i class="iconfont icon-tubiaoshangshengqushi"></i></div>
 						<div>3.6&nbsp<i class="iconfont icon-tubiaoxiajiangqushi" ></i></div>
-						<!-- <div>3.6&nbsp<i class="iconfont icon-tubiaoshangshengqushi" style="color:red"></i></div> -->
-					</div>
-					<div class="average-three flexed-two" v-show="false">
-						<div>平均获胜倍数</div>
-						<div>平均获胜倍数</div>
-						<div v-show="dataArray.optionC">平均获胜倍数</div>
-					</div>
+						<div>3.6&nbsp<i class="iconfont icon-tubiaoshangshengqushi" style="color:red"></i></div>
+					</div> -->
+					<!-- <div class="average-three flexed-two" v-show="true">
+						<div>当前获胜倍数:<span style="color:#FA3E55"></span></div>
+						<div>当前获胜倍数:<span style="color:#1AC5BB">{{dataArray.optionBOdds}}</span></div>
+						<div v-show="dataArray.optionC" style="color:#6CA6CD">当前获胜倍数:<span>{{dataArray.optionCOdds}}</span>
+					</div> -->
 				</div>
 				<div class="describe"></div>
 			</div>
@@ -71,6 +80,9 @@ import zkTimeDown from '../components/Countdown.vue'
 				dataArray:[],
 				message : '正在倒计时',
       			endTime : 0,
+      			scaleA:0,
+      			scaleB:0,
+      			scaleC:0
 			}
 		},
 		 methods: {
@@ -112,9 +124,15 @@ import zkTimeDown from '../components/Countdown.vue'
 		    let scaleA = optionAQuantity/optionAll;
 		    let scaleB = optionBQuantity/optionAll;
 		    let scaleC = optionCQuantity/optionAll;
+		    this.scaleA = toPercent(scaleA);
+		    this.scaleB = toPercent(scaleB);
+		    this.scaleC = toPercent(scaleC);
 		    divArray[0].style.width =toPercent(scaleA);
 		    divArray[1].style.width =toPercent(fomat(scaleA,scaleB,scaleC,1));
 		    divArray[2].style.width =toPercent(fomat(scaleA,scaleB,scaleC,2));
+		    // divArray[0].style.width ="90%"
+		    // divArray[1].style.width ="5%"
+		    // divArray[2].style.width ="5%"
 		    function toPercent(point){  
 		      var str=Number(point*100).toFixed(1);
 		        str+="%";
@@ -167,15 +185,15 @@ import zkTimeDown from '../components/Countdown.vue'
 				.hint {
 					display:flex;
 					justify-content:space-between;
-					margin-top:.5rem;
+					margin:.4rem .2rem;
 					img {
 						vertical-align:text-bottom ;
 					}
 				}
 				.progress {
 					margin:0 auto;
-					margin-top:.1rem;
-					margin-bottom:.2rem;
+					margin-top:.3rem;
+					margin-bottom:.3rem;
 					width:90%;
 					height:.25rem;
 					border-radius:5px;
@@ -241,7 +259,9 @@ import zkTimeDown from '../components/Countdown.vue'
 					}
 					.option-font-three{
 						font-weight:700;
+						letter-spacing: .1rem;
 						font-size:.4rem;
+						margin:.1rem 0;
 					}
 					.option-font-two{
 						font-weight:700;
@@ -250,7 +270,13 @@ import zkTimeDown from '../components/Countdown.vue'
 
 					.now-cent-three{
 						font-weight:700;
-						font-size:.7rem;
+						font-size:.45rem;
+						margin:.2rem 0;
+					}
+					.now-cent-two{
+						font-weight:700;
+						font-size:.55rem;
+						margin:.2rem 0;
 					}
 					.now-title-three{
 						font-size:.4rem;
@@ -261,15 +287,17 @@ import zkTimeDown from '../components/Countdown.vue'
 						font-wight:700;
 					}
 					.average-three{
-						font-size:.4rem;
-						color:#ccc;
+						margin:.1rem 0;
+						font-size:.3rem;
+						color:#000;
 					}
 				}
 			}
 			.title{
+				margin-top:.3rem;
 				.title-contont{
-				font-size:15px;
-				font-weight:900;
+					font-size:15px;
+					font-weight:900;
 				}
 			}
 			

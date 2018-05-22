@@ -48,8 +48,8 @@ export function bet(params) {
 export function record(params) {
   return fetch({
     url: '/app/user/record',
-    method: 'post',
-    data:JSON.stringify(params)
+    method: 'get',
+    params:params
   })
 }
 

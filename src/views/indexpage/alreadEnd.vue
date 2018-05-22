@@ -1,4 +1,4 @@
-	<template>
+<template>
 	<div class="contain">
 		<div class="cell">
 			<div class="title">
@@ -7,10 +7,7 @@
 			</div>
 			<div class="content">
 				<div class="hint">
-					 <!-- <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="false"  class="hint-time"></zk-time-down> -->
-					 <span style="color:#ccc">已结束</span>
-					 <span style="color:red;margin-right:2rem;" v-show="dataArray.earned > 0">预测正确</span>
-					  <span style="color:red;margin-right:2rem;" v-show="dataArray.earned <= 0">预测失败</span>
+					 <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="false" class="hint-time"></zk-time-down>
 					<!-- <div class="per-num"><i class="iconfont icon-wode"></i>{{dataArray.betNumber}}</div> -->
 					<div class="token">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
 				</div>
@@ -19,21 +16,21 @@
 					<div></div>
 					<div v-show="dataArray.optionC"></div>
 				</div> -->
-				<div class="option" >
-					<div :class="(!dataArray.optionC)?'option-font-two flexed-two':'option-font-two flexed-two'">
-					    <div>结果:选项{{dataArray.result}}</div>
-					<!--     <div><span v-show="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
-					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div> -->
+				<div class="option">
+					<div :class="(!dataArray.optionC)?'option-font-two flexed-two':'option-font-three flexed-two'">
+					    <div><span v-if="!dataArray.optionC">选项</span>A:{{dataArray.optionA}}</div>
+					    <div><span v-if="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
+					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div>
 					</div>
 					<div class="average-cent-three flexed-two">
 						<div>{{dataArray.mayEarnedA}}</i></div>
 						<div>{{dataArray.mayEarnedB}}</i></div>
-						<!-- <div v-show="dataArray.optionC">{{dataArray.mayEarnedC}}</div> -->
+						<div v-show="dataArray.optionC">{{dataArray.mayEarnedC}}</div>
 					</div>
-					<div :class="(!dataArray.optionC)?'now-title-two flexed-two':'now-title-two flexed-two'" style="color:#CCCCCC">
-						<div>历史下注({{dataArray.betQuantity}})</div>
-						<div>获得收益({{dataArray.earned}})</div>
-						<!-- <div v-show="dataArray.optionC">可能收益({{dataArray.tradeCoin}})</div> -->
+					<div :class="(!dataArray.optionC)?'now-title-two flexed-two':'now-title-three flexed-two'" style="color:#CCCCCC">
+						<div>可能收益({{dataArray.tradeCoin}})</div>
+						<div>可能收益({{dataArray.tradeCoin}})</div>
+						<div v-show="dataArray.optionC">可能收益({{dataArray.tradeCoin}})</div>
 					</div>
 				</div>
 				<div class="describe"></div>
@@ -116,7 +113,7 @@ import zkTimeDown from '../../components/Countdown.vue'
 				.hint {
 					display:flex;
 					justify-content:space-between;
-					margin-top:.3rem;
+					margin-top:.5rem;
 					letter-spacing: .05rem;
 					img {
 						vertical-align:text-bottom ;

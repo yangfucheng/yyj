@@ -1,13 +1,5 @@
 <template>
    <div class="contain">
-     <div class="back-nav-bar">
-        <div class="nav-container">
-          <router-link to="/myself">
-            <i class="iconfont icon-huitui"></i>
-          </router-link>
-          <span class="nav-title">流水记录</span>
-        </div>
-      </div>
       <div class="header">
         <div>
           <div style="font-size:.4rem;margin-bottom:.1rem;">结算货币</div>
@@ -25,15 +17,15 @@
       </div>
       <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
         <ul class="content">
-          <li v-for="x in items">
-            <div>
+          <li v-for="x in items" @click="step(x)">
+            <div class="wrap">
               <div class="way">
                 <div>下注支付</div>
-                <div>{{x.createTime | changeTime}}</div>
+                <div style="overflow:hidden; width: 3rem;white-space: nowrap;text-overflow: ellipsis;color:#888888">{{x.memo}}</div>
               </div>
               <div class="price">
-                <div>#比特币价格#</div>
-                <div>{{x.amount}}</div>
+                <div>{{x.createTime | changeTime}}</div>
+                <div style="text-align:right;">{{x.amount}}</div>
               </div>
             </div>
           </li>
@@ -75,17 +67,21 @@ export default {
        }
       record(params).then(response => {
         this.items = response.body.result;
+        this.$refs.loadmore.onTopLoaded();
       })
     },
     loadTop(){
-
+      this.fetch();
     },
     loadBottom(){
 
     },
-    step(route) {
+    step(id) {
       this.$router.push({
-        name:route,
+        name:'recodeDetail',
+        params:{
+          id:id
+        }
       })
     }
   }
@@ -106,43 +102,19 @@ export default {
       justify-content:space-between;
     }
     .content{
-      width:100%;
+      width:95%;
+      margin:0 auto;
+
       li{
-        height:1.5rem;
         border-bottom:1px solid #ccc;
-        line-height:1.3rem;
-        font-size:.35rem;
-        div{
-           margin:0 .2rem;
-          .way{
+        .wrap{
+           height:1.3rem;
+           line-height:.65rem;
            display:flex;
            justify-content:space-between;
-           height:1rem;
-           div:nth-child(1){
-              font-size:.5rem;
-              font-weight:400;
-           }
-        }
-        .price{
-           display:flex;
-           justify-content:space-between;
-           height:1rem;
-           div{
-            margin-top:-.4rem;
-           }
-           div:nth-child(1){
-              font-size:.39rem;
-              font-weight:400;
-           }
-           div:nth-child(2){
-              font-size:.4rem;
-              font-weight:600;
-           }
-          }
         }
       }
     }
-    
   } 
 
 </style>

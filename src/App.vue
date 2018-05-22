@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <router-view></router-view>
+      <router-view v-wechat-title='$route.meta.title'></router-view>
       <tabbar v-show="isTab">dada</tabbar>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   },
   created () {
     // this.$router.push('views/index.vue');
-    // this.$router.push('/')
+    this.$router.push('/')
   },
   computed: {
     isTab () {
