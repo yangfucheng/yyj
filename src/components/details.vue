@@ -261,7 +261,7 @@ export default {
     },
     loadTop(){
       this.fetch()
-      this.$refs.loadmore.onBottomLoaded();
+      // this.$refs.loadmore.onBottomLoaded();
     },
     initTime(){
       // self =this;

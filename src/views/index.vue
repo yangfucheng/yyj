@@ -250,8 +250,14 @@ export default {
 @import "../common/style.scss";
   
   .contain {
-    margin-bottom:1.5rem;
+    // margin-bottom:1.5rem;
     // margin-top:1.3rem;
+    // position:absolute;
+    // width: 100%;
+    // height:100%;
+    // top: 0;
+    // bottom: 1.5rem;
+    // overflow: auto;
 
     // .search{
     //   width:95%;
@@ -270,11 +276,11 @@ export default {
       .wrapper{
           position:absolute;
           width: 100%;
-          height:100%;
           top: 0;
-          // bottom: 2rem;
-          // overflow: auto;
-          // z-index: 0;
+          height:93%;
+          // bottom: 1.5rem;
+          overflow: auto;
+          z-index: 0;
           .swiper{
             background-color:#FFF;
             height:5rem;

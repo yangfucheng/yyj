@@ -176,7 +176,7 @@ import zkTimeDown from '../components/Countdown.vue'
 		border:1px solid #CCC;
 		border-radius:5px;
 		box-shadow: -2px -2px 1px 10px #F0F0F0;
-		padding-bottom:.5rem;
+		padding-bottom:.7rem;
 		.cell {
 			width:90%;
 			margin:0 auto;
