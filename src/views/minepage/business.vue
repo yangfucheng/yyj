@@ -1,51 +1,55 @@
 <template>
    <div class="contain">
-      <div class="header">
-        <div>
-          <div style="font-size:.4rem;margin-bottom:.1rem;">结算货币</div>
-          <div >
-              <el-select v-model="value" style="width:2.5rem;">
-                <el-option label="GXS" value="GXS"></el-option>
-                <el-option label="FPS" value="FPS"></el-option>
-              </el-select>
-          </div>
-        </div>
-        <div style="font-size:.5rem;margin-top:.8rem;">
-          <span>筛选</span>
-          <span style="align-self:center"><i class="iconfont icon-shaixuan1"></i></span>
-        </div>
-      </div>
-      <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-        <ul class="content">
-          <li v-for="x in items" @click="step(x)">
+      <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" class="mt-wrap" :auto-fill="false" >
+        <div class="header">
+          <div>
             <div class="wrap">
-              <div class="way">
-                <div>下注支付</div>
-                <div style="overflow:hidden; width: 3rem;white-space: nowrap;text-overflow: ellipsis;color:#888888">{{x.memo}}</div>
-              </div>
-              <div class="price">
-                <div>{{x.createTime | changeTime}}</div>
-                <div style="text-align:right;">{{x.amount}}</div>
-              </div>
+              <!-- <span style="font-size:.4rem;margin-bottom:.1rem;">结算货币</span> -->
+              <span >
+                  <el-select v-model="value"  placeholder="请选择币种" style="margin-top:.3rem; width:4rem;">
+                    <el-option label="GXS" value="GXS"></el-option>
+                    <el-option label="PPS" value="PPS"></el-option>
+                  </el-select>
+              </span>
             </div>
-          </li>
-        </ul>
+          </div>
+          <!-- <div style="font-size:.5rem;margin-top:.6rem;" @click="demo()">
+            <span>筛选</span>
+            <span style="align-self:center"><i class="iconfont icon-shaixuan1"></i></span>
+          </div> -->
+        </div>
+          <ul class="content">
+            <li v-for="x in items" @click="stepDetail(x)">
+              <div class="wrap">
+                <div class="way">
+                  <div>{{x.tag | changeRecode}}</div>
+                  <div style="overflow:hidden; width: 3rem;white-space: nowrap;text-overflow: ellipsis;color:#888888">{{x.memo}}</div>
+                </div>
+                <div class="price">
+                  <div>{{x.createTime | changeTime}}</div>
+                  <div style="text-align:right;" :class="x.amount > 0?'green':'red'">{{x.amount}}</div>
+                </div>
+              </div>
+            </li>
+          </ul>
       </mt-loadmore>
    </div>
 </template>
 
 <script>
 import { record } from '../../api/api.js'
-import {timestampToTime} from '../../untils/enums.js'
+import {timestampToTime,recodeDec,getTextByName} from '../../untils/enums.js'
+import { Indicator,Loadmore } from 'mint-ui';
 export default {
   data () {
     return {
       items:[
       ],
-      value:'GXS',
+      value:'',
       allLoaded:true,
-      page:''
-
+      page:1,
+      totalPage:'',
+      bottomDistance:200
     }
   },
   created() {
@@ -57,26 +61,60 @@ export default {
   filters: {
     changeTime(value){
       return timestampToTime(value);
+    },
+    changeRecode(value){
+      return getTextByName(recodeDec,value);
+    }
+  },
+  watch:{
+    'value'(){
+      this.items =[];
+      this.fetch();
     }
   },
   methods: {
+
     fetch(){
+      Indicator.open();
       var params={
-          coin:"",
-          page:this.page
+          coin:this.value,
+          page:this.page,
+          pageSize:1
        }
       record(params).then(response => {
-        this.items = response.body.result;
-        this.$refs.loadmore.onTopLoaded();
-      })
+        Indicator.close();
+        // this.items = response.body.result;
+        // for(var i = 0 ; i<this.items.length ; i++){
+        //    this.items.push(this.items[i]);
+        // }
+         this.totalPage =response.body.totalCount;
+         var dataResult = response.body.result;
+         for(var i = 0 ; i< dataResult.length; i++){
+            this.items.push(dataResult[i]);
+         }
+          this.$refs.loadmore.onTopLoaded();
+          this.$refs.loadmore.onBottomLoaded();
+        })
     },
-    loadTop(){
+    demo(){
       this.fetch();
     },
-    loadBottom(){
-
+    loadTop(){
+      this.items =[];
+      this.page=1;
+      this.fetch();
+      this.$refs.loadmore.onTopLoaded();
     },
-    step(id) {
+    loadBottom(){
+       if(this.totalPage > this.page){
+          this.page++;
+          this.fetch();
+        }else{
+          this.bottomAllLoaded =true;
+          this.$refs.loadmore.onBottomLoaded();
+        }
+    },
+    stepDetail(id) {
       this.$router.push({
         name:'recodeDetail',
         params:{
@@ -87,13 +125,25 @@ export default {
   }
 }
 </script>
-
+<style>
+  
+</style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "../../common/mixin.scss";
   @import "../../common/style.scss";
+  
   .contain{
-    position:relative;
+    .mt-wrap{
+      position:absolute;
+      top:0;
+      left:0;
+      bottom:0;
+      height:100%;
+      width:100%;
+      padding:10px 0;
+      overflow: scroll;
+    }
     .header{
       border-bottom:1px solid #ccc;
       // padding:.5rem 0;
@@ -104,14 +154,23 @@ export default {
     .content{
       width:95%;
       margin:0 auto;
-
+      height:100%;
       li{
         border-bottom:1px solid #ccc;
         .wrap{
            height:1.3rem;
+           margin-top:.2rem;
            line-height:.65rem;
            display:flex;
            justify-content:space-between;
+           .green{
+             color:#1AC5BB;
+             font-size:.4rem;
+           }
+           .red{
+             color:red;
+             font-size:.4rem;
+           }
         }
       }
     }

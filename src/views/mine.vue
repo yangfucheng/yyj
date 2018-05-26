@@ -5,12 +5,12 @@
         <li>
           <div class="icon"><i class="iconfont icon-wode"></i></div>
           <div class="name">
-            <label>用户名:<span style="color:#000;margin-left:.2rem">王力宏</span> </label>
+            <label>用户名:<span style="color:#000;margin-left:.2rem">{{dataObj.nickName}}</span> </label>
             <span></span>
           </div>
-          <div class="idcard">王力宏粉丝团的9998位居民</div>
+          <div class="idcard">预言家的第{{dataObj.userId}}位居民</div>
         </li>
-        <li v-for="item in common" @click="step(item.route)">
+        <li v-for="item in common" @click="step(item.route,item.type)">
           <div class="icon"><i :class="item.icon"></i></div>
           <div class="text">{{item.text}}</div>
           <div class="into"><i class="iconfont icon-jiantou1"></i></div>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { info } from '../api/api.js'
+import { Indicator } from 'mint-ui';
 export default {
   data () {
     return {
@@ -27,47 +29,66 @@ export default {
       {
         icon:'iconfont icon-shouzhiliushui',
         text:'流水记录',
-         route:'business'
+        route:'business',
+        type:''
       },
       {
         icon:'iconfont icon-wocanyude',
         text:'我参加的',
-        route:'join'
+        route:'join',
+        type:''
       },
-      // {
-      //   icon:'../../static/icon/collect.png',
-      //   text:'我收藏的'
-      // },
-      // {
-      //   icon:'../../static/icon/tixian.png',
-      //   text:'提现',
-      //   route:'tixian'
-      // },
       {
         icon:'iconfont icon-tixian',
         text:'我的钱包',
-        route:'money'
+        route:'money',
+        type:''
       },
       {
         icon:'iconfont icon-shezhi',
         text:'设置',
-        route:'set'
+        route:'set',
+        type:''
+
       },
       {
         icon:'iconfont icon-wode',
         text:'联系客服',
-        route:'connect'
+        route:'connect',
+        type:''
       },
-      ]
+      {
+        icon:'iconfont icon-weixin1',
+        text:'关于微信',
+        route:'connect',
+        type:'wai'
+      },
+      ],
+      dataObj:{}
     }
   },
+  created(){
+    this.fetch();
+  },
   methods: {
-    step(route) {
-      this.$router.push({
-        name:route,
+
+    step(route,type) {
+      if(type=="wai"){
+        window.location.href ="http://vip.wxtolink.com/wx/?i=1280";
+      }else{
+        this.$router.push({
+          name:route,
+        })
+      }
+    },
+    fetch(){
+      Indicator.open();
+      info().then(response=>{
+        Indicator.close();
+        this.dataObj =response.body;
       })
     }
-  }
+  },
 }
 </script>
 

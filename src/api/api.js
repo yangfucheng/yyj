@@ -68,3 +68,32 @@ export function refresh(params) {
     params:params
   })
 }
+//钱包
+export function wallet(params) {
+  return fetch({
+    url: '/app/user/wallet',
+    method: 'get',
+    params:params
+  })
+}
+
+//充值
+export function recharge(params) {
+  return fetch({
+    url: '/app/user/gxsRecharge',
+    method: 'post',
+    data:JSON.stringify(params)
+  })
+}
+
+//个人信息
+export function info(params) {
+  return fetch({
+    url: '/app/user/info',
+    method: 'get',
+    params:params
+  })
+}
+
+
+

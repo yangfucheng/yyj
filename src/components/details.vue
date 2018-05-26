@@ -8,15 +8,20 @@
           <span class="nav-title">详情</span>
         </div>
       </div> -->
-      <mt-loadmore :top-method="loadTop" ref="loadmore" @top-status-change="handleTopChange">
+      <mt-loadmore :top-method="loadTop"  @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore"  class="mt-wrap">
         <div class="title-content">
           <div class="title">
             <img src="../../static/icon/hot.png" height="14" width="14" alt="">
             <span style="margin-top:.2rem;">{{dataArray.title}}</span>
           </div>
-          <div class="start-time">开始时间: {{dataArray.betStartTime | changeTime}}</div> 
+          <div class="time-wrap">
+             <div class="start-time">开始时间: {{dataArray.betStartTime | changeDate}}</div> 
           <!-- <div class="end-time">剩余时间: 03:24:14 18</div> -->
-          <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="true" class="end-time"></zk-time-down>
+              <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="true" class="end-time"></zk-time-down>
+          </div>
+          <div class="notice">
+              <span><i class="iconfont icon-xinxi"></i>{{dataArray.notice}}</span>
+          </div>
         </div>
         <div class="describe" v-show="false">
           <div class="situation">
@@ -35,16 +40,13 @@
           </div>
           <div class="prodution"><span class="label">数据来源:网易&nbsp&nbsp&nbsp</span><a>http://www.baidu.com</a></div>
         </div>
-        <div class="notice">
-          <span><i class="iconfont icon-xinxi"></i>比特币一直在跌,大神预言zhe</span>
-        </div>
         <div class="bet">
-          <div class="title">投注</div>
           <div class="content">
+            <div class="title">投注</div>
             <div class="option-font-three flexed">
-                <div @click="choose('A',dataArray.optionA,dataArray.optionAOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;;">选项A:</span>{{dataArray.optionA}}</div>
-                <div @click="choose('B',dataArray.optionB,dataArray.optionBOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;;">选项B:</span>{{dataArray.optionB}}</div>
-                <div v-if="dataArray.optionC" @click="choose('C',dataArray.optionC,dataArray.optionCOdds)" ><span style="margin-right:.1rem;">C:</span>{{dataArray.optionC}}</div>
+                <div @click="choose('A',dataArray.optionA,dataArray.optionAOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;border-color:#FA3E55;">选项</span>A:{{dataArray.optionA}}</div>
+                <div @click="choose('B',dataArray.optionB,dataArray.optionBOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;border-color:#1AC5BB;">选项</span>B:{{dataArray.optionB}}</div>
+                <div v-if="dataArray.optionC" @click="choose('C',dataArray.optionC,dataArray.optionCOdds)" ><span style="margin-right:.1rem;border-color:#6CA6CD;">C:</span>{{dataArray.optionC}}</div>
             </div>
             <div class="progress" ref="progress"> 
               <div></div> 
@@ -77,7 +79,7 @@
             </div>
             <div class="single">
               
-              <span>单次最高投注:&nbsp&nbsp <span style="color:#000"> <span>{{dataArray.maxBet}}</span>&nbsp {{dataArray.tradeCoin}}</span></span>
+              <span>单次最高投注:&nbsp&nbsp <span style="color:#000"> <span>{{dataArray.maxBet}}</span>份</span></span>
               <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{dataArray.betNumber}}</span>
             </div>
           </div>
@@ -87,7 +89,7 @@
           <table>
             <tr>
               <th>投入选项</th>
-              <th>投入份数</th>
+              <th>投注金额</th>
               <th>获胜倍数</th>
               <th>投注时间</th>
             </tr>
@@ -103,10 +105,18 @@
       <mt-popup v-model="popupVisible" position="bottom">
         <div class="name-wrap">
           <div>
-            <div class="option"> 选项{{optOrder}}:{{option}}</div>
-            <div class="label">请选择投入代币的数量:
-              <span style="color:red;margin-left:.2rem">{{allMoney*dataArray.minBet}}</span>
-              <span style="color:red;margin-left:0rem">({{dataArray.minBet}}{{dataArray.tradeCoin}}/份)</span>
+            <div class="option"> 
+              <span>选项{{optOrder}}:{{option}}</span>
+              <div class="yue">
+                <div>{{dataArray.tradeCoin}}余额: <span style="color:red">{{dataArray.wallet}}</span> </div>   
+                <span style="text-align:right"><router-link to="/myself/recharge">立即充值</router-link></span> 
+              </div>
+
+            </div>
+
+            <div class="label">需要:
+              <span style="color:red;margin-left:.2rem">{{allMoney*dataArray.minBet}}{{dataArray.tradeCoin}}</span>
+              <span style="color:#ccc;margin-left:0rem">({{dataArray.minBet}}{{dataArray.tradeCoin}}/份)</span>
             </div>
             
           </div>
@@ -128,15 +138,15 @@
             <div slot="end">50</div>
         </mt-range> -->
         <div class="award">
-          <span>当前获胜倍数:<span class="label-red">{{nowOdd}}</span></span>
-          <span>猜对获得: <span class="label-red">{{nowOdd * allMoney}}</span></span>
+          <span>当前获胜倍数:<span class="label-red">{{ nowOdd }}</span></span>
+          <span>猜对获得: <span class="label-red">{{ getAllMoney }}</span> <span>{{dataArray.tradeCoin}}</span></span>
         </div>
 
         <div class="footer">
-          <span class="text">当前获得倍数仅供参考以确认后实时数据为准</span>
+          <span class="text">当前获胜倍数仅供参考以结束时获胜倍数为准</span>
           <div class="button">
-            <button @click="clear()">清空</button>
-            <button @click="submit()">确认</button>
+            <button @click="popupVisible=false">取消</button>
+            <button @click="submit()" style="color:#fff">买入</button>
           </div>
         </div>
       </mt-popup>
@@ -146,7 +156,9 @@
 <script>
 import zkTimeDown from '../components/Countdown.vue'
 import {getDetial,bet,refresh} from '../api/api.js'
-import {timestampToTime} from '../../src/untils/enums.js'
+import {timestampToTime,timestampTodate} from '../../src/untils/enums.js'
+import { Indicator,Toast } from 'mint-ui';
+import {GetQueryString} from '../untils/enums.js'
 var qs=require("qs");
 export default {
   components : {
@@ -155,7 +167,7 @@ export default {
   data () {
     return {
       message: '正在倒计时',
-      endTime: '',
+      endTime: 0,
       popupVisible: false,
       rangeValue:0,
       buttonArray:[5,10,50,'全部'],
@@ -165,109 +177,121 @@ export default {
       optOrder:'',
       option:'',
       nowOdd:'',
-      maxValue:'',
+      maxValue:0,
       scaleA:0,
       scaleB:0,
-      scaleC:0
+      scaleC:0,
     }
   },
   mounted() {
-      // alert(this.cell);
-    var proDom =this.$refs.progress;
-    var divArray =proDom.getElementsByTagName('div');
-    // let scaleA = 0.95 / this.dataArray.optionAOdds;
-    // let scaleB = 0.95 / this.dataArray.optionBOdds;
-    // let scaleC = 0.95 / (this.dataArray.optionCOdds);
-    let optionAQuantity = this.dataArray.optionAQuantity;
-    let optionBQuantity = this.dataArray.optionBQuantity;
-    let optionCQuantity = this.dataArray.optionCQuantity;
-    let optionAll = optionAQuantity + optionBQuantity +optionCQuantity
-    let scaleA = optionAQuantity/optionAll;
-    let scaleB = optionBQuantity/optionAll;
-    let scaleC = optionCQuantity/optionAll;
-    this.scaleA = toPercent(scaleA);
-    this.scaleB = toPercent(scaleB);
-    this.scaleC = toPercent(scaleC);
-    // divArray[0].style.width =toPercent(scaleA);
-    // divArray[1].style.width =toPercent(fomat(scaleA,scaleB,scaleC,1));
-    // divArray[2].style.width =toPercent(fomat(scaleA,scaleB,scaleC,2));
-    // if(scaleC==Infinity){
-    //   scaleC=0;
-    // }
-    // alert(scaleC)
-    divArray[0].style.width =toPercent(scaleA);
-    divArray[1].style.width =toPercent(fomat(scaleA,scaleB,scaleC,1));
-    divArray[2].style.width =toPercent(fomat(scaleA,scaleB,scaleC,2));
-    // divArray[0].style.width =scaleA
-    // divArray[1].style.width =scaleB
-    // divArray[2].style.width =scaleC
-    function toPercent(point){  
-      var str=Number(point*100).toFixed(1);
-        str+="%";
-        return str;
-    }
-    function fomat(scaleA,scaleB,scaleC,num){
-      if(!scaleC&&num==1){
-
-        if(scaleA+scaleB!=1){
-          return 1-scaleA;
-        }else{
-          return scaleB;
-        }
-      }
-      else if(scaleC&&num==2){ 
-        if(scaleA+scaleB+scaleC!=1){
-          return 1-(scaleA+scaleB)
-        }else{
-          return scaleC
-        }
-      }else if(!scaleC&&num==2){
-        return 0;
-      }
-      else{
-        return scaleB;
-      }
+    
+  },
+  computed:{
+    getAllMoney(){
+      return parseFloat((this.nowOdd * this.allMoney).toFixed(7))
     }
   },
   created() {
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
     }
-    // alert();
-    this.dataArray=this.$route.params.dataArray;
-    this.endTime =this.dataArray.betEndTime || '';
-    this.maxValue = this.dataArray.maxBet;
+    // alert(GetQueryString(id))
+    // alert(this.$route.params.id);
+    // this.dataArray=this.$route.params.dataArray;
+    // this.endTime =this.dataArray.betEndTime || '';
+    // this.maxValue = this.dataArray.maxBet;
+    this.dataArray = [];
     this.fetch();
     this.initTime();
   },
   filters: {
     changeTime(value){
       return timestampToTime(value)
-    }
+    },
+    changeDate(value){
+      return timestampTodate(value)
+    },
   },
   methods: {
     fetch(){
+      Indicator.open('Loading...');
       var params = {
-        projectId:this.dataArray.id
+        projectId:this.$route.params.id
       }
       getDetial(params).then(response=>{
+        Indicator.close();
         this.dataArray = response.body;
         this.endTime =response.body.betEndTime || '';
         this.maxValue = response.body.maxBet;
+        this.$nextTick(function () {
+        // DOM 更新了
+          this.getJSON();
+        })
+        
+      }).catch(function(e){
+        console.log(e);
+        Indicator.close();
       })
     },
-    handleTopChange(){
-      
+    handleTopChange(status){
+      this.topStatus = status;
     },
     loadTop(){
       this.fetch()
-      // this.$refs.loadmore.onBottomLoaded();
+      this.$refs.loadmore.onTopLoaded();
     },
     initTime(){
       // self =this;
       // var init = setInterval(function(){
       //   self.refresh();
       // },10000)
+    },
+    getJSON(){
+      var proDom =this.$refs.progress;
+      var divArray =proDom.getElementsByTagName('div');
+      let optionAQuantity =this.dataArray.optionAQuantity;
+      let optionBQuantity = this.dataArray.optionBQuantity;
+      let optionCQuantity = this.dataArray.optionCQuantity;
+      let optionAll = optionAQuantity + optionBQuantity +optionCQuantity
+      let scaleA = optionAQuantity/optionAll;
+      let scaleB = optionBQuantity/optionAll;
+      let scaleC = optionCQuantity/optionAll;
+      if(scaleC==Infinity){
+        scaleC=0;
+      }
+      this.scaleA = toPercent(scaleA);
+      this.scaleB = toPercent(scaleB);
+      this.scaleC = toPercent(scaleC);
+      divArray[0].style.width =toPercent(scaleA);
+      divArray[1].style.width =toPercent(fomat(scaleA,scaleB,scaleC,1));
+      divArray[2].style.width =toPercent(fomat(scaleA,scaleB,scaleC,2));
+      function toPercent(point){  
+        var str=Number(point*100).toFixed(1);
+          str+="%";
+          return str;
+      }
+      function fomat(scaleA,scaleB,scaleC,num){
+        if(!scaleC&&num==1){
+
+          if(scaleA+scaleB!=1){
+            return 1-scaleA;
+          }else{
+            return scaleB;
+          }
+        }
+        else if(scaleC&&num==2){ 
+          if(scaleA+scaleB+scaleC!=1){
+            return 1-(scaleA+scaleB)
+          }else{
+            return scaleC
+          }
+        }else if(!scaleC&&num==2){
+          return 0;
+        }
+        else{
+          return scaleB;
+        }
+      }
     },
     refresh(){
       var params ={
@@ -285,8 +309,16 @@ export default {
         betResult:this.optOrder,
         betQuantity:(this.allMoney * this.dataArray.minBet),
       }
+      if((this.allMoney * this.dataArray.minBet) > this.dataArray.wallet){
+           this.$message.error('余额不足');
+          return;
+      }
       bet(params).then(response=>{
         this.popupVisible = false;
+        this.$message({
+          message: '下注成功',
+          type: 'success'
+        });
         this.fetch();
       })
     },
@@ -325,17 +357,22 @@ export default {
 @import "../common/mixin.scss";
 @import "../common/style.scss";
 .contianer {
-  width:100%;
-  margin:0 auto;
-  position:absolute;
-  top:0;
-  height:100%;
-  background-color:#FFF;
+
+  .mt-wrap{
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    height:100%;
+    width:100%;
+    overflow: scroll;
+  }
   .title-content{
-    width:98%;
+    width:100%;
     margin:0 auto;
-    box-shadow: 2px 2px 10px #cccccc;
     margin-bottom:.3rem;
+    border-bottom:.2rem solid #eeeeee;
     // border:1px solid #777777;
     .title{
       font-size:.4rem;
@@ -343,18 +380,42 @@ export default {
       margin:.2rem .2rem .4rem .2rem;
       padding-top:.2rem;
     }
-    .start-time {
-      font-size:.3rem;
-      color:#C0C0C0;
-      font-weight:400;
-      margin:.1rem .2rem .1rem .2rem;
-      border-bottom:1px solid #C0C0C0;
+    .time-wrap{
+      width:95%;
+      margin:0 auto;
+      display:flex;
+      .start-time {
+        font-size:.3rem;
+        color:#C0C0C0;
+        font-weight:400;
+        // margin:.1rem .2rem .1rem .2rem;
+        width:38%;
+      }
+      .end-time {
+        width:72%;
+        color:#C0C0C0;
+        font-size:.35rem;
+        text-align:right;
+      }
     }
-    .end-time {
+    .notice{
+      // border-bottom:1px solid #ccc;
+      // border-top:1px solid #ccc;
+      border:1px solid #ccc;
+      border-radius:8px;
+      width:90%;
+      margin:.3rem auto;
+      padding:.5rem .2rem;
       font-size:.35rem;
-      // font-weight:400;
-      margin-left:48%;
-      padding:.2rem 0;
+      color:rgb(77, 94, 187);
+      span{
+        width:100%;
+        white-space:pre-wrap;
+        word-wrap:break-word ;
+        display:block;
+        overflow: hidden ;
+        word-break:normal;
+      }
     }
   }
   .describe{
@@ -386,15 +447,8 @@ export default {
       }
     }
   }
-  .notice{
-    border-bottom:1px solid #ccc;
-    border-top:1px solid #ccc;
-    padding:.3rem .6rem;
-    font-size:.35rem;
-    color:rgb(77, 94, 187);
-    box-shadow: 2px 2px 10px #cccccc;
-  }
   .bet{
+    border-bottom:.2rem solid #eeeeee;
     .title{
       font-size:.45rem;
       font-weight:700;
@@ -402,9 +456,9 @@ export default {
       margin-left:.1rem;
     }
     .content {
-      border:1px solid #ccc;
+      // border:1px solid #ccc;
       padding-bottom:.3rem;
-      box-shadow:0 -1px 10px #ccc;
+      // box-shadow:0 -1px 10px #ccc;
       .single{
         margin:.3rem auto;
         width:90%;
@@ -467,13 +521,32 @@ export default {
         // font-weight:700;
         font-size:.35rem;
         padding:.1rem;
-        & > div {
-          box-shadow: 2px 2px 0px #777777;
-          border-radius:5px;
-          border:1px solid #cccccc;
+        & > div:nth-child(1) {
+          // box-shadow: 2px 2px 0px #777777;
+          border-radius:20px;
+          border:1px solid #FA3E55;
           padding:.2rem;
           width:100%;
           margin:.3rem .3rem .1rem .3rem;
+
+        }
+        & > div:nth-child(2) {
+          // box-shadow: 2px 2px 0px #777777;
+          border-radius:20px;
+          border:1px solid #1AC5BB;
+          padding:.2rem;
+          width:100%;
+          margin:.3rem .3rem .1rem .3rem;
+
+        }
+        & > div:nth-child(3) {
+          // box-shadow: 2px 2px 0px #777777;
+          border-radius:20px;
+          border:1px solid #6CA6CD;
+          padding:.2rem;
+          width:100%;
+          margin:.3rem .3rem .1rem .3rem;
+
         }
       }
       .now-cent-three{
@@ -529,7 +602,7 @@ export default {
     table{
       width:100%;
       padding:100px;
-      box-shadow:0 -1px 10px #ccc;
+      // box-shadow:0 -1px 10px #ccc;
       th{
         width:25%;
         text-align: center;
@@ -546,7 +619,8 @@ export default {
   }
   .mint-popup-bottom{
     width:100%;
-    height:8rem;
+    // height:8rem;
+    padding:.5rem;
     .name-wrap{
       margin-top:.2rem;
       // display:flex;
@@ -559,6 +633,14 @@ export default {
         border-bottom:1px solid #ccc;
         padding:.2rem;
         padding-left:.7rem;
+        .yue{
+          margin-top:.1rem;
+          font-size:.35rem;
+          color:#ccc;
+          display:flex;
+          justify-content:space-between;
+          width:82%;
+        }
         // border:1px solid #1AC6BC;
       }
       .label{
@@ -589,7 +671,7 @@ export default {
       justify-content:space-between;
       width:80%;
       margin:0 auto;
-      margin-left:.7rem;
+      // margin-left:.7rem;
       & > div{
         border:1px solid #1AC6BC;
         border-radius:.3rem;
@@ -604,7 +686,7 @@ export default {
       margin:.5rem auto;
       .input{
         width:7rem;
-        margin-left:-.8rem;
+        margin-left:-.5rem;
       }
     }
     .award{
@@ -612,7 +694,7 @@ export default {
       justify-content:space-around;
       margin-top:.2rem;
       font-size:.35rem;
-      margin-left:-.7rem;
+      // margin-left:-.7rem;
       margin-bottom:.4rem;
       .label-red{
         color:red;
@@ -622,16 +704,17 @@ export default {
     .footer{
       display:flex;
       justify-content:space-between;
+      align-items:center;
       width:88%;
       margin:0 auto;
       .text{
-        width:50%;
+        width:40%;
         font-size:.35rem;
       }
       .button{
          width:45%;
          margin-left:.1rem;
-         margin-top:.2rem;
+         // margin-top:.2rem;
          button{
           text-align: center;
           border:1px solid #1AC6BC;

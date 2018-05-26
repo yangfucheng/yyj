@@ -10,6 +10,8 @@ import business from '@/views/minepage/business.vue'
 import set from '@/views/minepage/set.vue'
 import money from '@/views/minepage/money.vue'
 import recodeDetail from '@/views/minepage/recodeDetail.vue'
+import recharge from '@/views/minepage/recharge.vue'
+import moneyDeatil from '@/views/minepage/moneyDeatil.vue'
 import details from '../components/details.vue'
 import login from '../views/login/login.vue'
 
@@ -44,7 +46,7 @@ export default new Router({
       meta:{title:"投票"}
     },
     {
-      path: '/index/details',
+      path: '/index/details/:id',
       name: 'details',
       component: details,
       meta:{title:"详情"}
@@ -90,6 +92,18 @@ export default new Router({
       name: 'recodeDetail',
       component: recodeDetail,
       meta:{title:"我的钱包"}
+    },
+    {
+      path: '/myself/recharge',
+      name: 'recharge',
+      component: recharge,
+      meta:{title:"充值"}
+    },
+    {
+      path: '/myself/moneyDeatil',
+      name: 'moneyDeatil',
+      component: moneyDeatil,
+      meta:{title:"充值详情"}
     }
   ]
 })

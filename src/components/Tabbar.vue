@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
@@ -39,6 +40,13 @@ export default {
       handler (val,oldval) { //多看文档 handler
         if (this.selected == "市场预测") {
           // this.$router.push('/')
+          this.$router.push('/')
+          this.selected = '首页'
+          Toast({
+            message: '暂未开放',
+            position: 'middle',
+            duration: 3000
+          });
           this.img2="static/icon/index.png"
         } else {
           this.img2="static/icon/indexchoose.png"
@@ -57,6 +65,15 @@ export default {
         }
       }
       // deep:true//对象内部的属性监听，也叫深度监听
+    },
+    '$route'(){
+      // alert(this.$route.path)
+      var routeStr = this.$route.path;
+      if(this.$route.path == '/myself'){
+        this.selected = '我的';
+      }else if(this.$route.path == '/'){
+        this.selected = '首页';
+      }
     }
   }
 }
@@ -65,15 +82,18 @@ export default {
 <style lang="scss" scoped>
 
 .mint-tabbar{
-  border-top:1px solid #ccc;
+  border-top:1px solid #e0e0e0;
   background:#fff;
-  height: 1.3rem;
-  padding-top:-.4rem;
-  padding:.1rem 0;
+  height: 1.5rem;
+  align-items:center;
+  // line-height:1.5rem;
+  // padding-top:.rem;
+  // padding:.3rem 0;
 }
 .is-selected{
     color :#FE4070;
-    background :#fff;
+    // background :#fff;
+     // border-top:1px solid #e0e0e0;
     text-decoration: none;
   }
 </style>

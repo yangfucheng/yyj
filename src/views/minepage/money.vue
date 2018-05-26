@@ -2,39 +2,61 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
-        <li v-for="item in common" @click="step(item.route)">
+        <li v-for="item in common" @click="step(item.route,item.textRight)">
           <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div>
           <div class="text">{{item.text}}</div>
           <div class="textRight">{{item.textRight}}</div>
-          <!-- <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div> -->
+          <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
         </li>
       </ul>
    </div>
 </template>
 
 <script>
+
+import { wallet } from '../../api/api.js'
+import { Indicator } from 'mint-ui';
 export default {
   data () {
     return {
       common:[
       {
-        icon:'../../static/icon/canyu.png',
+        icon:'../../static/icon/yucec.png',
         text:'PPS',
-        textRight:'0.2736',
-        route:'join'
+        textRight:'0',
       },
       {
-        icon:'../../static/icon/collect.png',
+        icon:'../../static/icon/gxs.png',
         text:'GXS',
-        textRight:'请在布洛克城钱包查看'
+        textRight:'0',
+        route:'moneyDeatil'
       },
       ]
     }
   },
+  created() {
+    if(this.$store.state.tabHidden) {
+      this.$store.dispatch('tabHidden')
+    }
+    this.fetch();
+  },
   methods: {
-    step(route) {
+    fetch(){
+      Indicator.open();
+      // Indicator.open();
+      wallet().then(response=>{
+        // Indicator.close();
+        Indicator.close();
+        this.common[0].textRight = response.body.PPS;
+        this.common[1].textRight = response.body.GXS;
+      })
+    },
+    step(route,num) {
       this.$router.push({
         name:route,
+        params:{
+          num:num
+        }
       })
     }
   }
@@ -58,7 +80,7 @@ export default {
           // @include border-1px();
           height:1.2rem;
         }
-        li:nth-child(n){
+        li:nth-child(2){
           // @include border-1px();
           border-top:1px solid #e0e0e0;
           border-bottom:1px solid #e0e0e0;
@@ -87,7 +109,7 @@ export default {
           .textRight{
              position:absolute;
              top:.4rem;
-             right:.5rem;
+             right:1.2rem;
              height:.5rem;
              width:5rem;
              text-align: right;

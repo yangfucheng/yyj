@@ -7,10 +7,10 @@
 			</div>
 			<div class="content">
 				<div class="hint">
-					 <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="false" class="hint-time"></zk-time-down>
+					 <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="false" class="hint-time"></zk-time-down style="width:40%;text-align:center">
 					<!-- <div class="hint-time">剩余时间 &nbsp  0天15时</div> -->
-					<div class="per-num"><i class="iconfont icon-wode"></i>{{dataArray.betNumber}}</div>
-					<div class="token">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
+					<div class="per-num" style="width:30%;text-align:center;"><i class="iconfont icon-wode" style="font-size:.3rem;margin-right:.1rem"></i>{{dataArray.betNumber}}</div>
+					<div class="token" style="width:30%;text-align:center">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
 				</div>
 			<!-- 	<div class="option">
 					
@@ -88,7 +88,8 @@ import zkTimeDown from '../components/Countdown.vue'
 		 methods: {
     		setp() {
 		      this.$router.push({
-		        name:'details',
+		        // name:'details',
+		        path:'index/details/'+this.dataArray.id,
 		        params:{
 		          dataArray:this.dataArray
 		        }
@@ -124,9 +125,13 @@ import zkTimeDown from '../components/Countdown.vue'
 		    let scaleA = optionAQuantity/optionAll;
 		    let scaleB = optionBQuantity/optionAll;
 		    let scaleC = optionCQuantity/optionAll;
+		    if(scaleC == NaN){
+		    	scaleC = 0;
+		    }
 		    this.scaleA = toPercent(scaleA);
 		    this.scaleB = toPercent(scaleB);
 		    this.scaleC = toPercent(scaleC);
+		    console.log(scaleC)
 		    divArray[0].style.width =toPercent(scaleA);
 		    divArray[1].style.width =toPercent(fomat(scaleA,scaleB,scaleC,1));
 		    divArray[2].style.width =toPercent(fomat(scaleA,scaleB,scaleC,2));
@@ -172,22 +177,24 @@ import zkTimeDown from '../components/Countdown.vue'
 		width:96%;
 		// height:6rem;
 		margin:0 auto;
-		margin-top:.15rem;
+		// margin-top:.15rem;
 		border:1px solid #CCC;
 		border-radius:5px;
-		box-shadow: -2px -2px 1px 10px #F0F0F0;
+		// box-shadow: -2px -2px 1px 10px #F0F0F0;
 		padding-bottom:.7rem;
+		margin-top:.2rem;
+		padding:.5rem 0;
 		.cell {
 			width:90%;
 			margin:0 auto;
-			margin-top:.3rem 0;
+			// margin-top:.3rem 0;
 			.content {
 				.hint {
 					display:flex;
-					justify-content:space-between;
+					// justify-content:space-between;
 					margin:.4rem .2rem;
-					img {
-						vertical-align:text-bottom ;
+					.hint-time{
+						width:40%;
 					}
 				}
 				.progress {
@@ -294,7 +301,7 @@ import zkTimeDown from '../components/Countdown.vue'
 				}
 			}
 			.title{
-				margin-top:.3rem;
+				// margin-top:.3rem;
 				.title-contont{
 					font-size:15px;
 					font-weight:900;

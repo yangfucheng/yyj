@@ -3,16 +3,18 @@
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
         <li v-for="item in common" @click="step(item.route)">
-          <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div>
+          <!-- <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div> -->
           <div class="text">{{item.text}}</div>
           <div class="textRight">{{item.textRight}}</div>
-          <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
+          <!-- <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div> -->
         </li>
       </ul>
    </div>
 </template>
 
 <script>
+import { info } from '../../api/api.js'
+import { Indicator } from 'mint-ui';
 export default {
   data () {
     return {
@@ -20,26 +22,40 @@ export default {
       {
         icon:'../../static/icon/canyu.png',
         text:'昵称',
-        textRight:'15267131952',
+        textRight:'',
         route:'join'
       },
       {
         icon:'../../static/icon/collect.png',
         text:'当前账号',
-        textRight:'15267131952'
+        textRight:''
       },
       {
         icon:'../../static/icon/tixian.png',
         text:'关于我们',
         route:'tixian'
-      },
-      ]
+      }
+      ],
     }
+  },
+  created() {
+    if(this.$store.state.tabHidden) {
+      this.$store.dispatch('tabHidden')
+    }
+    this.fetch();
   },
   methods: {
     step(route) {
       this.$router.push({
         name:route,
+      })
+    },
+    fetch(){
+      Indicator.open();
+      info().then(response=>{
+        Indicator.close();
+        this.common[0].textRight =response.body.nickName;
+        this.common[1].textRight =response.body.account;
       })
     }
   }
@@ -85,17 +101,17 @@ export default {
           .text{
             position:absolute;
             top:.4rem;
-            left:1.2rem;
+            left:.3rem;
             font-size:.3rem;
             color:rgb(151, 160, 166);
           }
           .textRight{
              position:absolute;
              top:.4rem;
-             right:.5rem;
+             right:.3rem;
              height:.5rem;
-             width:2.5rem;
-             text-align: left;
+             width:5rem;
+             text-align: right;
              color:rgb(151, 160, 166);
           }
           .into {

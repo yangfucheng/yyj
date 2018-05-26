@@ -25,7 +25,7 @@
 					<div class="average-cent-three flexed-two">
 						<div>{{dataArray.mayEarnedA}}</i></div>
 						<div>{{dataArray.mayEarnedB}}</i></div>
-						<div v-show="dataArray.optionC">{{dataArray.mayEarnedC}}</div>
+						<div v-show="dataArray.optionC">{{dataArray.mayEarnedc}}</div>
 					</div>
 					<div :class="(!dataArray.optionC)?'now-title-two flexed-two':'now-title-three flexed-two'" style="color:#CCCCCC">
 						<div>可能收益({{dataArray.tradeCoin}})</div>
@@ -42,6 +42,7 @@
 
 <script type="text/javascript">
 import zkTimeDown from '../../components/Countdown.vue'
+import { numTampTofloat } from '../../../src/untils/enums.js'
 	export default {
 		components : {
       		zkTimeDown
@@ -59,18 +60,17 @@ import zkTimeDown from '../../components/Countdown.vue'
       			endTime : 0,
 			}
 		},
-		 methods: {
-    		
-  		},
+		methods: {
+			
+		},
+		filters: {
+		   formatNum(value){
+		   		return numTampTofloat(value);
+		   }
+		},
   		created() {
   			 this.dataArray = this.dataProp;
   			 this.endTime =this.dataProp.betEndTime;
-  		},
-  		watch: {
-  			"dataProp"(){
-  				// alert(JSON.stringify(this.dataProp))
-  				this.dataArray =this.dataProp
-  			}
   		},
 		mounted() {
 			
@@ -99,21 +99,22 @@ import zkTimeDown from '../../components/Countdown.vue'
 	
 	.contain{
 		width:96%;
-		height:5rem;
+		// height:5rem;
 		margin:0 auto;
 		margin-top:.15rem;
 		border:1px solid #CCC;
 		border-radius:5px;
-		box-shadow: -2px -2px 1px 10px #F0F0F0;
+		// box-shadow: -2px -2px 1px 10px #F0F0F0;
+		padding:.5rem 0;
 		.cell {
 			width:80%;
 			margin:0 auto;
-			margin-top:.3rem;
+			// margin-top:.3rem;
 			.content {
 				.hint {
 					display:flex;
 					justify-content:space-between;
-					margin-top:.5rem;
+					margin-top:.3rem;
 					letter-spacing: .05rem;
 					img {
 						vertical-align:text-bottom ;
@@ -178,7 +179,7 @@ import zkTimeDown from '../../components/Countdown.vue'
 						font-size:.7rem;
 					}
 					.now-title-three{
-						font-size:.4rem;
+						font-size:.3rem;
 					}
 					.average-cent-three{
 						color:#1AC6BC;

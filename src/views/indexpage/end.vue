@@ -12,21 +12,21 @@
 				</div>
 				<div class="option">
 					<div class="option-font-two">
-					    <div>结果: <span style="color:#000">选项{{dataArray.result}}:{{dataArray.resultMemo}}</span>	 </div>
+					    <div>最终结果: <span style="color:#000">选项{{dataArray.result}}.{{dataArray.resultMemo}}</span>	 </div>
 					    <!-- <div>C:不会跌破</div> -->
 					</div>
 					<div class="average-cent-three flexed-two">
 						<div>
-							<div><i class="iconfont icon-renshutongji"></i>&nbsp{{dataArray.betNumber}}</div>
-							<div>参与人数</div>
+							<div class="num">{{dataArray.betNumber}}</div>
+							<div class="label">参与人数</div>
 						</div>
 						<div>
-							<div>{{ratio * 100}}%</div>
-							<div>选项比例</div>
+							<div class="num">{{ratio}}</div>
+							<div class="label">最终倍数</div>
 						</div>
 						<div>
-							<div><i class="iconfont icon-29"></i>{{dataArray.capitalPool}}</div>
-							<div>奖金池</div>
+							<div class="num">{{dataArray.capitalPool}}</div>
+							<div class="label">奖金池</div>
 						</div>
 					</div>
 				</div>
@@ -86,20 +86,22 @@
 	
 	.contain{
 		width:96%;
-		height:4.5rem;
+		// height:4.5rem;
 		margin:0 auto;
 		margin-top:.15rem;
 		border:1px solid #CCC;
 		border-radius:5px;
-		box-shadow: -2px -2px 1px 10px #F0F0F0;
+		// box-shadow: -2px -2px 1px 10px #F0F0F0;
+		padding:.5rem 0  .5rem 0;
 		.cell {
-			width:90%;
+			width:80%;
 			margin:0 auto;
-			margin-top:.3rem;
+			// margin-top:.3rem;
 			.content {
 				.hint {
 					display:flex;
 					justify-content:space-between;
+					letter-spacing: .05rem;
 					margin:.2rem 0;
 					color:#6E6E6E;
 					img {
@@ -141,18 +143,16 @@
 						}
 					}
 					.flexed-two{
-						justify-content:space-between;
 						display:flex;
-						text-align: center;
-						align-items: center;
-						& > div{
-							width:60%;
-						}
+						justify-content:space-between;
+						text-align:center;
+
+						
 					}
 					.option-font-two{
 						font-weight:700;
 						font-size:.4rem;
-						margin-bottom:.3rem;
+						// margin-bottom:.3rem;
 						color:#6E6E6E;
 					}
 
@@ -164,13 +164,13 @@
 						font-size:.4rem;
 					}
 					.average-cent-three{
-						color:#000;
-						font-size:.45rem;
-						.iconfont{
-							font-size:.6rem;
+						.num{
+							margin:.2rem;
+							font-size:.5rem;
 						}
-						& > div{
-							font-weight:400;
+						.label{
+							font-size:.35rem;
+							color:#ccc;
 						}
 					}
 					.average-three{

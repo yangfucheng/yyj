@@ -9,8 +9,8 @@
 				<div class="hint">
 					 <!-- <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="false"  class="hint-time"></zk-time-down> -->
 					 <span style="color:#ccc">已结束</span>
-					 <span style="color:red;margin-right:2rem;" v-show="dataArray.earned > 0">预测正确</span>
-					  <span style="color:red;margin-right:2rem;" v-show="dataArray.earned <= 0">预测失败</span>
+					<!--  <span style="color:red;margin-right:2rem;" v-show="dataArray.earned > 0">预测正确</span>
+					  <span style="color:red;margin-right:2rem;" v-show="dataArray.earned <= 0">预测失败</span> -->
 					<!-- <div class="per-num"><i class="iconfont icon-wode"></i>{{dataArray.betNumber}}</div> -->
 					<div class="token">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
 				</div>
@@ -21,18 +21,18 @@
 				</div> -->
 				<div class="option" >
 					<div :class="(!dataArray.optionC)?'option-font-two flexed-two':'option-font-two flexed-two'">
-					    <div>结果:选项{{dataArray.result}}</div>
+					    <div>最终结果:{{dataArray.result}}.{{dataArray.resultMemo}}</div>
 					<!--     <div><span v-show="!dataArray.optionC">选项</span>B:{{dataArray.optionB}}</div>
 					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div> -->
 					</div>
 					<div class="average-cent-three flexed-two">
-						<div>{{dataArray.mayEarnedA}}</i></div>
-						<div>{{dataArray.mayEarnedB}}</i></div>
+						<div>{{dataArray.betQuantity}}</i></div>
+						<div>{{dataArray.earned}}</i></div>
 						<!-- <div v-show="dataArray.optionC">{{dataArray.mayEarnedC}}</div> -->
 					</div>
 					<div :class="(!dataArray.optionC)?'now-title-two flexed-two':'now-title-two flexed-two'" style="color:#CCCCCC">
-						<div>历史下注({{dataArray.betQuantity}})</div>
-						<div>获得收益({{dataArray.earned}})</div>
+						<div>历史下注({{dataArray.tradeCoin}})</div>
+						<div>获得收益({{dataArray.tradeCoin}})</div>
 						<!-- <div v-show="dataArray.optionC">可能收益({{dataArray.tradeCoin}})</div> -->
 					</div>
 				</div>
@@ -102,21 +102,22 @@ import zkTimeDown from '../../components/Countdown.vue'
 	
 	.contain{
 		width:96%;
-		height:5rem;
+		// height:6rem;
 		margin:0 auto;
 		margin-top:.15rem;
 		border:1px solid #CCC;
 		border-radius:5px;
-		box-shadow: -2px -2px 1px 10px #F0F0F0;
+		// box-shadow: -2px -2px 1px 10px #F0F0F0;
+		padding:.5rem 0;
 		.cell {
 			width:80%;
 			margin:0 auto;
-			margin-top:.3rem;
+			// margin-top:.3rem;
 			.content {
 				.hint {
 					display:flex;
 					justify-content:space-between;
-					margin-top:.3rem;
+					margin-top:.2rem;
 					letter-spacing: .05rem;
 					img {
 						vertical-align:text-bottom ;
