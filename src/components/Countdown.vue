@@ -41,10 +41,10 @@
                if(leftTime <= 0){
                    // this.flag = true
                    // this.$emit('time-end')
-                   this.time="已结束"
+                   this.time="停止下注"
                }
                if(this.type==false && leftTime > 0){
-                  this.time = `${d}天${h}小时`
+                  this.time = `${d}天${h}小时${m}分`
                }
            },
            formate (time) {

@@ -13,7 +13,10 @@ import recodeDetail from '@/views/minepage/recodeDetail.vue'
 import recharge from '@/views/minepage/recharge.vue'
 import moneyDeatil from '@/views/minepage/moneyDeatil.vue'
 import details from '../components/details.vue'
+import ranking from '../components/ranking.vue'
+import error from '../404.vue'
 import login from '../views/login/login.vue'
+import banner1 from '../views/indexpage/banner.vue'
 
 
 Vue.use(Router)
@@ -24,7 +27,25 @@ export default new Router({
       path: '/',
       name: 'index',
       component: index,
-      meta:{title:"首页"}
+      meta:{title:"预测市场"}
+    },
+    {
+      path: '/exception',
+      name: 'error',
+      component: error,
+      meta:{title:"错误页面"}
+    },
+    {
+      path: '/ranking',
+      name: 'ranking',
+      component: ranking,
+      meta:{title:"排行榜"}
+    },
+    {
+      path: '/index/banner1',
+      name: 'banner1',
+      component: banner1,
+      meta:{title:"玩法介绍"}
     },
     {
       path: '/login',

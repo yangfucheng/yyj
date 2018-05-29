@@ -77,8 +77,21 @@ export function GetQueryString(name){
 }
 
 export function numTampTofloat(value){
-     
-      parseFloat(value);
+  if(value){
+    let num = parseFloat(value);
+    return parseFloat(parseFloat(num.toFixed(8)));
+  }else{
+    return 0;
+  }
+}
+
+export function numTampTwo(value){
+  if(value){
+    let num = parseFloat(value);
+    return num.toFixed(2);
+  }else{
+    return 0;
+  }
 }
 
 

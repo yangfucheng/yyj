@@ -28,22 +28,22 @@
 					</div>
 					<div :class="(!dataArray.optionC)?'now-cent-two flexed-two':'now-cent-three flexed-three'" >
 						<div style="color:#FA3E55">
-							<span>{{dataArray.optionAOdds}}</span>/
-							<span style="font-size:.35rem;">{{scaleA}}</span>
+							<span>{{dataArray.optionAOdds | formatNum}}</span>/
+							<span style="font-size:.35rem;">{{scaleA | formatNum}}%</span>
 						</div>
 						<div style="color:#1AC5BB">
-							<span>{{dataArray.optionBOdds}}</span>/
-							<span style="font-size:.35rem;">{{scaleB}}</span>
+							<span>{{dataArray.optionBOdds | formatNum}}</span>/
+							<span style="font-size:.35rem;">{{scaleB | formatNum}}%</span>
 						</div>
 						<div v-show="dataArray.optionC" style="color:#6CA6CD">
-							<span>{{dataArray.optionCOdds}}</span>/
-							<span style="font-size:.35rem;">{{scaleC}}</span>
+							<span>{{dataArray.optionCOdds | formatNum }}</span>/
+							<span style="font-size:.35rem;">{{scaleC | formatNum}}%</span>
 						</div>
 					</div>
 					<div :class="(!dataArray.optionC)?'flexed-two':'flexed-three'" >
-						<div  style="color:#CCC">获胜倍数/概率</div>
-						<div  style="color:#CCC">获胜倍数/概率</div>
-						<div v-show="dataArray.optionC"  style="color:#CCC">获胜倍数/概率</div>
+						<div  style="color:#CCC">预计获胜倍数/概率</div>
+						<div  style="color:#CCC">预计获胜倍数/概率</div>
+						<div v-show="dataArray.optionC"  style="color:#CCC">预计获胜倍数/概率</div>
 					</div>
 					<!-- <div class="average-cent-three flexed-two" v-show="true">
 						<div>3.6 &nbsp<i class="iconfont icon-tubiaoshangshengqushi"></i></div>
@@ -64,7 +64,8 @@
 
 
 <script type="text/javascript">
-import zkTimeDown from '../components/Countdown.vue'
+import zkTimeDown from '../components/Countdown.vue';
+import { numTampTwo } from '../untils/enums.js'
 	export default {
 		components : {
       		zkTimeDown
@@ -85,6 +86,11 @@ import zkTimeDown from '../components/Countdown.vue'
       			scaleC:0
 			}
 		},
+		filters: {
+		    formatNum(value){
+		      return numTampTwo(value);
+		    }
+		 },
 		 methods: {
     		setp() {
 		      this.$router.push({
@@ -194,7 +200,7 @@ import zkTimeDown from '../components/Countdown.vue'
 					// justify-content:space-between;
 					margin:.4rem .2rem;
 					.hint-time{
-						width:40%;
+						width:44%;
 					}
 				}
 				.progress {

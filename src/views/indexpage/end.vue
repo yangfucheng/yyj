@@ -18,14 +18,14 @@
 					<div class="average-cent-three flexed-two">
 						<div>
 							<div class="num">{{dataArray.betNumber}}</div>
-							<div class="label">参与人数</div>
+							<div class="label">参与人次</div>
 						</div>
 						<div>
-							<div class="num">{{ratio}}</div>
+							<div class="num">{{dataArray.ratio | changeNum}}</div>
 							<div class="label">最终倍数</div>
 						</div>
 						<div>
-							<div class="num">{{dataArray.capitalPool}}</div>
+							<div class="num">{{dataArray.capitalPool | changeNum}}</div>
 							<div class="label">奖金池</div>
 						</div>
 					</div>
@@ -38,6 +38,8 @@
 
 
 <script type="text/javascript">
+import { numTampTofloat } from '../../../src/untils/enums.js'
+
 	export default {
 		props: {
 			dataProp: {
@@ -48,7 +50,6 @@
 			return {
 				proValue:'',
 				dataArray:[],
-				ratio:0
 			}
 		},
 		methods: {
@@ -64,16 +65,16 @@
   		watch: {
   			"dataProp"(){
   				this.dataArray =this.dataProp
-  				if(this.dataArray.ratio){
-  					let ratio = this.dataArray.ratio;
-  					this.ratio = ratio.toFixed(2);
-  				}
   			}
   		},
   		created() {
   			
-  			
   		},
+  		filters: {
+	      changeNum(value){
+	        return  numTampTofloat(value);
+	      }
+	    },
 		mounted() {
 			this.dataArray = this.dataProp;
 			this.dataArray = this.dataProp;

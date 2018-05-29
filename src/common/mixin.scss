@@ -48,7 +48,7 @@ $mainColor:#1AC6BC;
 }
 
  @mixin color-1px {
-    background-color:red;
+    // background-color:red;
  }
  @mixin border-1px-top{
   position:relative;
@@ -58,7 +58,7 @@ $mainColor:#1AC6BC;
     top:0;
     left:0;
     width:100%;
-    border-top:1px solid #e0e0e0;
+    border-top:1px solid #000;
     transform:scaleY(.1);
     transform-origin:0 100%;
     content:''

@@ -23,14 +23,14 @@
 					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div>
 					</div>
 					<div class="average-cent-three flexed-two">
-						<div>{{dataArray.mayEarnedA}}</i></div>
-						<div>{{dataArray.mayEarnedB}}</i></div>
-						<div v-show="dataArray.optionC">{{dataArray.mayEarnedc}}</div>
+						<div>{{dataArray.mayEarnedA | formatNum}}</i></div>
+						<div>{{dataArray.mayEarnedB | formatNum}}</i></div>
+						<div v-show="dataArray.optionC">{{dataArray.mayEarnedc | formatNum}}</div>
 					</div>
 					<div :class="(!dataArray.optionC)?'now-title-two flexed-two':'now-title-three flexed-two'" style="color:#CCCCCC">
-						<div>可能收益({{dataArray.tradeCoin}})</div>
-						<div>可能收益({{dataArray.tradeCoin}})</div>
-						<div v-show="dataArray.optionC">可能收益({{dataArray.tradeCoin}})</div>
+						<div>可能收益({{dataArray.tradeCoin }})</div>
+						<div>可能收益({{dataArray.tradeCoin }})</div>
+						<div v-show="dataArray.optionC">可能收益({{dataArray.tradeCoin }})</div>
 					</div>
 				</div>
 				<div class="describe"></div>

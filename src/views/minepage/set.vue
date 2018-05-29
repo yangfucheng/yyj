@@ -2,7 +2,7 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
-        <li v-for="item in common" @click="step(item.route)">
+        <li v-for="item in common" @click="step(item.type)">
           <!-- <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div> -->
           <div class="text">{{item.text}}</div>
           <div class="textRight">{{item.textRight}}</div>
@@ -22,8 +22,7 @@ export default {
       {
         icon:'../../static/icon/canyu.png',
         text:'昵称',
-        textRight:'',
-        route:'join'
+        textRight:''
       },
       {
         icon:'../../static/icon/collect.png',
@@ -33,7 +32,7 @@ export default {
       {
         icon:'../../static/icon/tixian.png',
         text:'关于我们',
-        route:'tixian'
+        type:'wai'
       }
       ],
     }
@@ -45,10 +44,10 @@ export default {
     this.fetch();
   },
   methods: {
-    step(route) {
-      this.$router.push({
-        name:route,
-      })
+    step(type) {
+     if(type=="wai"){
+        window.location.href ="https://www.ppset.io";
+      }
     },
     fetch(){
       Indicator.open();
@@ -79,7 +78,7 @@ export default {
           // @include border-1px();
           height:1.2rem;
         }
-        li:nth-child(n){
+        li:nth-child(2n){
           // @include border-1px();
           border-top:1px solid #e0e0e0;
           border-bottom:1px solid #e0e0e0;

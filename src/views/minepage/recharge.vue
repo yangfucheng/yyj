@@ -2,7 +2,7 @@
    <div class="contain">
       <div class="content">
         <div class="wrap">
-           <label >充值金额:</label>
+           <label style="color:#000">充值金额</label>
             <input type="text" placeholder="请输入充值金额" v-model="moeny">
         </div>
         <div class="dec">
@@ -23,6 +23,7 @@
 
 <script>
 import { recharge } from '../../api/api.js'
+import { Toast } from 'mint-ui';
 var qs=require("qs");
 export default {
   name: 'HelloWorld',
@@ -47,16 +48,37 @@ export default {
   },
   methods: {
     submit(){
+       var moeny = parseFloat(this.moeny).toFixed(8);
+       this.moeny  = moeny;
+      if(!this.isNumber(this.moeny) || this.moeny <= 0){
+         Toast({
+            message: '请输入大于0数字',
+            position: 'middle',
+            duration: 3000
+          });
+         return;
+      }
+
+     
       var params ={
         amount:this.moeny
       }
+
       if(this.moeny){
         recharge(params).then(response=>{
           window.location.href=response.body;
         })
       }
+    },
+    isNumber(val){
+      var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+      var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+      if(regPos.test(val) || regNeg.test(val)){
+        return true;
+      }else{
+        return false;
+      }
     }
-    
   },
   components:{
     
@@ -90,22 +112,27 @@ export default {
       input::-webkit-input-placeholder{
         color:#CCC;
       }
+      input{
+        outline:none;
+        border:none;
+      }
     }
     .dec{
       margin-top:.4rem;
       width:90%;
       margin:0 auto;
+      color:#c0c4cc;
     }
     
   }
   .submit{
-    width:50%;
-    height:.9rem;
-    line-height:.9rem;
+    width:80%;
+    height:1.1rem;
+    line-height:1.1rem;
     border:1px solid #ccc;
     margin:.5rem auto;
     text-align: center;
-    border-radius:10px;
+    border-radius:25px;
     background-color:rgb(231, 228, 231);
     color:#fff;
   }

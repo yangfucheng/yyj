@@ -9,15 +9,17 @@
           <!-- <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div> -->
         </li>
       </ul>
-      <div class="content-dec">
-        <span>简介</span>
-        <div>
-          <span>GXS是公信宝基金会在GXChain（公信链）上发行的Token，不仅具有流通价值，同时在公信链上开发、认证应⽤、使⽤链上服务（例如链上转账的矿⼯费）以及使⽤BaaS服务都需要⽀付或燃烧GXS，GXS是作为链上应⽤运⾏唯⼀使⽤到的Token。 在布洛克城中也可以很方便地利用GXS进行支付结算，如居民之间互相使用GXS进行结算，使用城市公共服务需要用GXS结算，商家提供的服务也需要用GXS来购买等等。</span>
+      <div class="content-dec" >
+        <div class="content">
+          <span>简介</span>
+          <div >
+            <span>GXS是公信宝基金会在GXChain（公信链）上发行的Token，不仅具有流通价值，同时在公信链上开发、认证应⽤、使⽤链上服务（例如链上转账的矿⼯费）以及使⽤BaaS服务都需要⽀付或燃烧GXS，GXS是作为链上应⽤运⾏唯⼀使⽤到的Token。 在布洛克城中也可以很方便地利用GXS进行支付结算，如居民之间互相使用GXS进行结算，使用城市公共服务需要用GXS结算，商家提供的服务也需要用GXS来购买等等。</span>
+          </div>
         </div>
-      </div>
-       <div>
-          <div @click="step" class="submit">充值</div>
-          <div @click="submit" class="submit1">提现</div>
+         <div>
+            <div @click="step" class="submit">充值</div>
+            <div @click="submit" class="submit1">提现</div>
+        </div>
       </div>
 
    </div>
@@ -141,40 +143,46 @@ export default {
 
     }
     .content-dec{
-      width:95%;
-      margin:.1rem auto;
+      width:100%;
+      margin:1px auto;
       line-height:.6rem;
-      letter-spacing:2px;
+      // letter-spacing:.5px;
+      background:#FFF;
+      padding:.1rem 0;
+      .content{
+         width:92%;
+         margin:0 auto;
+      }
     }
     .submit{
       position:absolute;
       // top:0;
       // left:0;
       bottom:20%;
-      width:50%;
-      left:25%;
-      height:.9rem;
-      line-height:.9rem;
+      width:80%;
+      left:10%;
+      height:1.1rem;
+      line-height:1.1rem;
       border:1px solid #ccc;
       margin:.3rem auto;
       text-align: center;
-      border-radius:10px;
+      border-radius:25px;;
       background-color:red;
       color:#fff;
     }
     .submit1{
-      position:absolute;
+     position:absolute;
       // top:0;
       // left:0;
       bottom:10%;
-      width:50%;
-      left:25%;
-      height:.9rem;
-      line-height:.9rem;
+      width:80%;
+      left:10%;
+      height:1.1rem;
+      line-height:1.1rem;
       border:1px solid #ccc;
       margin:.3rem auto;
       text-align: center;
-      border-radius:10px;
+      border-radius:25px;;
       background-color:#CCCCCC;
       color:#fff;
     }

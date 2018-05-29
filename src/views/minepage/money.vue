@@ -6,7 +6,7 @@
           <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div>
           <div class="text">{{item.text}}</div>
           <div class="textRight">{{item.textRight}}</div>
-          <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
+          <div class="into" v-show="item.text=='GXS'"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
         </li>
       </ul>
    </div>

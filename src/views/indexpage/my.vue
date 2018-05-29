@@ -26,8 +26,8 @@
 					    <div v-show="dataArray.optionC">C:{{dataArray.optionC}}</div> -->
 					</div>
 					<div class="average-cent-three flexed-two">
-						<div>{{dataArray.betQuantity}}</i></div>
-						<div>{{dataArray.earned}}</i></div>
+						<div>{{dataArray.betQuantity | changeNum }}</i></div>
+						<div>{{dataArray.earned | changeNum }}</i></div>
 						<!-- <div v-show="dataArray.optionC">{{dataArray.mayEarnedC}}</div> -->
 					</div>
 					<div :class="(!dataArray.optionC)?'now-title-two flexed-two':'now-title-two flexed-two'" style="color:#CCCCCC">
@@ -45,6 +45,8 @@
 
 <script type="text/javascript">
 import zkTimeDown from '../../components/Countdown.vue'
+import { numTampTofloat } from '../../../src/untils/enums.js'
+
 	export default {
 		components : {
       		zkTimeDown
@@ -65,6 +67,11 @@ import zkTimeDown from '../../components/Countdown.vue'
 		 methods: {
     		
   		},
+  		filters: {
+	      changeNum(value){
+	        return  numTampTofloat(value);
+	      }
+	    },
   		created() {
   			 this.dataArray = this.dataProp;
   			 this.endTime =this.dataProp.betEndTime;
@@ -73,6 +80,7 @@ import zkTimeDown from '../../components/Countdown.vue'
   			"dataProp"(){
   				// alert(JSON.stringify(this.dataProp))
   				this.dataArray =this.dataProp
+
   			}
   		},
 		mounted() {

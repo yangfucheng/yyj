@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import timestampToTime from '../../untils/enums.js'
+import{ timestampToTime,getTextByName,recodeDec } from '../../untils/enums.js'
 export default {
   data () {
     return {
@@ -37,7 +37,6 @@ export default {
         textRight:'283GXS'
       },
        {
-
         text:'备注',
         textRight:'283GXS'
       },
@@ -68,16 +67,28 @@ export default {
       }else{
         return ''
       }
+    },
+    getTextByName(obj,value){
+      for(let i in obj){
+        if(obj[i].name == value){
+          return obj[i].text || ''
+        }
+      }
+      return ''
     }
   },
   filters: {
-   
+   changeRecode(value){
+      return getTextByName(recodeDec,value);
+    }
   },
   mounted(){
     var dataArray = this.$route.params.id;
+    this.common[0].textRight = this.getTextByName(recodeDec,dataArray.tag) ;
+    this.common[1].text = dataArray.amount > 0 ? '收入':'支出';
     this.common[1].textRight = dataArray.amount;
     this.common[2].textRight = this.changeTime(dataArray.createTime);
-    this.common[3].textRight = dataArray.lastAmount;
+    this.common[3].textRight = dataArray.newAmount + dataArray.tradeCoin;
     this.common[4].textRight = dataArray.memo;
   },
   created() {

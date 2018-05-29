@@ -4,13 +4,23 @@
    <!--  <div class="search">
       <span class="text"><i class="iconfont icon-sousuo"></i>搜索商品 分类 功效 用户</span>
     </div> -->
+    <!--  <div class="clicle" @click="stepRank()">
+       排行榜
+     </div> -->
      <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore1" :bottom-method='loadBottom'   :bottomAllLoaded='bottomAllLoaded'>
+
       <div class="wrapper"  ref="viewBox" >
         <div class="swiper"  v-show="isSwiper" ref="swiper">
-          <mt-swipe   :show-indicators="false" :auto="200000"> 
-            <mt-swipe-item><img src="https://ydb.anydd.com/images/app/banner3.jpg" width="100%"></mt-swipe-item>
-             <mt-swipe-item><img src="http://img3.imgtn.bdimg.com/it/u=1396157838,559404900&fm=214&gp=0.jpg" width="100%" height="100%"></mt-swipe-item>
-             <mt-swipe-item><img src="http://img3.imgtn.bdimg.com/it/u=1396157838,559404900&fm=214&gp=0.jpg" width="100%" height="100%"></mt-swipe-item>
+          <mt-swipe  :auto="5000"> 
+            <mt-swipe-item >
+              <img src="https://ydb.anydd.com/images/app/banner1.jpg" width="100%" height="100%" >
+              <!-- <router-link to="/error"></router-link> -->
+            </mt-swipe-item>
+            <mt-swipe-item >
+              <img src="http://ydb.anydd.com/images/app/banner4.jpg" width="100%" height="100%" >
+              <!-- <router-link to="/error"></router-link> -->
+            </mt-swipe-item>
+             <mt-swipe-item><img src="https://ydb.anydd.com/images/app/banner3.jpg" width="100%" height="100%" @click="step"></mt-swipe-item>
           </mt-swipe>
         </div>
         <div class="nav" ref="navbar">
@@ -97,11 +107,14 @@ export default {
       page:1,
       bottomAllLoaded:false,
       pageArray:[true,false,false,false,false,false,false],
-      //   "体育","游戏","我的","已结束"
       navNameArray:[
         {
           id:1,
-          name:"推荐"
+          name:"热门"
+        },
+        {
+          id:4,
+          name:"区块链"
         },
         {
           id:2,
@@ -111,10 +124,7 @@ export default {
           id:3,
           name:"体育"
         },
-        {
-          id:4,
-          name:"娱乐"
-        },
+        
         {
           id:5,
           name:"其他"
@@ -166,7 +176,7 @@ export default {
       var params ={}
        params={
           type:this.type,
-          page:this.page,
+          pageNo:this.page,
           tag:this.tag
        }
        
@@ -188,6 +198,16 @@ export default {
       }).catch(function(e){
         console.log(e);
         Indicator.close();
+      })
+    },
+    step(){
+      this.$router.push({
+        name:'banner1'
+      })
+    },
+    stepRank(){
+      this.$router.push({
+        name:'ranking'
       })
     },
     handleScroll (scrollTop) {
@@ -260,17 +280,30 @@ export default {
 }
 
 </script>
-<style>
-  .mint-tabbar > .mint-tab-item.is-selected {
-    background-color: #FFF;
-    color: #26a2ff;
-  }
-</style>
+<style lang='scss'>
+.mint-tabbar>.mint-tab-item.is-selected{
+  background-color: #FFF;
+  color: red;
+}
+</style>  
 <style lang="scss" scoped>
 @import "../common/mixin.scss";
 @import "../common/style.scss";
   
   .contain {
+    .clicle{
+      border-radius:50%;
+      width:1rem;
+      height:1rem;
+      background:$mainColor;
+      color:#fff;
+      line-height:1rem;
+      position:fixed;
+      bottom:3rem;;
+      z-index:9999;
+      right:1rem;
+      border:1px solid $mainColor;
+    }
     // margin-bottom:1.5rem;
     // margin-top:1.3rem;
     // position:absolute;
@@ -304,17 +337,24 @@ export default {
           // z-index: 0;
           margin-bottom:1.7rem;
           .swiper{
-            background-color:#FFF;
-            height:5rem;
-            width:100%;
-            margin:0 auto;
-            // margin-top:1.5rem;
-            margin-bottom:0;
-            .mint-swipe-item {
-              backgorund-color:red;
+            // .swiper-img{
+            //    background-image: url('https://ydb.anydd.com/images/app/banner1.jpg');
+            //    background-size:100%;
+            //    background-repeat:no-repeat;
+            //    width:100%;
+            //    height:6rem;
+            // }
+              background-color:#FFF;
+              height:5.3rem;
+              width:100%;
+              margin:0 auto;
+              // margin-top:1.5rem;
+              margin-bottom:0;
+              .mint-swipe-item {
+                backgorund-color:red;
+              }
             }
           }
-        }
       
       .Hidden{
         margin-top:1.3rem;
@@ -323,10 +363,8 @@ export default {
 
       // }
       .nav{
-        border-top:1px solid #ccc;
-        border-bottom:1px solid #ccc;
-        .is-selected{
-        }
+        // border-top:1px solid #ccc;
+        @include border-1px;
         li{
           font-size:.4rem;
         }

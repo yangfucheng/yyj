@@ -42,7 +42,7 @@
         </div>
         <div class="bet">
           <div class="content">
-            <div class="title">投注</div>
+            <div class="title">买入</div>
             <div class="option-font-three flexed">
                 <div @click="choose('A',dataArray.optionA,dataArray.optionAOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;border-color:#FA3E55;">选项</span>A:{{dataArray.optionA}}</div>
                 <div @click="choose('B',dataArray.optionB,dataArray.optionBOdds)"><span v-show="!dataArray.optionC" style="margin-right:.1rem;border-color:#1AC5BB;">选项</span>B:{{dataArray.optionB}}</div>
@@ -68,9 +68,9 @@
             </div>
             </div>
             <div :class="(!dataArray.optionC)?'now-title-two flexed':'now-title-three flexed'">
-              <div>获胜倍数/概率</div>
-              <div>获胜倍数/概率</div>
-              <div v-if="dataArray.optionC">获胜倍数/概率</div>
+              <div>预计获胜倍数/概率</div>
+              <div>预计获胜倍数/概率</div>
+              <div v-if="dataArray.optionC">预计获胜倍数/概率</div>
             </div>
             <div :class="(!dataArray.optionC)?'average-two flexed':'average-three flexed'">
               <div><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionAQuantity}}{{dataArray.tradeCoin}}</span></div>
@@ -85,17 +85,17 @@
           </div>
         </div>
         <div class="history">
-          <div class="title">历史投注记录</div>
+          <div class="title">历史买入记录</div>
           <table>
             <tr>
-              <th>投入选项</th>
-              <th>投注金额</th>
-              <th>获胜倍数</th>
-              <th>投注时间</th>
+              <th>买入选项</th>
+              <th>买入金额</th>
+              <th>预计获胜倍数</th>
+              <th>买入时间</th>
             </tr>
             <tr v-for="item in dataArray.history">
               <td>{{item.betResult}}</td>
-              <td>{{item.betQuantity}}</td>
+              <td>{{item.betQuantity}}{{dataArray.tradeCoin}}</td>
               <td>{{item.betOdds}}</td>
               <td>{{item.createTime | changeTime}}</td>
             </tr>
@@ -109,16 +109,15 @@
               <span>选项{{optOrder}}:{{option}}</span>
               <div class="yue">
                 <div>{{dataArray.tradeCoin}}余额: <span style="color:red">{{dataArray.wallet}}</span> </div>   
-                <span style="text-align:right"><router-link to="/myself/recharge">立即充值</router-link></span> 
+                <span style="text-align:right"><router-link to="/myself/recharge" v-show="dataArray.tradeCoin=='GXS'">立即充值</router-link></span> 
               </div>
 
             </div>
 
             <div class="label">需要:
-              <span style="color:red;margin-left:.2rem">{{allMoney*dataArray.minBet}}{{dataArray.tradeCoin}}</span>
+              <span style="color:red;margin-left:.2rem">{{ getNeedMoeny }} <span style="color:#000">{{dataArray.tradeCoin}}</span> </span>
               <span style="color:#ccc;margin-left:0rem">({{dataArray.minBet}}{{dataArray.tradeCoin}}/份)</span>
             </div>
-            
           </div>
           <div>
              <!-- <div class="now-money">当前投入:{{allMoney}}</div> -->
@@ -127,7 +126,7 @@
         </div>
          <div class="range">
           <div class="input">
-             <el-input-number v-model="rangeValue"  :min="1" :max="maxValue" label="描述文字" ></el-input-number>
+             <el-input-number v-model="rangeValue"  :min="0"  :max="maxValue" label="请输入整数份"  ></el-input-number>
           </div>
         </div>
         <div class="button-wrap">
@@ -139,11 +138,11 @@
         </mt-range> -->
         <div class="award">
           <span>当前获胜倍数:<span class="label-red">{{ nowOdd }}</span></span>
-          <span>猜对获得: <span class="label-red">{{ getAllMoney }}</span> <span>{{dataArray.tradeCoin}}</span></span>
+          <span>预计猜对获得: <span class="label-red">{{ getAllMoney }}</span> <span>{{dataArray.tradeCoin}}</span></span>
         </div>
 
         <div class="footer">
-          <span class="text">当前获胜倍数仅供参考以结束时获胜倍数为准</span>
+          <span class="text" style="color:red">当前获胜倍数仅供参考以结束时获胜倍数为准</span>
           <div class="button">
             <button @click="popupVisible=false">取消</button>
             <button @click="submit()" style="color:#fff">买入</button>
@@ -169,8 +168,8 @@ export default {
       message: '正在倒计时',
       endTime: 0,
       popupVisible: false,
-      rangeValue:0,
-      buttonArray:[5,10,50,'全部'],
+      rangeValue:1,
+      buttonArray:[5,10,50,'最大'],
       buttonMoeny:0,
       allMoney:0,
       dataArray:null,
@@ -188,7 +187,11 @@ export default {
   },
   computed:{
     getAllMoney(){
-      return parseFloat((this.nowOdd * this.allMoney).toFixed(7))
+      return parseFloat((this.nowOdd * this.allMoney * this.dataArray.minBet).toFixed(7))
+    },
+
+    getNeedMoeny(){
+      return parseFloat((this.allMoney * this.dataArray.minBet).toFixed(7))
     }
   },
   created() {
@@ -235,6 +238,9 @@ export default {
     },
     handleTopChange(status){
       this.topStatus = status;
+    },
+    inputNum(value){
+      
     },
     loadTop(){
       this.fetch()
@@ -313,14 +319,49 @@ export default {
            this.$message.error('余额不足');
           return;
       }
+
+      if(this.rangeValue < 1){
+          this.$message.error('请输入大于0的整数');
+          return;
+      }
+
+      if(!Number.isInteger(this.rangeValue)){
+         this.$message.error('请输入大于0的整数');
+          return;
+      }
+
+      if(!this.isNumber(this.rangeValue)){
+
+         this.$message.error('请输入大于0的整数');
+          return;
+      }
+
+       let endTime = new Date(this.endTime)
+       let nowTime = new Date();
+       let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000);
+       if(leftTime < 0){
+          this.popupVisible = false;
+          this.$message.error('项目已结束,停止下注');
+          return;
+       }
+
       bet(params).then(response=>{
         this.popupVisible = false;
         this.$message({
-          message: '下注成功',
+          message: '买入成功',
           type: 'success'
         });
         this.fetch();
       })
+    },
+    isNumber(val){
+      var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+      var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+      if(regPos.test(val) || regNeg.test(val)){
+        return true;
+      }else{
+        return false;
+      }
     },
     choose(optOrder,option,optionOdd){
       this.popupVisible=true;
@@ -329,7 +370,7 @@ export default {
       this.nowOdd = optionOdd;
     },
     addMoney(x){
-      if(x=="全部"){
+      if(x=="最大"){
         this.rangeValue =this.dataArray.maxBet;
       }else{
          this.rangeValue = x; 
@@ -389,12 +430,12 @@ export default {
         color:#C0C0C0;
         font-weight:400;
         // margin:.1rem .2rem .1rem .2rem;
-        width:38%;
+        width:44%;
       }
       .end-time {
         width:72%;
         color:#C0C0C0;
-        font-size:.35rem;
+        font-size:.3rem;
         text-align:right;
       }
     }
@@ -620,33 +661,36 @@ export default {
   .mint-popup-bottom{
     width:100%;
     // height:8rem;
-    padding:.5rem;
+    padding:.2rem 0 .4rem 0;
     .name-wrap{
-      margin-top:.2rem;
+      // margin-top:.2rem;
+     
+
       // display:flex;
       // margin-left:.7rem;
       // margin-bottom:.2rem;
       .option{
         font-size:.5rem;
         font-weight:700;
-        width:100%;
+        width:85%;
         border-bottom:1px solid #ccc;
-        padding:.2rem;
-        padding-left:.7rem;
+        margin:.2rem auto;
+        // padding-left:.7rem;
         .yue{
           margin-top:.1rem;
           font-size:.35rem;
           color:#ccc;
           display:flex;
           justify-content:space-between;
-          width:82%;
+          width:100%;
+          margin:.2rem auto;
         }
         // border:1px solid #1AC6BC;
       }
       .label{
         // text-align: center;
-        margin:.2rem 0;
-        padding-left:.7rem;
+        width:85%;
+        margin:.2rem auto;
         font-size:.35rem;
         font-weight:400;
       }
@@ -669,9 +713,8 @@ export default {
       display:flex;
       // flex-wrap:wrap;
       justify-content:space-between;
-      width:80%;
+      width:85%;
       margin:0 auto;
-      // margin-left:.7rem;
       & > div{
         border:1px solid #1AC6BC;
         border-radius:.3rem;
@@ -686,15 +729,17 @@ export default {
       margin:.5rem auto;
       .input{
         width:7rem;
-        margin-left:-.5rem;
+        margin-left:-.8rem;
       }
     }
     .award{
       display:flex;
-      justify-content:space-around;
+      justify-content:space-between;
       margin-top:.2rem;
       font-size:.35rem;
       // margin-left:-.7rem;
+      width:85%;
+      margin:.3rem auto;
       margin-bottom:.4rem;
       .label-red{
         color:red;
@@ -705,15 +750,13 @@ export default {
       display:flex;
       justify-content:space-between;
       align-items:center;
-      width:88%;
+      width:85%;
       margin:0 auto;
       .text{
-        width:40%;
+        width:45%;
         font-size:.35rem;
       }
       .button{
-         width:45%;
-         margin-left:.1rem;
          // margin-top:.2rem;
          button{
           text-align: center;
@@ -731,8 +774,7 @@ export default {
   }
 }
 .el-input-number{
-  width:8rem;
-  line-height:1rem;
+  width:8.5rem;
 }
 
 .el-input__inner{

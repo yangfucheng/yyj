@@ -3,7 +3,9 @@
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
         <li>
-          <div class="icon"><i class="iconfont icon-wode"></i></div>
+          <div class="icon">
+            <div class="icon-img"></div>
+          </div>
           <div class="name">
             <label>用户名:<span style="color:#000;margin-left:.2rem">{{dataObj.nickName}}</span> </label>
             <span></span>
@@ -22,6 +24,7 @@
 <script>
 import { info } from '../api/api.js'
 import { Indicator } from 'mint-ui';
+
 export default {
   data () {
     return {
@@ -34,7 +37,7 @@ export default {
       },
       {
         icon:'iconfont icon-wocanyude',
-        text:'我参加的',
+        text:'我参与的',
         route:'join',
         type:''
       },
@@ -53,13 +56,13 @@ export default {
       },
       {
         icon:'iconfont icon-wode',
-        text:'联系客服',
+        text:'联系我们',
         route:'connect',
         type:''
       },
       {
         icon:'iconfont icon-weixin1',
-        text:'关于微信',
+        text:'关注微信',
         route:'connect',
         type:'wai'
       },
@@ -125,6 +128,13 @@ export default {
             background-color:#fff;
             line-height:2rem;
             text-align: center;
+            .icon-img{
+              background-image: url('../../static/icon/yucec.png');
+              background-repeat:no-repeat;
+              background-size:cover;
+              width:1.6rem;
+              height:1.6rem;
+            }
             i{
               font-size:1rem;
               color:rgb(151, 160, 166);
@@ -185,11 +195,7 @@ export default {
              color:rgb(151, 160, 166);
           }
         }
-
     }
-
-    
-    
   }
   
 

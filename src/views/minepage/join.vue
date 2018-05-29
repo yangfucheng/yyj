@@ -1,6 +1,6 @@
 <template>
-   <div class="contain">
-     <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore" :bottom-method='loadBottom'   :bottomAllLoaded='bottomAllLoaded' >
+   <div class="contain" >
+     <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore" :bottom-method='loadBottom'   :bottomAllLoaded='bottomAllLoaded' class="mt-wrap">
         <mt-navbar v-model="selected" class="nav">
   	      <mt-tab-item :id="1" ><span class="font">进行中</span></mt-tab-item>
   	      <mt-tab-item :id="2"><span class="font">停止下注</span></mt-tab-item>
@@ -36,11 +36,14 @@ export default {
     return {
     	selected:1,		
       id:1,
-      page:0,
+      page:1,
       bottomAllLoaded:false,
       dataArray:[],
-      status:'online'
+      status:'online',
     }
+  },
+  mounted() {
+    // this.$refs.mtWrap.style.height = document.documentElement.clientHeight + 'px';
   },
   created() {
     if(this.$store.state.tabHidden) {
@@ -55,17 +58,21 @@ export default {
       var params ={}
        params={
           type:'mine',
-          page:this.page,
+          pageNo:this.page,
           status:this.status
        }
        getList(params).then(response => {
-           this.dataArray = response.body.result;
            this.totalPage = response.body.totalPage;
             if(this.totalPage == 1){
               this.bottomAllLoaded =true;
             }
+            var dataArray =[];
+          var dataResult = response.body.result;
+           for(var i = 0 ; i< dataResult.length; i++){
+              dataArray.push(dataResult[i]);
+           }
+           this.dataArray =dataArray;
            this.$refs.loadmore.onTopLoaded();
-           this.$refs.loadmore.onBottomLoaded();
            Indicator.close();
       }).catch(function(e){
         console.log(e);
@@ -73,16 +80,18 @@ export default {
       })
     },
     loadTop(){
+      this.dataArray= [];
       this.page=1;
       this.fetch();
     },
     loadBottom(){
-      if(this.totalPage < this.page){
+      if(this.totalPage > this.page){
         this.page++;
         this.fetch();
+        this.$refs.loadmore.onBottomLoaded();
       }else{
         this.bottomAllLoaded =true;
-        this.$refs.loadmore1.onBottomLoaded();
+        this.$refs.loadmore.onBottomLoaded();
       }
     },
     handleTopChange(status) {
@@ -103,21 +112,33 @@ export default {
   }
 }
 </script>
-
+<style>
+/* .mint-loadmore-text{
+    display: none;
+  } */
+</style>
 <style lang="scss" scoped>
 @import "../../common/mixin.scss";
 @import  '../../common/style.scss';
 .contain {
-	position:relative;
+	.mt-wrap{
+    // position:absolute;
+    // top:0;
+    // left:0;
+    // bottom:0;
+    // height:100%;
+    // width:100%;
+    // overflow: auto;
 	.nav{
-      	border-bottom:1px solid #e0e0e0;
-      	.font{
-			font-size:.4rem;;
-		}
+    border-bottom:1px solid #e0e0e0;
+    .font{
+		  font-size:.4rem;;
+	   }
 	}
+}
 	
     .is-selected{
-    	border-bottom: 3px solid $mainColor;
+    	border-bottom: 3px solid red;
     	color:#000;
     }
 
