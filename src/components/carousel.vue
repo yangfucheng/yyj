@@ -1,4 +1,4 @@
-<template>
+<<template>
 	<div class="contain" @click="setp(dataArray)" >
 		<div class="cell">
 			<div class="title">
@@ -9,7 +9,7 @@
 				<div class="hint">
 					 <zk-time-down @time-end="message = '倒计时结束'" :endTime='endTime' :type="false" class="hint-time"></zk-time-down style="width:40%;text-align:center">
 					<!-- <div class="hint-time">剩余时间 &nbsp  0天15时</div> -->
-					<div class="per-num" style="width:30%;text-align:center;"><i class="iconfont icon-wode" style="font-size:.3rem;margin-right:.1rem"></i>{{dataArray.betNumber}}</div>
+					<div class="per-num" style="width:30%;text-align:center;"><i class="iconfont icon-wode" style="font-size:.3rem;margin-right:.1rem"></i>{{getcishu}}</div>
 					<div class="token" style="width:30%;text-align:center">交易代币:&nbsp {{dataArray.tradeCoin}}</div>
 				</div>
 			<!-- 	<div class="option">
@@ -113,6 +113,11 @@ import { numTampTwo } from '../untils/enums.js'
   				this.dataArray =this.dataProp
   			}
   		},
+  		computed:{
+		    getcishu(){
+		      return (this.dataArray.optionAQuantity + this.dataArray.optionBQuantity + this.dataArray.optionCQuantity)/this.dataArray.minBet;
+		    },
+		 },
 		mounted() {
 			
 			var proDom =this.$refs.progress;
