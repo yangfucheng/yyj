@@ -6,7 +6,7 @@
               <div class="wrap">
                 <!-- <span style="font-size:.4rem;margin-bottom:.1rem;">结算货币</span> -->
                 <span >
-                    <el-select v-model="value"  placeholder="请选择币种" style="margin-top:.3rem; width:4rem;">
+                    <el-select v-model="value1"  placeholder="请选择币种" style="margin-top:.3rem; width:4rem;">
                       <el-option label="全部币种" value=""></el-option>
                       <el-option label="GXS" value="GXS"></el-option>
                       <el-option label="PPS" value="PPS"></el-option>
@@ -57,7 +57,7 @@ export default {
     return {
       items:[
       ],
-      value:'',
+      value1:'',
       bottomAllLoaded:false,
       page:1,
       totalPage:'',

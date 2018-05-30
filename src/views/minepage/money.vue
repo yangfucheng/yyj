@@ -37,8 +37,13 @@ export default {
       })
     },
     step(tradeCoin) {
-      if(coin!='pps'){
-        this.$router.push({path:'moneyDetail/'+tradeCoin});
+      if(this.coin!='pps'){
+        this.$router.push({
+          name:'moneyDeatil',
+          params:{
+            tradeCoin:tradeCoin
+          }
+        })
       }
     }
   }
@@ -62,14 +67,14 @@ export default {
           // @include border-1px();
           height:1.2rem;
         }
-        li:nth-child(2){
+        li:nth-child(2n){
           // @include border-1px();
           border-top:1px solid #e0e0e0;
           border-bottom:1px solid #e0e0e0;
           // @include border-1px-top
         }
         li:nth-child(5){
-          margin-top:.3rem;
+          // margin-top:.3rem;
         }
         li:nth-child(n) {
           background-color:#fff; 

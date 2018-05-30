@@ -4,9 +4,9 @@
    <!--  <div class="search">
       <span class="text"><i class="iconfont icon-sousuo"></i>搜索商品 分类 功效 用户</span>
     </div> -->
-    <!--  <div class="clicle" @click="stepRank()">
+     <div class="clicle" @click="stepRank()">
        排行榜
-     </div> -->
+     </div>
      <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore1" :bottom-method='loadBottom'   :bottomAllLoaded='bottomAllLoaded'>
 
       <div class="wrapper"  ref="viewBox" >
@@ -107,6 +107,7 @@ export default {
       page:1,
       bottomAllLoaded:false,
       pageArray:[true,false,false,false,false,false,false],
+      bottomDistance:0,
       navNameArray:[
         {
           id:1,
@@ -190,7 +191,7 @@ export default {
            this.dataArray = dataArray;
            this.totalPage = response.body.totalPage;
             if(this.totalPage == 1){
-              this.bottomAllLoaded =true;
+              // this.bottomAllLoaded =true;
             }
            this.$refs.loadmore1.onTopLoaded();
            this.$refs.loadmore1.onBottomLoaded();
@@ -212,6 +213,7 @@ export default {
     },
     handleScroll (scrollTop) {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      console.log(scrollTop)
       var swiperDom = this.$refs.swiper;
       var navDom = this.$refs.navbar;
       var swiperH = 0;
@@ -245,7 +247,7 @@ export default {
         this.page++;
         this.fetch();
       }else{
-        this.bottomAllLoaded =true;
+        // this.bottomAllLoaded =true;
         this.$refs.loadmore1.onBottomLoaded();
       }
     }
@@ -331,7 +333,7 @@ export default {
           // position:absolute;
           // width: 100%;
           // top: 0;
-          // height:93%;
+          // height:10rem;
           // bottom: 1.5rem;
           // overflow: auto;
           // z-index: 0;

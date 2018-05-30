@@ -73,9 +73,9 @@
               <div v-if="dataArray.optionC">预计获胜倍数/概率</div>
             </div>
             <div :class="(!dataArray.optionC)?'average-two flexed':'average-three flexed'">
-              <div><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionAQuantity}}{{dataArray.tradeCoin}}</span></div>
-               <div><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionBQuantity}}{{dataArray.tradeCoin}}</span></div>
-                <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionCQuantity}}{{dataArray.tradeCoin}}</span></div>
+              <div><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionAQuantity | changeNum}}{{dataArray.tradeCoin}}</span></div>
+               <div><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionBQuantity | changeNum}}{{dataArray.tradeCoin}}</span></div>
+                <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionCQuantity | changeNum}}{{dataArray.tradeCoin}}</span></div>
             </div>
             <div class="single">
               
@@ -155,7 +155,7 @@
 <script>
 import zkTimeDown from '../components/Countdown.vue'
 import {getDetial,bet,refresh} from '../api/api.js'
-import {timestampToTime,timestampTodate} from '../../src/untils/enums.js'
+import {timestampToTime,timestampTodate,numTampTofloat} from '../../src/untils/enums.js'
 import { Indicator,Toast } from 'mint-ui';
 import {GetQueryString} from '../untils/enums.js'
 var qs=require("qs");
@@ -217,6 +217,9 @@ export default {
     changeDate(value){
       return timestampTodate(value)
     },
+    changeNum(value){
+      return numTampTofloat(value)
+    }
   },
   methods: {
     fetch(){

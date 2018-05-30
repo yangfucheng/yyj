@@ -127,6 +127,7 @@ export default {
   }
   .intro{
     width:100%;
+    margin-top: .6rem;
   }
   span,li,p{
     white-space: nowrap;

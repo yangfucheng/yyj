@@ -14,7 +14,9 @@
 
 <script>
 import { info,changeName} from '../../api/api.js'
-import { Indicator ,MessageBox } from 'mint-ui';
+import { Indicator ,MessageBox,Toast } from 'mint-ui';
+
+ var qs=require("qs");
 export default {
   data () {
     return {
@@ -41,7 +43,7 @@ export default {
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
     }
-    /*this.fetch();*/
+    this.fetch();
   },
   methods: {
     step(type,text) {
@@ -49,10 +51,15 @@ export default {
         window.location.href ="https://www.ppset.io";
       }
       if(text=='昵称'){
+       
         MessageBox.prompt(' ','请输入新昵称').then(({ value, action }) => {
           if(value!=''&&value!=null){
             changeName({userName:value}).then(response=>{
-              return;
+              Toast({
+                message: '修改名称成功',
+                iconClass: 'icon icon-success'
+              });
+              this.fetch();
             })
           }
         });
@@ -62,8 +69,8 @@ export default {
       Indicator.open();
       info().then(response=>{
         Indicator.close();
-        this.common[0].textRight =response.body.nickName;
-        this.common[1].textRight =response.body.account;
+        this.common[0].textRight =response.body.userName;
+        this.common[1].textRight =response.body.telphone;
       })
     }
   }
@@ -115,7 +122,7 @@ export default {
           .textRight{
              position:absolute;
              top:.4rem;
-             right:.3rem;
+             right:1rem;
              height:.5rem;
              width:5rem;
              text-align: right;
@@ -124,7 +131,7 @@ export default {
           .into {
              position:absolute;
              top:.3rem;
-             right:.5rem;
+             right:.3rem;
              height:.5rem;
              width:.5rem;
              text-align: center;
