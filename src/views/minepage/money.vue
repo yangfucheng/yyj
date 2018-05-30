@@ -2,11 +2,11 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
-        <li v-for="item in common" @click="step(item.route,item.textRight)">
-          <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div>
-          <div class="text">{{item.text}}</div>
-          <div class="textRight">{{item.textRight}}</div>
-          <div class="into" v-show="item.text=='GXS'"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
+        <li v-for="item in common" @click="step(item.coin)">
+          <div class="icon"><img :src="item.image" height="22" width="22" alt=""></div>
+          <div class="text">{{item.coin}}</div>
+          <div class="textRight">{{item.amount}}</div>
+          <div class="into" v-show="item.coin!='pps'"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
         </li>
       </ul>
    </div>
@@ -19,19 +19,7 @@ import { Indicator } from 'mint-ui';
 export default {
   data () {
     return {
-      common:[
-      {
-        icon:'../../static/icon/yucec.png',
-        text:'PPS',
-        textRight:'0',
-      },
-      {
-        icon:'../../static/icon/gxs.png',
-        text:'GXS',
-        textRight:'0',
-        route:'moneyDeatil'
-      },
-      ]
+      common:[]
     }
   },
   created() {
@@ -43,21 +31,15 @@ export default {
   methods: {
     fetch(){
       Indicator.open();
-      // Indicator.open();
       wallet().then(response=>{
-        // Indicator.close();
         Indicator.close();
-        this.common[0].textRight = response.body.PPS;
-        this.common[1].textRight = response.body.GXS;
+        this.common=response.body;
       })
     },
-    step(route,num) {
-      this.$router.push({
-        name:route,
-        params:{
-          num:num
-        }
-      })
+    step(tradeCoin) {
+      if(coin!='pps'){
+        this.$router.push({path:'moneyDetail/'+tradeCoin});
+      }
     }
   }
 }

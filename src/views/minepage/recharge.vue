@@ -7,7 +7,7 @@
         </div>
         <div class="dec">
           <p style="margin-bottom: .1rem;">
-            将布洛克城中的GXS资产转移到您所在预言家的账户
+            将布洛克城中的{{coin}}资产转移到您所在预言家的账户
           </p>
           <p>
             请确保账户余额充足，此次充值将不收取手续费
@@ -22,14 +22,16 @@
 </template>
 
 <script>
-import { recharge } from '../../api/api.js'
+import {GetQueryString} from '../../untils/enums.js';
+import { recharge } from '../../api/api.js';
 import { Toast } from 'mint-ui';
 var qs=require("qs");
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      moeny:''
+      moeny:'',
+      coin:''
     }
   },
   watch:{
@@ -45,6 +47,7 @@ export default {
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
     }
+    this.coin=this.$route.params.coin;
   },
   methods: {
     submit(){
@@ -58,12 +61,11 @@ export default {
           });
          return;
       }
-
      
       var params ={
-        amount:this.moeny
+        amount:this.moeny,
+        tradeCoin:this.coin,
       }
-
       if(this.moeny){
         recharge(params).then(response=>{
           window.location.href=response.body;

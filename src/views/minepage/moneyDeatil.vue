@@ -2,10 +2,9 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
-        <li v-for="item in common" @click="step()">
-          <!-- <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div> -->
-          <div class="text">{{item.text}}</div>
-          <div class="textRight">{{item.textRight}}</div>
+        <li @click="step">
+          <div class="text">{{coinData.coin}}</div>
+          <div class="textRight">{{coinData.amount}}</div>
           <!-- <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div> -->
         </li>
       </ul>
@@ -13,7 +12,7 @@
         <div class="content">
           <span>简介</span>
           <div >
-            <span>GXS是公信宝基金会在GXChain（公信链）上发行的Token，不仅具有流通价值，同时在公信链上开发、认证应⽤、使⽤链上服务（例如链上转账的矿⼯费）以及使⽤BaaS服务都需要⽀付或燃烧GXS，GXS是作为链上应⽤运⾏唯⼀使⽤到的Token。 在布洛克城中也可以很方便地利用GXS进行支付结算，如居民之间互相使用GXS进行结算，使用城市公共服务需要用GXS结算，商家提供的服务也需要用GXS来购买等等。</span>
+            <span>{{coinData.intro}}</span>
           </div>
         </div>
          <div>
@@ -21,52 +20,40 @@
             <div @click="submit" class="submit1">提现</div>
         </div>
       </div>
-
    </div>
 </template>
 
 <script>
 
-import { wallet } from '../../api/api.js'
+import { walletDetail } from '../../api/api.js'
 import { Indicator } from 'mint-ui';
 import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
-      common:[
-      {
-        // icon:'../../static/icon/yucec.png',
-        text:'名称',
-        textRight:'GXS',
-      },
-      {
-        // icon:'../../static/icon/gxs.png',
-        text:'数量',
-        textRight:'0',
-        route:'recharge'
-      },
-      ]
+      coinData:{},
     }
   },
   created() {
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
     }
-    this.fetch();
-    
+    let coin=this.$route.params.tradeCoin; 
+    this.fetch(coin);
   },
   methods: {
-    fetch(){
+    fetch(coin){
       Indicator.open();
-      wallet().then(response=>{
+      walletDetail({tradeCoin:coin}).then(response=>{
         Indicator.close();
-        this.common[1].textRight = response.body.GXS;
+        this.coinData= response.body;
       })
     },
     step() {
       this.$router.push({
-        name:'recharge'
-      })
+          name:'recharge',
+          params:{coin:this.coinData.coin},
+        });
     },
     submit() {
         Toast({

@@ -121,7 +121,7 @@ export default new Router({
       meta:{title:"充值"}
     },
     {
-      path: '/myself/moneyDeatil',
+      path: '/myself/moneyDetail:tradeCoin',
       name: 'moneyDeatil',
       component: moneyDeatil,
       meta:{title:"充值详情"}

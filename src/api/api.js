@@ -71,7 +71,7 @@ export function refresh(params) {
 //钱包
 export function wallet(params) {
   return fetch({
-    url: '/app/user/wallet',
+    url: '/app/user/walletList',
     method: 'get',
     params:params
   })
@@ -80,9 +80,18 @@ export function wallet(params) {
 //充值
 export function recharge(params) {
   return fetch({
-    url: '/app/user/gxsRecharge',
+    url: '/app/user/recharge',
     method: 'post',
     data:JSON.stringify(params)
+  })
+}
+
+//钱包详情
+export function walletDetail(params) {
+  return fetch({
+    url: '/app/user/walletDetail',
+    method: 'get',
+    params:params,
   })
 }
 
@@ -95,5 +104,19 @@ export function info(params) {
   })
 }
 
+//排行榜
+export function getRank(params) {
+  return fetch({
+    url: '/app/rank/income/'+params,
+    method: 'get',
+  })
+}
 
+//个人收益及排名
+export function getUserRank(params) {
+  return fetch({
+    url: '/app/user/userIncome/'+params,
+    method: 'get',
+  })
+}
 
