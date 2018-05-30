@@ -8,7 +8,7 @@ const service = axios.create({
   // withCredentials: true,
   headers:{'content-type':'application/json'},
   // baseURL: process.env.BASE_API, // api的base_url
-  // baseURL: 'http://localhost:9998',
+  // baseURL: 'http://localhost:8080',
   // headers: {'X-Requested-With':'XMLHttpRequest'}
   timeout: 30000                  // 请求超时时间
 })
@@ -18,6 +18,7 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   if (getToken()) {
     config.headers['Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    console.log(config.headers)
   }
   return config
 }, error => {

@@ -13,6 +13,7 @@ import recodeDetail from '@/views/minepage/recodeDetail.vue'
 import recharge from '@/views/minepage/recharge.vue'
 import moneyDeatil from '@/views/minepage/moneyDeatil.vue'
 import details from '../components/details.vue'
+import list from '../components/list.vue'
 import login from '../views/login/login.vue'
 
 
@@ -50,6 +51,12 @@ export default new Router({
       name: 'details',
       component: details,
       meta:{title:"详情"}
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: list,
+      meta:{title:"排行榜"}
     },
     {
       path: '/myself/join',

@@ -10,9 +10,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "better-scroll": "^1.10.1",
     "css-loader": "^0.28.11",
     "element-ui": "^2.3.4",
+    "js-cookie": "^2.2.0",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

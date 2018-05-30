@@ -95,5 +95,23 @@ export function info(params) {
   })
 }
 
+//获取用户自己的收益及排行
+export function list_self(params) {
+  return fetch({
+    url: '/app/user/userIncome',
+    method: 'get',
+    params:params
+  })
+}
+
+//获取所有用户的收益排行前10
+export function list_all(params) {
+  return fetch({
+    url: '/app/rank/income',
+    method: 'get',
+    params:params
+  })
+}
+
 
 
