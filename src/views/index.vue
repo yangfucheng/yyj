@@ -7,30 +7,30 @@
      <div class="clicle" @click="stepRank()">
        排行榜
      </div>
-     <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore1" :bottom-method='loadBottom'   :bottomAllLoaded='bottomAllLoaded'>
+    
 
-      <div class="wrapper"  ref="viewBox" >
+      <!-- <div class="wrapper"  ref="viewBox" >
         <div class="swiper"  v-show="isSwiper" ref="swiper">
           <mt-swipe  :auto="5000"> 
             <mt-swipe-item >
               <img src="https://ydb.anydd.com/images/app/banner1.jpg" width="100%" height="100%" >
-              <!-- <router-link to="/error"></router-link> -->
+            
             </mt-swipe-item>
             <mt-swipe-item >
               <img src="http://ydb.anydd.com/images/app/banner4.jpg" width="100%" height="100%" >
-              <!-- <router-link to="/error"></router-link> -->
+            
             </mt-swipe-item>
              <mt-swipe-item><img src="https://ydb.anydd.com/images/app/banner3.jpg" width="100%" height="100%" @click="step"></mt-swipe-item>
           </mt-swipe>
-        </div>
-        <div class="nav" ref="navbar">
+        </div> -->
+     <!--    <div class="nav" ref="navbar">
           <mt-navbar v-model="selected" >
             <mt-tab-item v-for="x in navNameArray" :id="x.id">{{x.name}}</mt-tab-item>
             </mt-navbar>
-        </div>
-        <mt-tab-container v-model="selected"  >
-              <mt-tab-container-item :id="1" :class="isSwiper==false?'Hidden':'content'">
-                   <ul><li> <carousel  v-for="item in dataArray" :dataProp='item' ></carousel></li> </ul>
+        </div> -->
+      <!--   <mt-tab-container v-model="selected"  > -->
+              <!-- <mt-tab-container-item :id="1" :class="isSwiper==false?'Hidden':'content'" >
+                   <ul class="content"><li> <carousel  v-for="item in dataArray" :dataProp='item' ></carousel></li> </ul>
               </mt-tab-container-item>
 
               <mt-tab-container-item :id="2"  :class="isSwiper==false?'Hidden':'content'">
@@ -63,26 +63,29 @@
                       <carousel v-for="item in dataArray" :dataProp='item'></carousel>
                     </li> 
                   </ul>
-              </mt-tab-container-item>
+              </mt-tab-container-item> -->
 
-              <mt-tab-container-item :id="7"  :class="isSwiper==false?'Hidden':'content'">
+              <!-- <mt-tab-container-item :id="7"  :class="isSwiper==false?'Hidden':'content'"  > -->
+                <div class="wrapper" ref="wrapper">
                    <ul>
                     <li>
                       <end v-for="item in dataArray" :dataProp='item'></end>
                     </li> 
                   </ul>
-              </mt-tab-container-item>
+                  </div>
 
-               <mt-tab-container-item :id="6"  :class="isSwiper==false?'Hidden':'content'">
-                     <ul><li>
+              <!-- </mt-tab-container-item> -->
+
+             <!--   <mt-tab-container-item :id="6"  :class="isSwiper==false?'Hidden':'content'" >
+                     <ul ><li>
                         <my v-for="item in dataArray" :dataProp='item' v-show="item.result"></my>
                       <alend v-for="item in dataArray" :dataProp='item' v-show="!item.result"></alend>
                     </li> </ul>
-                </mt-tab-container-item>
-          </mt-tab-container>
-        </div>
-      </mt-loadmore>
-      </div>
+                </mt-tab-container-item> -->
+          <!-- </mt-tab-container> -->
+       
+   
+          </div>
    
   </div>
 </template>
@@ -153,19 +156,18 @@ export default {
     }
   },  
   mounted() {
-    if(this.isSwiper==true){
-      window.addEventListener('scroll', this.handleScroll,true)
+    // if(this.isSwiper==true){
+    //   window.addEventListener('scroll', this.handleScroll,true)
+    // }
+    this.$nextTick(() => { 
+      this.scroll = new Bscroll(this.$refs.wrapper, {})
+      this.scroll.on('touchend', (pos) => {
+        // 下拉动作
+        if (pos.y > 50) {
+          this.fetch()
+        }
+      })
     }
-    // this.box = this.$refs.viewBox;
-
-    // // this.$refs.viewBox.scrollTop = -100;
-    // this.box.addEventListener('scroll', () => {
-    //   // console.log(" scroll " + this.$refs.viewBox.scrollTop)
-    //   // this.$refs.viewBox.scrollTop ;
-      
-    //   //以下是我自己的需求，向下滚动的时候显示“我是有底线的（类似支付宝）”
-    //   this.handleScroll(this.$refs.viewBox.scrollTop);
-    // }, false)
   },
   created() {
     this.fetch();
@@ -176,7 +178,7 @@ export default {
       this.dataArray = null;
       var params ={}
        params={
-          type:this.type,
+          type:'end',
           pageNo:this.page,
           tag:this.tag
        }
@@ -193,8 +195,11 @@ export default {
             if(this.totalPage == 1){
               // this.bottomAllLoaded =true;
             }
-           this.$refs.loadmore1.onTopLoaded();
-           this.$refs.loadmore1.onBottomLoaded();
+          this.$nextTick(() => { 
+            this._initScroll();
+          })
+           // this.$refs.loadmore1.onTopLoaded();
+           // this.$refs.loadmore1.onBottomLoaded();
            Indicator.close();
       }).catch(function(e){
         console.log(e);
@@ -212,7 +217,7 @@ export default {
       })
     },
     handleScroll (scrollTop) {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      // var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       console.log(scrollTop)
       var swiperDom = this.$refs.swiper;
       var navDom = this.$refs.navbar;
@@ -232,7 +237,8 @@ export default {
       }
     },
     _initScroll(){
-        this.scroll = new BScroll(this.$refs.wrapper, {})
+        this.scroll = new BScroll(this.$refs.wrapper, {});
+
     },
     handleTopChange(status) {
         this.topStatus = status;
@@ -329,15 +335,16 @@ export default {
     //     font-weight:700;
     //   }
     // 
-      .wrapper{
-          // position:absolute;
-          // width: 100%;
-          // top: 0;
-          // height:10rem;
-          // bottom: 1.5rem;
-          // overflow: auto;
-          // z-index: 0;
-          margin-bottom:1.7rem;
+        .wrapper{
+          width: 100%;
+          position:absolute;
+          top: 45px;
+          bottom: 50px;
+          overflow: hidden;
+          z-index: 1;
+          .content{
+            height:100%;
+          }
           .swiper{
             // .swiper-img{
             //    background-image: url('https://ydb.anydd.com/images/app/banner1.jpg');
