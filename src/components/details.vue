@@ -80,7 +80,7 @@
             <div class="single">
               
               <span>单次最高投注:&nbsp&nbsp <span style="color:#000"> <span>{{dataArray.maxBet}}</span>份</span></span>
-              <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{dataArray.betNumber}}</span>
+              <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{getcishu}}</span>
             </div>
           </div>
         </div>
@@ -192,6 +192,9 @@ export default {
 
     getNeedMoeny(){
       return parseFloat((this.allMoney * this.dataArray.minBet).toFixed(7))
+    },
+    getcishu(){
+      return Math.round((this.dataArray.optionAQuantity + this.dataArray.optionBQuantity + this.dataArray.optionCQuantity)/this.dataArray.minBet);
     }
   },
   created() {

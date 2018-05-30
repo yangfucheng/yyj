@@ -1,4 +1,4 @@
-<<template>
+<template>
 	<div class="contain" @click="setp(dataArray)" >
 		<div class="cell">
 			<div class="title">
@@ -115,7 +115,7 @@ import { numTampTwo } from '../untils/enums.js'
   		},
   		computed:{
 		    getcishu(){
-		      return (this.dataArray.optionAQuantity + this.dataArray.optionBQuantity + this.dataArray.optionCQuantity)/this.dataArray.minBet;
+		      return Math.round((this.dataArray.optionAQuantity + this.dataArray.optionBQuantity + this.dataArray.optionCQuantity)/this.dataArray.minBet);
 		    },
 		 },
 		mounted() {

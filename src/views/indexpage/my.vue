@@ -31,7 +31,7 @@
 						<!-- <div v-show="dataArray.optionC">{{dataArray.mayEarnedC}}</div> -->
 					</div>
 					<div :class="(!dataArray.optionC)?'now-title-two flexed-two':'now-title-two flexed-two'" style="color:#CCCCCC">
-						<div>历史下注({{dataArray.tradeCoin}})</div>
+						<div>历史买入({{dataArray.tradeCoin}})</div>
 						<div>获得收益({{dataArray.tradeCoin}})</div>
 						<!-- <div v-show="dataArray.optionC">可能收益({{dataArray.tradeCoin}})</div> -->
 					</div>
