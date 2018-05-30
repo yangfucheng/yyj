@@ -120,3 +120,11 @@ export function getUserRank(params) {
   })
 }
 
+//修改昵称
+export function changeName(params) {
+  return fetch({
+    url:'/app/user/updateUserName',
+    method: 'post',
+    data:JSON.stringify(params)
+  })
+}

@@ -34,6 +34,9 @@
   </div>
   </mt-tab-container-item>
   </mt-tab-container>
+  <div>
+    <img src='https://ydb.anydd.com/images/app/rank.jpg' class='intro'/>
+  </div>
   <!-- <div class='instruction'>
     <i>*</i>排行榜说明：预言周排行榜根据用户在每周一至周日中获得的GXS和PPS折算成一定的分值进行排行，收益1GXS对应25收益值，收益1PPS对应1收益值，进入排行榜前10位的用户每周都能获得PPS奖励。
   </div> -->
@@ -121,6 +124,9 @@ export default {
   .rank3{
     color:#c18c22;
     background:url('../common/images/jijun.png') no-repeat center center;
+  }
+  .intro{
+    width:100%;
   }
   span,li,p{
     white-space: nowrap;

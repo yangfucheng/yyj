@@ -2,19 +2,19 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
-        <li v-for="item in common" @click="step(item.type)">
+        <li v-for="item in common" @click="step(item.type,item.text)">
           <!-- <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div> -->
           <div class="text">{{item.text}}</div>
           <div class="textRight">{{item.textRight}}</div>
-          <!-- <div class="into"><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div> -->
+          <div class="into" v-show='item.text=="昵称"'><img src="../../../static/icon/jiantou.png" height="22" width="22" alt=""></div>
         </li>
       </ul>
    </div>
 </template>
 
 <script>
-import { info } from '../../api/api.js'
-import { Indicator } from 'mint-ui';
+import { info,changeName} from '../../api/api.js'
+import { Indicator ,MessageBox } from 'mint-ui';
 export default {
   data () {
     return {
@@ -41,12 +41,21 @@ export default {
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
     }
-    this.fetch();
+    /*this.fetch();*/
   },
   methods: {
-    step(type) {
+    step(type,text) {
      if(type=="wai"){
         window.location.href ="https://www.ppset.io";
+      }
+      if(text=='昵称'){
+        MessageBox.prompt(' ','请输入新昵称').then(({ value, action }) => {
+          if(value!=''&&value!=null){
+            changeName({userName:value}).then(response=>{
+              return;
+            })
+          }
+        });
       }
     },
     fetch(){
@@ -63,7 +72,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  // @import "../common/mixin.scss";
   // @import "../common/style.scss";
   .contain{
     position:absolute;

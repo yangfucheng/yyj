@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import {GetQueryString} from '../../untils/enums.js';
 import { recharge } from '../../api/api.js';
 import { Toast } from 'mint-ui';
 var qs=require("qs");
