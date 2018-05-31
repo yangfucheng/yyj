@@ -14,7 +14,7 @@
     <ul class='rank_list'>
       <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li></ul></li>
       <li v-for='item in dataObj' :key='item.id'>
-        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li>{{item.username}}<li></li><li>{{item.income}}</li></ul>
+        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username}}</li><li>{{item.income}}</li></ul>
       </li>
     </ul>
   </div>
@@ -28,7 +28,7 @@
     <ul class='rank_list'>
       <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li></ul></li>
       <li v-for='item in lastObj' :key='item.id'>
-        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li>{{item.username}}<li></li><li>{{item.income}}</li></ul>
+        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username}}</li><li>{{item.income}}</li></ul>
       </li>
     </ul>
   </div>
