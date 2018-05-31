@@ -12,9 +12,9 @@
   </div>
   <div class='list'>
     <ul class='rank_list'>
-      <li><ul class='thead'><li>名次</li><li>账户</li><li>收益值</li></ul></li>
+      <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li></ul></li>
       <li v-for='item in dataObj' :key='item.id'>
-        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li>{{item.userName}}<li></li><li>{{item.income}}</li></ul>
+        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li>{{item.username}}<li></li><li>{{item.income}}</li></ul>
       </li>
     </ul>
   </div>
@@ -26,7 +26,7 @@
   </div>
   <div class='list'>
     <ul class='rank_list'>
-      <li><ul class='thead'><li>名次</li><li>账户</li><li>收益值</li></ul></li>
+      <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li></ul></li>
       <li v-for='item in lastObj' :key='item.id'>
         <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li>{{item.username}}<li></li><li>{{item.income}}</li></ul>
       </li>
@@ -37,9 +37,6 @@
   <div>
     <img src='https://ydb.anydd.com/images/app/rank.jpg' class='intro'/>
   </div>
-  <!-- <div class='instruction'>
-    <i>*</i>排行榜说明：预言周排行榜根据用户在每周一至周日中获得的GXS和PPS折算成一定的分值进行排行，收益1GXS对应25收益值，收益1PPS对应1收益值，进入排行榜前10位的用户每周都能获得PPS奖励。
-  </div> -->
   </div>
 </template>
 

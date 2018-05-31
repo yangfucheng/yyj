@@ -8,15 +8,15 @@
         </mt-navbar>
         <mt-tab-container v-model="selected">
   	      <mt-tab-container-item  :id="1">
-               <alend v-for="item in dataArray" :dataProp='item' ></alend>
+               <alend v-for="item in dataArray" :dataProp='item' :key='item'></alend>
   	      </mt-tab-container-item>
         </mt-tab-container>
         <mt-tab-container v-model="selected">
         <mt-tab-container-item  :id="2">
-            <alend v-for="item in dataArray" :dataProp='item' ></alend>
+            <alend v-for="item in dataArray" :dataProp='item' :key='item'></alend>
         </mt-tab-container-item>
          <mt-tab-container-item :id="3">
-            <my v-for="item in dataArray" :dataProp='item' ></my>
+            <my v-for="item in dataArray" :dataProp='item' :key='item'></my>
         </mt-tab-container-item>
       </mt-tab-container>
     </mt-loadmore>
