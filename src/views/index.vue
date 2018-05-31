@@ -23,7 +23,7 @@
              <mt-swipe-item><img src="https://ydb.anydd.com/images/app/banner3.jpg" width="100%" height="100%" @click="step"></mt-swipe-item>
           </mt-swipe>
         </div>
-        <div class="nav" ref="navbar">
+        <div class="nav" ref="navbar" :class="{fix:isFix}">
           <mt-navbar v-model="selected" >
             <mt-tab-item v-for="x in navNameArray" :id="x.id" :key='x.id'>{{x.name}}</mt-tab-item>
             </mt-navbar>
@@ -108,6 +108,7 @@ export default {
       bottomAllLoaded:false,
       pageArray:[true,false,false,false,false,false,false],
       bottomDistance:0,
+      isFix:false,
       navNameArray:[
         {
           id:1,
@@ -221,14 +222,12 @@ export default {
         swiperH = swiperDom.clientHeight;
       }
       if(scrollTop > swiperH){
-        this.isSwiper =false;
-        if(navDom){
-            navDom.style.width='100%';
-            navDom.style.position = 'fixed';
-            navDom.style.zIndex  = '1';
-            navDom.style.backgroundColor = '#FFF'
-        }
+          this.isSwiper =false;
+          this.isFix=true;
         // this.$refs.content.style.color  = '1.5rem'
+      }else{
+        this.isFix=false;
+        this.isSwiper=true;
       }
     },
     _initScroll(){
@@ -291,8 +290,8 @@ export default {
 <style lang="scss" scoped>
 @import "../common/mixin.scss";
 @import "../common/style.scss";
-  
   .contain {
+    overflow: scroll;
     .clicle{
       border-radius:50%;
       width:1rem;
@@ -375,6 +374,12 @@ export default {
         li{
           font-size:.4rem;
         }
+      }
+      .fix{
+       position:fixed;
+       background:#fff;
+       z-index:1;
+       width: 100%;
       }
       .mint-tab-item{
           text-decoration: none;
