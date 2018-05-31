@@ -109,7 +109,7 @@
               <span>选项{{optOrder}}:{{option}}</span>
               <div class="yue">
                 <div>{{dataArray.tradeCoin}}余额: <span style="color:red">{{dataArray.wallet}}</span> </div>   
-                <span style="text-align:right"><router-link to="/myself/recharge" v-show="dataArray.tradeCoin=='GXS'">立即充值</router-link></span> 
+                <span style="text-align:right;color:#1AC6BC" v-show="dataArray.tradeCoin!='PPS'" @click="charge()">立即充值</span> 
               </div>
 
             </div>
@@ -240,6 +240,14 @@ export default {
       }).catch(function(e){
         console.log(e);
         Indicator.close();
+      })
+    },
+    charge(){
+      this.$router.push({
+        name:'moneyDeatil',
+        params:{
+          tradeCoin:this.dataArray.tradeCoin
+        }
       })
     },
     handleTopChange(status){

@@ -7,10 +7,10 @@
             <div class="icon-img"></div>
           </div>
           <div class="name">
-            <label>用户名:<span style="color:#000;margin-left:.2rem">{{dataObj.nickName}}</span> </label>
+            <label>用户名:<span style="color:#000;margin-left:.2rem">{{dataObj.userName}}</span> </label>
             <span></span>
           </div>
-          <div class="idcard">预言家的第{{dataObj.userId}}位居民</div>
+          <div class="idcard">预言家的第{{dataObj.id}}位居民</div>
         </li>
         <li v-for="item in common" @click="step(item.route,item.type)">
           <div class="icon"><i :class="item.icon"></i></div>

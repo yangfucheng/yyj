@@ -5,7 +5,7 @@
       <span class="text"><i class="iconfont icon-sousuo"></i>搜索商品 分类 功效 用户</span>
     </div> -->
      <div class="clicle" @click="stepRank()">
-       排行榜
+    
      </div>
      <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore1" :bottom-method='loadBottom'   :bottomAllLoaded='bottomAllLoaded'>
 
@@ -297,14 +297,19 @@ export default {
       border-radius:50%;
       width:1rem;
       height:1rem;
-      background:$mainColor;
+      // background:$mainColor;
       color:#fff;
       line-height:1rem;
       position:fixed;
-      bottom:3rem;;
+      bottom:1.8rem;;
       z-index:9999;
-      right:1rem;
-      border:1px solid $mainColor;
+      right:.2rem;
+      // border:1px solid $mainColor;
+      background-image: url('https://ydb.anydd.com/images/app/rankicon.png');
+      background-repeat:no-repeat;
+      background-size:cover;
+      width:1.3rem;
+      height:1.3rem;
     }
     // margin-bottom:1.5rem;
     // margin-top:1.3rem;

@@ -7,21 +7,22 @@
   <mt-tab-container v-model="selected">
   <mt-tab-container-item id="current">
   <div class='user'>
-    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.nickName}}</span></div>
+    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.userName}}</span></div>
     <div class='user_info'><p>我的收益值：{{userRank!=null?userRank.income:''}}</p><p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>名</p></div>
   </div>
   <div class='list'>
     <ul class='rank_list'>
-      <li><ul class='thead'><li>名次</li><li>账户</li><li>收益值</li></ul></li>
+      <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li></ul></li>
       <li v-for='item in dataObj' :key='item.id'>
-        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li>{{item.userName}}<li></li><li>{{item.income}}</li></ul>
+        <ul><li>
+          <span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username}}</li><li>{{item.income}}</li></ul>
       </li>
     </ul>
   </div>
   </mt-tab-container-item>
   <mt-tab-container-item id="last">
   <div class='user'>
-    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.nickName}}</span></div>
+    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.userName}}</span></div>
     <div class='user_info'><p>我的收益值：{{lastRank!=null?lastRank.income:''}}</p><p>排名：<span class='rank'>{{lastRank!=null?lastRank.rank:''}}</span>名</p></div>
   </div>
   <div class='list'>
@@ -89,6 +90,7 @@ export default {
     },
     getMineRank(type){
       getUserRank(type).then(response=>{
+
         if(type=='current'){
           this.userRank =response.body;
         }else{

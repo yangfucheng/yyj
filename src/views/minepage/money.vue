@@ -16,6 +16,7 @@
 
 import { wallet } from '../../api/api.js'
 import { Indicator } from 'mint-ui';
+import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
@@ -37,13 +38,19 @@ export default {
       })
     },
     step(tradeCoin) {
-      if(this.coin!='pps'){
+      if(tradeCoin!='PPS'){
         this.$router.push({
           name:'moneyDeatil',
           params:{
             tradeCoin:tradeCoin
           }
         })
+      }else{
+         Toast({
+          message: 'PPS暂未开放充值',
+          position: 'middle',
+          duration: 2000
+        });
       }
     }
   }
