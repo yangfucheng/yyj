@@ -12,7 +12,7 @@
           <el-option
             v-for="item in options"
             :label="item.label"
-            :value="item.label">
+            :value="item.label" :key='item.label'>
           </el-option>
         </el-select>
         <div class="num">
