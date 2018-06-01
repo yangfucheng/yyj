@@ -8,7 +8,7 @@
   <mt-tab-container-item id="current">
   <div class='user'>
     <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.userName}}</span></div>
-    <div class='user_info'><p>我的收益值：{{userRank!=null?userRank.income:''}}</p><p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>名</p></div>
+    <div class='user_info'><p>我的收益值：{{userRank?(userRank.income?userRank.income:0):0}}</p><p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>&nbsp;名</p></div>
   </div>
   <div class='list'>
     <ul class='rank_list'>
@@ -22,7 +22,7 @@
   <mt-tab-container-item id="last">
   <div class='user'>
     <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.userName}}</span></div>
-    <div class='user_info'><p>我的收益值：{{lastRank!=null?lastRank.income:''}}</p><p>排名：<span class='rank'>{{lastRank!=null?lastRank.rank:''}}</span>名</p></div>
+    <div class='user_info'><p>我的收益值：{{lastRank?(lastRank.income?lastRank.income:0):0}}</p><p>排名：<span class='rank'>{{lastRank!=null?lastRank.rank:''}}</span>&nbsp;名</p></div>
   </div>
   <div class='list'>
     <ul class='rank_list'>
@@ -86,7 +86,6 @@ export default {
     },
     getMineRank(type){
       getUserRank(type).then(response=>{
-
         if(type=='current'){
           this.userRank =response.body;
         }else{
