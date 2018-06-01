@@ -13,6 +13,10 @@
         <div class="swiper"  v-show="isSwiper" ref="swiper">
           <mt-swipe  :auto="5000"> 
             <mt-swipe-item >
+              <img src="https://ydb.anydd.com/images/app/banner5.jpg" width="100%" height="100%" >
+              <!-- <router-link to="/error"></router-link> -->
+            </mt-swipe-item>
+            <mt-swipe-item >
               <img src="https://ydb.anydd.com/images/app/banner1.jpg" width="100%" height="100%" >
               <!-- <router-link to="/error"></router-link> -->
             </mt-swipe-item>

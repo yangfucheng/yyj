@@ -2,15 +2,15 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
-        <li>
+        <li @click="step('set')">
           <div class="icon">
             <div class="icon-img"></div>
           </div>
-          <div class="name">
+          <div class="name" >
             <label>用户名:<span style="color:#000;margin-left:.2rem">{{dataObj.userName}}</span> </label>
-            <span></span>
           </div>
           <div class="idcard">预言家的第{{dataObj.id}}位居民</div>
+           <div class="jiantou"><i class="iconfont icon-jiantou1"></i></div>
         </li>
         <li v-for="item in common" @click="step(item.route,item.type)">
           <div class="icon"><i :class="item.icon"></i></div>
@@ -47,13 +47,13 @@ export default {
         route:'money',
         type:''
       },
-      {
-        icon:'iconfont icon-shezhi',
-        text:'设置',
-        route:'set',
-        type:''
+      // {
+      //   icon:'iconfont icon-shezhi',
+      //   text:'设置',
+      //   route:'set',
+      //   type:''
 
-      },
+      // },
       {
         icon:'iconfont icon-wode',
         text:'联系我们',
@@ -153,6 +153,14 @@ export default {
             position:absolute;
             top:1.2rem;
             left:2.5rem;
+            font-size:.3rem;
+            font-weight:200;
+            color:rgb(151, 160, 166);
+          }
+         .jiantou{
+            position:absolute;
+            top:1rem;
+            right:.5rem;
             font-size:.3rem;
             font-weight:200;
             color:rgb(151, 160, 166);
