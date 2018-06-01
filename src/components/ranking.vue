@@ -35,7 +35,7 @@
   </mt-tab-container-item>
   </mt-tab-container>
   <div>
-    <img src='https://ydb.anydd.com/images/app/rank.jpg' class='intro'/>
+    <img src='https://ydb.anydd.com/images/app/rank1.jpg' class='intro'/>
   </div>
   </div>
 </template>
