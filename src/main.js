@@ -15,6 +15,7 @@ import VueWechatTitle from 'vue-wechat-title'
 import 'lib-flexible'
 import '../flexible.js'
 import '../flexible.css'
+import '../src/common/my-mint.scss'
 
 
 
