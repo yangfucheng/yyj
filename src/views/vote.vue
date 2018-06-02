@@ -18,13 +18,13 @@
         </div>
         <mt-tab-container v-model="selected"  >
               <mt-tab-container-item :id="1" :class="isSwiper==false?'Hidden':'content'">
-                   <ul><li> <carousel  v-for="item in dataArray" :dataProp='item' :key='item'></carousel></li> </ul>
+                   <ul><li> <carousel  v-for="item in dataArray" :dataProp='item' :key='item.index'></carousel></li> </ul>
               </mt-tab-container-item>
 
               <mt-tab-container-item :id="2"  :class="isSwiper==false?'Hidden':'content'">
                    <ul>
                     <li>
-                      <carousel v-for="item in dataArray" :dataProp='item' :key='item'></carousel>
+                      <carousel v-for="item in dataArray" :dataProp='item' :key='item.index'></carousel>
                     </li> 
                   </ul>
               </mt-tab-container-item>
@@ -32,7 +32,7 @@
               <mt-tab-container-item :id="3"  :class="isSwiper==false?'Hidden':'content'">
                    <ul>
                     <li>
-                      <carousel v-for="item in dataArray" :dataProp='item' :key='item'></carousel>
+                      <carousel v-for="item in dataArray" :dataProp='item' :key='item.index'></carousel>
                     </li> 
                   </ul>
               </mt-tab-container-item>
@@ -40,7 +40,7 @@
               <mt-tab-container-item :id="4"  :class="isSwiper==false?'Hidden':'content'">
                    <ul>
                     <li>
-                      <carousel v-for="item in dataArray" :dataProp='item' :key='item'></carousel>
+                      <carousel v-for="item in dataArray" :dataProp='item' :key='item.index'></carousel>
                     </li> 
                   </ul>
               </mt-tab-container-item>
@@ -48,7 +48,7 @@
               <mt-tab-container-item :id="5"  :class="isSwiper==false?'Hidden':'content'">
                    <ul>
                     <li>
-                      <carousel v-for="item in dataArray" :dataProp='item' :key='item'></carousel>
+                      <carousel v-for="item in dataArray" :dataProp='item' :key='item.index'></carousel>
                     </li> 
                   </ul>
               </mt-tab-container-item>
@@ -56,15 +56,15 @@
               <mt-tab-container-item :id="7"  :class="isSwiper==false?'Hidden':'content'">
                    <ul>
                     <li>
-                      <end v-for="item in dataArray" :dataProp='item' :key='item'></end>
+                      <end v-for="item in dataArray" :dataProp='item' :key='item.index'></end>
                     </li> 
                   </ul>
               </mt-tab-container-item>
 
                <mt-tab-container-item :id="6"  :class="isSwiper==false?'Hidden':'content'">
                      <ul><li>
-                        <my v-for="item in dataArray" :dataProp='item' v-show="item.result" :key='item'></my>
-                      <alend v-for="item in dataArray" :dataProp='item' v-show="!item.result" :key='item'></alend>
+                        <my v-for="item in dataArray" :dataProp='item' v-show="item.result" :key='item.index'></my>
+                      <alend v-for="item in dataArray" :dataProp='item' v-show="!item.result" :key='item.index'></alend>
                     </li> </ul>
                 </mt-tab-container-item>
           </mt-tab-container>

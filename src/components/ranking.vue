@@ -7,7 +7,7 @@
   <mt-tab-container v-model="selected">
   <mt-tab-container-item id="current">
   <div class='user'>
-    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.userName}}</span></div>
+    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user?user.userName:''}}</span></div>
     <div class='user_info'><p>我的收益值：{{userRank?(userRank.income?userRank.income:0):0}}</p><p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>&nbsp;名</p></div>
   </div>
   <div class='list'>
@@ -21,14 +21,14 @@
   </mt-tab-container-item>
   <mt-tab-container-item id="last">
   <div class='user'>
-    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user.userName}}</span></div>
+    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user?user.userName:''}}</span></div>
     <div class='user_info'><p>我的收益值：{{lastRank?(lastRank.income?lastRank.income:0):0}}</p><p>排名：<span class='rank'>{{lastRank!=null?lastRank.rank:''}}</span>&nbsp;名</p></div>
   </div>
   <div class='list'>
-    <ul class='rank_list'>
-      <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li></ul></li>
+    <ul class='last_rank_list'>
+      <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li><li>奖励</li></ul></li>
       <li v-for='item in lastObj' :key='item.id'>
-        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li></ul>
+        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li><li>{{item.bonus}}</li></ul>
       </li>
     </ul>
   </div>
@@ -67,9 +67,9 @@ export default {
     }
   },
   created(){
+    this.getUserInfo();
     this.fetch('current');
     this.fetch('last');
-    this.getUserInfo();
     this.getMineRank('current');
     this.getMineRank('last');
     if(this.$store.state.tabHidden) {
@@ -137,10 +137,19 @@ export default {
     width:100%;
     margin-top: .6rem;
   }
-  span,li,p{
+  span,li,p,.user_detail{
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+  .rank_list ul>li:first-child,.rank_list ul>li:nth-child(3){
+    width: 30%;
+  }
+  .last_rank_list ul>li:first-child{
+    width:14%;
+  }
+  .last_rank_list ul>li:nth-child(3),.last_rank_list ul>li:nth-child(4){
+    width:23%;
   }
   .contain{
     color:#676b6d;
@@ -175,7 +184,7 @@ export default {
         }
       }
     }
-    .rank_list{
+    .rank_list,.last_rank_list{
       ul:after{
         content:""; 
         display:block; 
@@ -194,9 +203,6 @@ export default {
           float: left;
           text-align:center;
           padding:10px 0;
-        }
-        li:first-child,li:nth-child(3){
-          width: 30%;
         }
         li:nth-child(2){
           width:40%;

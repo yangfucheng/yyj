@@ -1,5 +1,5 @@
 <template>
-	<div class="contain" >
+	<div class="contain"  @click="setp">
 		<div class="cell">
 			<div class="title">
 				<img src="../../../static/icon/hot.png" height="15" width="15" alt="">
@@ -54,13 +54,14 @@ import { numTampTofloat } from '../../../src/untils/enums.js'
 		},
 		methods: {
 			setp() {
-		      this.$router.push({
-		        name:'details',
-		        params:{
-		          dataArray:this.dataArray
-		        }
-		      })
-		    }
+		        this.$router.push({
+		        // name:'details',
+		            path:'/index/details/'+this.dataArray.id,
+		            params:{
+		                dataArray:this.dataArray
+		            }
+		        });
+		    },
   		},
   		watch: {
   			"dataProp"(){

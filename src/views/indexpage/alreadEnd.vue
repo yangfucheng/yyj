@@ -1,5 +1,5 @@
 <template>
-	<div class="contain">
+	<div class="contain" @click='goDetail'>
 		<div class="cell">
 			<div class="title">
 				<img src="../../../static/icon/hot.png" height="15" width="15" alt="">
@@ -61,7 +61,15 @@ import { numTampTofloat } from '../../../src/untils/enums.js'
 			}
 		},
 		methods: {
-			
+			goDetail(){
+                this.$router.push({
+		        // name:'details',
+		            path:'/index/details/'+this.dataArray.id,
+		            params:{
+		                dataArray:this.dataArray
+		            }
+		        });
+  		    }
 		},
 		filters: {
 		   formatNum(value){

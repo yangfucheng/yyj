@@ -95,7 +95,7 @@ import { numTampTwo } from '../untils/enums.js'
     		setp() {
 		      this.$router.push({
 		        // name:'details',
-		        path:'index/details/'+this.dataArray.id,
+		        path:'/index/details/'+this.dataArray.id,
 		        params:{
 		          dataArray:this.dataArray
 		        }
@@ -103,9 +103,8 @@ import { numTampTwo } from '../untils/enums.js'
 		    }
   		},
   		created() {
-  			 this.dataArray = this.dataProp;
-  			 this.endTime =this.dataProp.betEndTime;
-
+  			this.dataArray = this.dataProp;
+  			this.endTime =this.dataProp.betEndTime;
   		},
   		watch: {
   			"dataProp"(){

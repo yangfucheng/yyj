@@ -378,10 +378,17 @@ export default {
       }
     },
     choose(optOrder,option,optionOdd){
-      this.popupVisible=true;
-      this.optOrder = optOrder;
-      this.option =option;
-      this.nowOdd = optionOdd;
+      let endTime = new Date(this.endTime)
+      let nowTime = new Date();
+      let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000);
+      if(leftTime < 0){
+        this.popupVisible = false;
+      }else{
+        this.popupVisible=true;
+        this.optOrder = optOrder;
+        this.option =option;
+        this.nowOdd = optionOdd;
+      }
     },
     addMoney(x){
       if(x=="最大"){
