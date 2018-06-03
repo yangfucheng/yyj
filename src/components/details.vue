@@ -358,9 +358,8 @@ export default {
           this.$message.error('项目已结束,停止下注');
           return;
        }
-
+      this.popupVisible = false;
       bet(params).then(response=>{
-        this.popupVisible = false;
         this.$message({
           message: '买入成功',
           type: 'success'

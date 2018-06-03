@@ -193,7 +193,13 @@ export default {
         }
       }
     }
+    .rank_list>li:nth-child(2),.last_rank_list>li:nth-child(2){
+        margin-top:36px;
+      }
     .rank_list,.last_rank_list{
+      max-height:415px;
+      min-height: 36px;
+      overflow: scroll;
       ul:after{
         content:""; 
         display:block; 
@@ -202,6 +208,8 @@ export default {
         clear:both;
       }
       .thead{
+        width: 100%;
+        position: absolute;
         background:#2bb8ae;
         color:#fff;
         border-bottom:none;
