@@ -27,7 +27,7 @@
              <mt-swipe-item><img src="https://ydb.anydd.com/images/app/banner3.jpg" width="100%" height="100%" @click="step"></mt-swipe-item>
           </mt-swipe>
         </div>
-        <div class="nav" ref="navbar">
+        <div class="nav" ref="navbar" :class="{fix:isFix}">
           <mt-navbar v-model="selected" >
             <mt-tab-item v-for="x in navNameArray" :id="x.id" :key='x.id'>{{x.name}}</mt-tab-item>
             </mt-navbar>
@@ -153,7 +153,8 @@ export default {
       isSwiper:true,
       LoadTopDom:null,
       loadBottomDom:null,
-      startTop:0
+      startTop:0,
+      isFix:false,
     }
   },  
   mounted() {
@@ -227,10 +228,7 @@ export default {
       if(scrollTop > swiperH){
         this.isSwiper =false;
         if(navDom){
-            navDom.style.width='100%';
-            navDom.style.position = 'fixed';
-            navDom.style.zIndex  = '1';
-            navDom.style.backgroundColor = '#FFF'
+          this.isFix=true;
         }
         // this.$refs.content.style.color  = '1.5rem'
       }
@@ -257,7 +255,6 @@ export default {
     }
   },
   watch: {
-    
     "selected"() {
         this.dataArray=[];
         var num =this.selected-1;
@@ -275,7 +272,7 @@ export default {
         }else{
           this.pageArray[i] =false;
         }
-     }
+    }
   },
   components:{
       carousel,
@@ -379,6 +376,12 @@ export default {
         li{
           font-size:.4rem;
         }
+      }
+      .fix{
+        position: fixed;
+        width: 100%;
+        z-index:2;
+        background:#fff;
       }
       .mint-tab-item{
           text-decoration: none;

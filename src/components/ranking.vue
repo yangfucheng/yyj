@@ -66,15 +66,24 @@ export default {
       }
     }
   },
+  watch: {
+    selected: function (val, oldVal) {
+      if(val=='last'){
+        if(this.lastRank==''){
+          this.fetch('last');
+          this.getMineRank('last');
+        }
+      }
+    }
+  },
   created(){
     this.getUserInfo();
     this.fetch('current');
-    this.fetch('last');
     this.getMineRank('current');
-    this.getMineRank('last');
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
-    }
+    };
+    history.scrollRestoration = 'manual';
   },
   methods: {
     fetch(type){
