@@ -5,17 +5,19 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import MintUI from 'mint-ui'
-import 'mint-ui/lib/style.css'
-import './common/iconfont/iconfont.css'
-import store from './store/index.js'
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+
 import './permission.js'
 import VueWechatTitle from 'vue-wechat-title'
 import 'lib-flexible'
 import '../flexible.js'
+
+import 'mint-ui/lib/style.css'
+import './common/iconfont/iconfont.css'
 import '../flexible.css'
 import '../src/common/my-mint.scss'
+import store from './store/index.js'
+import 'element-ui/lib/theme-chalk/index.css';
 
 
 
