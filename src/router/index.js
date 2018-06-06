@@ -17,6 +17,7 @@ import ranking from '../components/ranking.vue'
 import error from '../404.vue'
 import login from '../views/login/login.vue'
 import banner1 from '../views/indexpage/banner.vue'
+import commentList from '../views/comment/index.vue'
 
 
 Vue.use(Router)
@@ -40,6 +41,12 @@ export default new Router({
       name: 'ranking',
       component: ranking,
       meta:{title:"排行榜"}
+    },
+    {
+      path: '/comment',
+      name: 'comment',
+      component: commentList,
+      meta:{title:"评论详情"}
     },
     {
       path: '/index/banner1',

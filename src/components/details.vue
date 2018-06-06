@@ -78,14 +78,20 @@
                 <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionCQuantity | changeNum}}{{dataArray.tradeCoin}}</span></div>
             </div>
             <div class="single">
-              
+    
               <span>单次最高投注:&nbsp&nbsp <span style="color:#000"> <span>{{dataArray.maxBet}}</span>份</span></span>
               <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{getcishu}}</span>
             </div>
           </div>
         </div>
         <div class="history">
-          <div class="title">历史买入记录</div>
+          <mt-navbar v-model="selected">
+             <mt-tab-item id="historyList">历史买入记录</mt-tab-item>
+             <mt-tab-item id="comment">历史评价</mt-tab-item>
+          </mt-navbar>
+          <!-- <div class="title">历史买入记录</div> -->
+          <mt-tab-container v-model="selected">
+          <mt-tab-container-item id="historyList">
           <table>
             <tr>
               <th>买入选项</th>
@@ -100,6 +106,19 @@
               <td>{{item.createTime | changeTime}}</td>
             </tr>
           </table>
+          </mt-tab-container-item>
+          <mt-tab-container-item id="comment">
+            <ul class="comment_list">
+              <li v-for='item in commentList' :key='item.index'>{{item.content}}</li>
+            </ul>
+            <div class='comment_foot'>
+              <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
+            </div>
+            <div class='comment_container'>
+              <textarea v-model='comment' class='comment'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
+            </div>
+          </mt-tab-container-item>
+          </mt-tab-container>
         </div>
       </mt-loadmore>
       <mt-popup v-model="popupVisible" position="bottom">
@@ -140,7 +159,6 @@
           <span>当前获胜倍数:<span class="label-red">{{ nowOdd }}</span></span>
           <span>预计猜对获得: <span class="label-red">{{ getAllMoney }}</span> <span>{{dataArray.tradeCoin}}</span></span>
         </div>
-
         <div class="footer">
           <span class="text" style="color:red">当前获胜倍数仅供参考以结束时获胜倍数为准</span>
           <div class="button">
@@ -154,7 +172,7 @@
 
 <script>
 import zkTimeDown from '../components/Countdown.vue'
-import {getDetial,bet,refresh} from '../api/api.js'
+import {getDetial,bet,refresh,getCommentList,newComment} from '../api/api.js'
 import {timestampToTime,timestampTodate,numTampTofloat} from '../../src/untils/enums.js'
 import { Indicator,Toast } from 'mint-ui';
 import {GetQueryString} from '../untils/enums.js'
@@ -180,10 +198,15 @@ export default {
       scaleA:0,
       scaleB:0,
       scaleC:0,
+      selected:'historyList',
+      commentList:[],
+      pageNo:'',
+      comment:'',
+      projectId:'',
     }
   },
   mounted() {
-    
+    this.getComment(1);
   },
   computed:{
     getAllMoney(){
@@ -198,6 +221,7 @@ export default {
     }
   },
   created() {
+    this.projectId=this.$route.params.id;
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
     }
@@ -225,7 +249,7 @@ export default {
     fetch(){
       Indicator.open('Loading...');
       var params = {
-        projectId:this.$route.params.id
+        projectId:this.projectId
       }
       getDetial(params).then(response=>{
         Indicator.close();
@@ -241,6 +265,12 @@ export default {
         console.log(e);
         Indicator.close();
       })
+    },
+    getComment(pageNo){
+      let projectId=this.projectId;
+      getCommentList(projectId,{pageNo:pageNo}).then(res=>{
+        this.commentList=res.body.result;
+      });
     },
     charge(){
       this.$router.push({
@@ -358,9 +388,8 @@ export default {
           this.$message.error('项目已结束,停止下注');
           return;
        }
-
+      this.popupVisible = false;
       bet(params).then(response=>{
-        this.popupVisible = false;
         this.$message({
           message: '买入成功',
           type: 'success'
@@ -378,10 +407,17 @@ export default {
       }
     },
     choose(optOrder,option,optionOdd){
-      this.popupVisible=true;
-      this.optOrder = optOrder;
-      this.option =option;
-      this.nowOdd = optionOdd;
+      let endTime = new Date(this.endTime)
+      let nowTime = new Date();
+      let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000);
+      if(leftTime < 0){
+        this.popupVisible = false;
+      }else{
+        this.popupVisible=true;
+        this.optOrder = optOrder;
+        this.option =option;
+        this.nowOdd = optionOdd;
+      }
     },
     addMoney(x){
       if(x=="最大"){
@@ -394,6 +430,18 @@ export default {
       this.allMoney = 0;
       this.rangeValue = 0;
       this.buttonMoeny = 0;
+    },
+    subComment(){
+      let projectId=this.projectId;
+      let comment=this.comment;
+      newComment({projectId:projectId,content:comment}).then(response=>{
+        /*this.$message({
+          message: '买入成功',
+          type: 'success'
+        });*/
+        this.comment='';
+        this.getComment(1);
+      });
     }
   },
   watch: {
@@ -409,8 +457,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "../common/iconfont/iconfont.css";
 @import "../common/mixin.scss";
 @import "../common/style.scss";
+.mint-navbar .mint-tab-item.is-selected{
+  border-bottom-color:#1ac5bb;
+  color:#1ac5bb;
+}
 .contianer {
 
   .mt-wrap{
@@ -669,6 +722,26 @@ export default {
       td {
         text-align: center;
         border-bottom:1px solid #ccc;
+      }
+    }
+    .comment_foot{
+      width: 100%;
+      span{
+        flex:1;
+      }
+    }
+    .comment_container{
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      .comment{
+        flex: 1;
+        border: none;
+        border-top: 1px solid #e0e0e0;
+      }
+      .comment_btn{
+
       }
     }
   }

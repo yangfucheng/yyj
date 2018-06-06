@@ -128,3 +128,21 @@ export function changeName(params) {
     data:JSON.stringify(params)
   })
 }
+
+//评论列表
+export function getCommentList(id,params) {
+  return fetch({
+    url:'/app/project/comment/'+id,
+    method: 'get',
+    params:params
+  })
+}
+
+//新增评论
+export function newComment(params) {
+  return fetch({
+    url:'/app/project/comment',
+    method: 'post',
+    data:params
+  })
+}
