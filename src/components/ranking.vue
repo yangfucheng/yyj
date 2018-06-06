@@ -83,6 +83,7 @@ export default {
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
     };
+    window.scroll(0,0);
     history.scrollRestoration = 'manual';
   },
   methods: {
