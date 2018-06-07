@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import MintUI from 'mint-ui'
+import VueTouch from 'vue-touch'
 import 'mint-ui/lib/style.css'
 import './common/iconfont/iconfont.css'
 import store from './store/index.js'
@@ -24,6 +25,7 @@ global.storage = window.localStorage
 Vue.use(MintUI);
 Vue.use(ElementUI);
 Vue.use(VueWechatTitle)
+Vue.use(VueTouch, {name: 'v-touch'})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
