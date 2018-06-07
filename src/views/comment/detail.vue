@@ -3,24 +3,40 @@
 		<!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
 			<li v-for="item in list">{{ item }}</li>
 		</ul> -->
-        <ul class='comment_list'>
-            <li v-for='item in commentList' :key='item.index'>
+        <div class='comment_list'>
+            <img src='../../common/images/logo.png' class='logo'/>
+            <div class='comment_container'>
+                <div>
+                    <p class='user'>口水代扣</p>
+                    <p class='createTime'>2018-4-19</p>
+                    <p class="comment_first">杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
+                </div>
+            </div>
+        </div>
+        <ul>
+            <li class="comment_list comment_item">
                 <img src='../../common/images/logo.png' class='logo'/>
                 <div class='comment_container'>
                     <div>
-                        <p class='user'>{{item.userName}}</p>
-                        <p class='createTime'>{{item.createTime | changeTime}}</p>
-                        <p class="comment_first">{{item.content}}杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
+                        <p class='user'>口水代扣</p>
+                        <p class='createTime'>2018-4-19</p>
+                        <p class="comment_first">杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
                     </div>
-                    <ul>
-                        <li><span>钩子</span>：这从哪儿说起啊？</li>
-                        <li><span>钩子</span>：小龙女死了生了女儿然后编下去OK</li>
-                    </ul>
+                </div>
+            </li>
+            <li class="comment_list comment_item">
+                <img src='../../common/images/logo.png' class='logo'/>
+                <div class='comment_container'>
+                    <div>
+                        <p class='user'>口水代扣</p>
+                        <p class='createTime'>2018-4-19</p>
+                        <p class="comment_first">杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
+                    </div>
                 </div>
             </li>
         </ul>
         <div class='comment_foot'>
-            <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont' @click='isComment=true'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
+            <input type="text" v-model="reply" placeholder="回复评论" @focus='isComment=true'/>
         </div>
         <div class='comment_send' v-show='isComment'>
             <textarea v-model='comment' class='comment' rows="3" maxlength="100"></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
@@ -39,6 +55,7 @@ export default {
             isComment:false,
             comment:'',
             projectId:'',
+            reply:''
         }
     },
     created(){
@@ -46,7 +63,6 @@ export default {
             this.$store.dispatch('tabHidden')
         };
         this.projectId=this.$route.params.id;
-        this.getComment(1);
     },
     filters: {
         changeTime(value){
@@ -88,8 +104,7 @@ export default {
 
 <style lang='scss' scoped>
 .comment_list{
-      line-height:1.8;
-      >li{
+        line-height:1.8;
         display:flex;
         width:100%;
         padding:0.3rem 0.5rem;
@@ -116,16 +131,15 @@ export default {
           color: #9a9e9d;
           font-size: 0.2rem;
         }
-        ul{
-            margin-top:0.2rem;
-            background:#f4f8fb;
-            color:#666a69;
-            padding:0.3rem;
-            font-size: 0.36rem;
-            span{
-              color:#5d7ea1;
-            }
-        }
+}
+.comment_item{
+    line-height:1.2;
+    background:#fafafa;
+    padding:0.2rem 0.5rem;
+    .comment_first{
+        font-size:0.3rem;
+        padding:0.15rem 0;
+        border-bottom:1px solid #eee;
     }
 }
 .comment_foot,.comment_send{
@@ -136,11 +150,13 @@ export default {
     position: fixed;
     bottom: 0;
     background: #f5f5f5;
-    padding: 0.3rem 0;
+    padding: 0.15rem;
     border-top: 1px solid #eee;
+    box-sizing:border-box;
     align-items:center;
-    span{
-        flex:1;
+    input{
+        width:100%;
+        padding:2px;
     }
     textarea{
         flex:1;
