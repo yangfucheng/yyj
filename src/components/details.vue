@@ -87,7 +87,7 @@
         <div class="history">
           <mt-navbar v-model="selected">
              <mt-tab-item id="historyList">历史买入记录</mt-tab-item>
-             <mt-tab-item id="comment">历史评价</mt-tab-item>
+             <mt-tab-item id="comment">最新评论</mt-tab-item>
           </mt-navbar>
           <!-- <div class="title">历史买入记录</div> -->
           <mt-tab-container v-model="selected">
@@ -108,15 +108,29 @@
           </table>
           </mt-tab-container-item>
           <mt-tab-container-item id="comment">
-            <ul class="comment_list">
-              <li v-for='item in commentList' :key='item.index'>{{item.content}}</li>
+            <commentList></commentList>
+            <!-- <ul class='comment_list'>
+              <li v-for='item in commentList' :key='item.index'>
+                <img src='../common/images/logo.png' class='logo'/>
+                <div class='comment_container'>
+                    <div>
+                        <p class='user'>{{item.userName}}</p>
+                        <p class='createTime'>{{item.createTime | changeTime}}</p>
+                        <p class="comment_first">{{item.content}}杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
+                    </div>
+                    <ul>
+                        <li><span>钩子</span>：这从哪儿说起啊？</li>
+                        <li><span>钩子</span>：小龙女死了生了女儿然后编下去OK</li>
+                    </ul>
+                </div>
+              </li>
             </ul>
             <div class='comment_foot'>
               <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
             </div>
-            <div class='comment_container'>
+            <div class='comment_send' v-show='isComment'>
               <textarea v-model='comment' class='comment'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
-            </div>
+            </div> -->
           </mt-tab-container-item>
           </mt-tab-container>
         </div>
@@ -172,14 +186,16 @@
 
 <script>
 import zkTimeDown from '../components/Countdown.vue'
-import {getDetial,bet,refresh,getCommentList,newComment} from '../api/api.js'
+import commentList from '../views/comment/index.vue'
+import {getDetial,bet,refresh} from '../api/api.js'
 import {timestampToTime,timestampTodate,numTampTofloat} from '../../src/untils/enums.js'
 import { Indicator,Toast } from 'mint-ui';
 import {GetQueryString} from '../untils/enums.js'
 var qs=require("qs");
 export default {
   components : {
-      zkTimeDown
+      zkTimeDown,
+      commentList
   },
   data () {
     return {
@@ -199,14 +215,8 @@ export default {
       scaleB:0,
       scaleC:0,
       selected:'historyList',
-      commentList:[],
-      pageNo:'',
-      comment:'',
       projectId:'',
     }
-  },
-  mounted() {
-    this.getComment(1);
   },
   computed:{
     getAllMoney(){
@@ -266,12 +276,12 @@ export default {
         Indicator.close();
       })
     },
-    getComment(pageNo){
+    /*getComment(pageNo){
       let projectId=this.projectId;
       getCommentList(projectId,{pageNo:pageNo}).then(res=>{
         this.commentList=res.body.result;
       });
-    },
+    },*/
     charge(){
       this.$router.push({
         name:'moneyDeatil',
@@ -431,18 +441,18 @@ export default {
       this.rangeValue = 0;
       this.buttonMoeny = 0;
     },
-    subComment(){
+    /*subComment(){
       let projectId=this.projectId;
       let comment=this.comment;
       newComment({projectId:projectId,content:comment}).then(response=>{
-        /*this.$message({
+        this.$message({
           message: '买入成功',
           type: 'success'
-        });*/
+        });
         this.comment='';
         this.getComment(1);
       });
-    }
+    }*/
   },
   watch: {
     'rangeValue'() {
@@ -724,26 +734,47 @@ export default {
         border-bottom:1px solid #ccc;
       }
     }
-    .comment_foot{
-      width: 100%;
-      span{
-        flex:1;
+    /* .comment_list{
+      line-height:1.8;
+      >li{
+        display:flex;
+        width:100%;
+        padding:0.3rem 0.5rem;
+        box-sizing:border-box;
+        .comment_first{
+          font-size: 0.4rem;
+          color:#444;
+          padding:0.2rem 0;
+        }
+        .comment_container{
+            flex:1;
+        }
+        .logo{
+        width:0.6rem;
+        height:0.6rem;
+        border:1px solid #ccc;
+        border-radius:50%;
+        margin-right:0.2rem;
+        }
+        .user{
+          color:#888888;
+        }
+        .createTime{
+          color: #9a9e9d;
+          font-size: 0.2rem;
+        }
+        ul{
+            margin-top:0.2rem;
+            background:#f4f8fb;
+            color:#666a69;
+            padding:0.3rem;
+            font-size: 0.36rem;
+            span{
+              color:#5d7ea1;
+            }
+        }
       }
-    }
-    .comment_container{
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      .comment{
-        flex: 1;
-        border: none;
-        border-top: 1px solid #e0e0e0;
-      }
-      .comment_btn{
-
-      }
-    }
+    } */
   }
   .mint-popup-bottom{
     width:100%;
