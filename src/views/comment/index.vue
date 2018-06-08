@@ -3,34 +3,36 @@
 		<!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
 			<li v-for="item in list">{{ item }}</li>
 		</ul> -->
-        <ul class='comment_list'>
+        <ul class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <li v-for='item in commentList' :key='item.index'>
                 <img src='../../common/images/logo.png' class='logo'/>
                 <div class='comment_container'>
                     <div>
-                        <p class='user'>{{item.userName}}</p>
+                        <p class='user' @click='showReply(item.commentId,item.userId,item.userName)'>{{item.userName}}</p>
                         <p class='createTime'>{{item.createTime | changeTime}}</p>
-                        <p class="comment_first">{{item.content}}杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
+                        <p class="comment_first" @click='showReply(item.commentId,item.userId,item.userName)'>{{item.content}}杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
                     </div>
-                    <ul>
-                        <li><span>钩子</span>：这从哪儿说起啊？</li>
-                        <li><span>钩子</span>：小龙女死了生了女儿然后编下去OK</li>
+                    <ul v-if='item.replyTimes>0'>
+                        <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='showReply(reply.commentId,reply.userId,reply.userName)'>
+                            <span>{{reply.userName}}<span<!--  v-if='reply.toWhomUserName!=item.userName' -->>回复{{reply.toWhomUserName}}</span></span>：{{reply.content}}
+                        </li>
+                        <a href='javascript:void(0)' class='moreReply' @click='goDetail(item.commentId,item)'>查看更多回复&nbsp;></a>
                     </ul>
                 </div>
             </li>
         </ul>
         <div class='comment_foot'>
-            <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont' @click='isComment=true'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
+            <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont' @click='showComment'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
         </div>
         <div class='comment_send' v-show='isComment'>
-            <textarea v-model='comment' class='comment' rows="3" maxlength="100"></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
+            <textarea v-model='comment' class='comment' rows="3" maxlength="100" :placeholder='replyWho' @blur='isComment=false'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
         </div>
 	</div>
 </template>
 
 <script>
 import { InfiniteScroll } from 'mint-ui';
-import {getCommentList,newComment} from '../../api/api.js'
+import {getCommentList,newComment,newReply} from '../../api/api.js'
 import {timestampToTime} from '../../untils/enums.js'
 export default {
     data () {
@@ -39,6 +41,11 @@ export default {
             isComment:false,
             comment:'',
             projectId:'',
+            loading:false,
+            commentId:'',
+            toWhomUserId:'',
+            toWhomUserName:'',
+            replyWho:'',
         }
     },
     created(){
@@ -55,6 +62,11 @@ export default {
     },
     methods:{
         loadMore() {
+            this.loading=false;
+            if(this.pageNo<this.totalPage){
+                this.loading=true;
+                /*this.getComment(this.pageNo+1);*/
+            }
             /*this.loading = true;
             setTimeout(() => {
             let last = this.list[this.list.length - 1];
@@ -64,24 +76,69 @@ export default {
             this.loading = false;
             }, 2500);*/
         },
+        showComment(){
+            this.commentId='';
+            this.isComment=true;
+        },
         getComment(pageNo){
             let projectId=this.projectId;
             getCommentList(projectId,{pageNo:pageNo}).then(res=>{
-                this.commentList=res.body.result;
+                if(this.loading){
+                    let lastComment=this.commentList;
+                    this.commentList=lastComment.concat(res.body.result);
+                    this.loading=false;
+                }else{
+                    this.commentList=res.body.result;
+                }
+                this.totalPage=res.body.totalPage;
+                this.pageNo=res.body.pageNo;
             });
         },
         subComment(){
-           let projectId=this.projectId;
-           let comment=this.comment;
-           newComment({projectId:projectId,content:comment}).then(response=>{
+            let projectId=this.projectId;
+            let comment=this.comment;
+            if(comment.trim()==''){
+                return false;
+            }
+            this.isComment=false;
+            if(this.commentId==''){
+                newComment({projectId:projectId,content:comment}).then(response=>{
         /*this.$message({
           message: '买入成功',
           type: 'success'
-        });*/
+        });*/   
                 this.comment='';
+                this.commentList=[];
                 this.getComment(1);
-            });
-        }
+                });
+            }else{
+                let commentId=this.commentId;
+                let toWhomUserName=this.toWhomUserName;
+                let toWhomUserId=this.toWhomUserId;
+                let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
+                newReply(params).then(response=>{
+                    this.comment='';
+                    this.commentList=[];
+                    this.getComment(1);
+                });
+            }
+        },
+        showReply(commentId,toWhomUserId,toWhomUserName){
+            this.commentId=commentId;
+            this.toWhomUserId=toWhomUserId;
+            this.toWhomUserName=toWhomUserName;
+            this.replyWho='回复@'+toWhomUserName;
+            this.isComment=true;
+        },
+        goDetail(id,item){
+            localstore
+            this.$router.push({
+                path:'/comment/detail/'+id,
+                params:{
+                    id:id,
+                }
+            })
+        },  
     }, 
 }
 </script>
@@ -115,6 +172,7 @@ export default {
         .createTime{
           color: #9a9e9d;
           font-size: 0.2rem;
+          line-height: 1;
         }
         ul{
             margin-top:0.2rem;
@@ -123,10 +181,14 @@ export default {
             padding:0.3rem;
             font-size: 0.36rem;
             span{
-              color:#5d7ea1;
+                color:#5d7ea1;
+            }
+            .moreReply{
+                color: #9a9e9d;
             }
         }
     }
+    margin-bottom:1.2rem;
 }
 .comment_foot,.comment_send{
     color:#888;
@@ -136,18 +198,25 @@ export default {
     position: fixed;
     bottom: 0;
     background: #f5f5f5;
-    padding: 0.3rem 0;
+    height: 1.2rem;
     border-top: 1px solid #eee;
     align-items:center;
+    box-sizing:border-box;
     span{
         flex:1;
     }
     textarea{
         flex:1;
+        border-color:#eee;
+        padding: 0.1rem;
     }
     .comment_btn{
         border:none;
         box-shadow:none;
     }
+}
+.comment_send{
+    height: auto;
+    padding: 0.15rem;
 }
 </style>

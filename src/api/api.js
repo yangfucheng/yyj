@@ -146,3 +146,21 @@ export function newComment(params) {
     data:params
   })
 }
+
+//添加某一评论的回复
+export function newReply(params) {
+  return fetch({
+    url:'/app/project/reply',
+    method: 'post',
+    data:params
+  })
+}
+
+//回复列表
+export function getCommentDetailList(id,params) {
+  return fetch({
+    url:'/app/project/reply/'+id,
+    method: 'get',
+    params:params
+  })
+}
