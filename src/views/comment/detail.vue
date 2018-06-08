@@ -1,8 +1,5 @@
 <template>
 	<div>
-		<!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-			<li v-for="item in list">{{ item }}</li>
-		</ul> -->
         <div class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <img src='../../common/images/logo.png' class='logo'/>
             <div class='comment_container'>
@@ -27,10 +24,10 @@
         </ul>
         <div class='loading' v-show='loading'>正在加载中<i class='el-icon-loading'></i></div>
         <div class='comment_foot'>
-            <input type="text" v-model="reply" placeholder="回复评论" @focus='showComment'/>
+            <input type="text" v-model="reply" placeholder="回复评论" @focus='showReply(maincontent.commentId,maincontent.userId,maincontent.userName)'/>
         </div>
         <div class='comment_send' v-show='isComment'>
-            <textarea v-model='comment' class='comment' rows="3" maxlength="100" @blur='isComment=false' ref="content" ></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
+            <textarea v-model='comment' class='comment' rows="3" maxlength="100" @blur='isComment=false' ref="content" @keyup.enter="subComment"></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
         </div>
         <div class="background" v-show='isComment'></div>
 	</div>
@@ -80,11 +77,6 @@ export default {
                 this.getComment(this.pageNo+1);
             }
         },
-        showComment(){
-            this.commentId='';
-            this.isComment=true;
-            this.$refs.content.focus();
-        },
         getComment(pageNo){
             let projectId=this.projectId;
             getCommentDetailList(projectId,{pageNo:pageNo}).then(res=>{
@@ -107,22 +99,13 @@ export default {
             }
             this.isComment=false;
             if(this.commentId==''){
-                newComment({projectId:projectId,content:comment}).then(response=>{
-        /*this.$message({
-          message: '买入成功',
-          type: 'success'
-        });*/   
-                this.comment='';
-                this.commentList=[];
-                this.getComment(1);
-                });
-            }else{
                 let commentId=this.commentId;
                 let toWhomUserName=this.toWhomUserName;
                 let toWhomUserId=this.toWhomUserId;
                 let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
                 newReply(params).then(response=>{
                     this.comment='';
+                    this.commentId='';
                     this.commentList=[];
                     this.getComment(1);
                 });
@@ -134,6 +117,7 @@ export default {
             this.toWhomUserName=toWhomUserName;
             this.replyWho='回复@'+toWhomUserName;
             this.isComment=true;
+            this.$refs.content.focus();
         },
     }, 
 }

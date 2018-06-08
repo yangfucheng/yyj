@@ -1,8 +1,5 @@
 <template>
 	<div>
-		<!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-			<li v-for="item in list">{{ item }}</li>
-		</ul> -->
         <ul class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <li v-for='item in commentList' :key='item.index'>
                 <img src='../../common/images/logo.png' class='logo'/>
@@ -10,7 +7,7 @@
                     <div>
                         <p class='user' @click='showReply(item.commentId,item.userId,item.userName)'>{{item.userName}}</p>
                         <p class='createTime'>{{item.createTime | changeTime}}</p>
-                        <p class="comment_first" @click='showReply(item.commentId,item.userId,item.userName)'>{{item.content}}杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
+                        <p class="comment_first" @click='showReply(item.commentId,item.userId,item.userName)'>{{item.content}}</p>
                     </div>
                     <ul v-if='item.replyTimes>0'>
                         <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='showReply(reply.commentId,reply.userId,reply.userName)'>
@@ -113,6 +110,7 @@ export default {
                 let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
                 newReply(params).then(response=>{
                     this.comment='';
+                    this.commentId='';
                     this.commentList=[];
                     this.getComment(1);
                 });
