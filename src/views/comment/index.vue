@@ -14,19 +14,21 @@
                     </div>
                     <ul v-if='item.replyTimes>0'>
                         <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='showReply(reply.commentId,reply.userId,reply.userName)'>
-                            <span>{{reply.userName}}<span<!--  v-if='reply.toWhomUserName!=item.userName' -->>回复{{reply.toWhomUserName}}</span></span>：{{reply.content}}
+                            <span>{{reply.userName}}<span v-if='reply.toWhomUserName!=item.userName'>回复{{reply.toWhomUserName}}</span></span>：{{reply.content}}
                         </li>
-                        <a href='javascript:void(0)' class='moreReply' @click='goDetail(item.commentId,item)'>查看更多回复&nbsp;></a>
+                        <a href='javascript:void(0)' class='moreReply' @click='goDetail(item.commentId,item)' v-if='item.replyTimes>4'>查看更多回复&nbsp;></a>
                     </ul>
                 </div>
             </li>
         </ul>
+        <div class='loading' v-show='loading'>正在加载中<i class='el-icon-loading'></i></div>
         <div class='comment_foot'>
             <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont' @click='showComment'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
         </div>
         <div class='comment_send' v-show='isComment'>
-            <textarea v-model='comment' class='comment' rows="3" maxlength="100" :placeholder='replyWho' @blur='isComment=false'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
+            <textarea v-model='comment' class='comment' rows="3" maxlength="100" :placeholder='replyWho' @blur='isComment=false' ref='content'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
         </div>
+        <div class="background" v-show='isComment'></div>
 	</div>
 </template>
 
@@ -65,20 +67,13 @@ export default {
             this.loading=false;
             if(this.pageNo<this.totalPage){
                 this.loading=true;
-                /*this.getComment(this.pageNo+1);*/
+                this.getComment(this.pageNo+1);
             }
-            /*this.loading = true;
-            setTimeout(() => {
-            let last = this.list[this.list.length - 1];
-            for (let i = 1; i <= 10; i++) {
-                this.list.push(last + i);
-            }
-            this.loading = false;
-            }, 2500);*/
         },
         showComment(){
             this.commentId='';
             this.isComment=true;
+            this.$refs.content.focus();
         },
         getComment(pageNo){
             let projectId=this.projectId;
@@ -131,7 +126,8 @@ export default {
             this.isComment=true;
         },
         goDetail(id,item){
-            localstore
+            let comment=item;
+            localStorage.setItem("comment",JSON.stringify(comment));
             this.$router.push({
                 path:'/comment/detail/'+id,
                 params:{
@@ -144,6 +140,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+@import '../../common/loading.scss';
 .comment_list{
       line-height:1.8;
       >li{
@@ -202,6 +199,7 @@ export default {
     border-top: 1px solid #eee;
     align-items:center;
     box-sizing:border-box;
+    z-index：5；
     span{
         flex:1;
     }

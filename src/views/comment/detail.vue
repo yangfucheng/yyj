@@ -3,34 +3,36 @@
 		<!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
 			<li v-for="item in list">{{ item }}</li>
 		</ul> -->
-        <div class='comment_list'>
+        <div class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <img src='../../common/images/logo.png' class='logo'/>
             <div class='comment_container'>
-                <div>{{item}}
-                    <!-- <p class='user'>{{maincontent}}</p>
+                <div>
+                    <p class='user'>{{maincontent.userName}}</p>
                     <p class='createTime'>{{maincontent.createTime|changeTime}}</p>
-                    <p class="comment_first">{{maincontent.content}}</p> -->
+                    <p class="comment_first">{{maincontent.content}}</p> 
                 </div>
             </div>
         </div>
         <ul>
-            <!-- <li class="comment_list comment_item" v-for='item in commentList'>
+            <li class="comment_list comment_item" v-for='item in commentList' @click='showReply(item.commentId,item.userId,item.userName)'>
                 <img src='../../common/images/logo.png' class='logo'/>
-                <div class='comment_container'>
+                <div class='comment_container'> 
                     <div>
-                        <p class='user'>口水代扣</p>
-                        <p class='createTime'>2018-4-19</p>
-                        <p class="comment_first">杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
+                        <p class='user'>{{item.userName}}</p>
+                        <p class='createTime'>{{item.createTime|changeTime}}</p>
+                        <p class="comment_first">{{item.content}}</p>
                     </div>
                 </div>
-            </li> -->
+            </li>
         </ul>
+        <div class='loading' v-show='loading'>正在加载中<i class='el-icon-loading'></i></div>
         <div class='comment_foot'>
             <input type="text" v-model="reply" placeholder="回复评论" @focus='showComment'/>
         </div>
         <div class='comment_send' v-show='isComment'>
-            <textarea v-model='comment' class='comment' rows="3" maxlength="100" @blur='isComment=false'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
+            <textarea v-model='comment' class='comment' rows="3" maxlength="100" @blur='isComment=false' ref="content" ></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
         </div>
+        <div class="background" v-show='isComment'></div>
 	</div>
 </template>
 
@@ -46,55 +48,91 @@ export default {
             comment:'',
             projectId:'',
             reply:'',
-            item:'',
+            maincontent:'',
+            commentId:'',
+            toWhomUserId:'',
+            toWhomUserName:'',
+            replyWho:'',
+            focusStatus:false,
+            loading:false,
         }
     },
     created(){
         if(this.$store.state.tabHidden) {
             this.$store.dispatch('tabHidden')
         };
-        this.projectId=this.$route.params.id;
-        this.getComment(1);
+        // let maincontent=localStorage.getItem("comment");
+        // this.maincontent=JSON.parse(maincontent);
+        // localStorage.clear("comment");
+        // this.projectId=this.$route.params.id;
+        // this.getComment(1);
     },
     filters: {
         changeTime(value){
-            return timestampToTime(value)
+            return timestampToTime(value);
         },
     },
     methods:{
         loadMore() {
-            /*this.loading = true;
-            setTimeout(() => {
-            let last = this.list[this.list.length - 1];
-            for (let i = 1; i <= 10; i++) {
-                this.list.push(last + i);
+            this.loading=false;
+            if(this.pageNo<this.totalPage){
+                this.loading=true;
+                this.getComment(this.pageNo+1);
             }
-            this.loading = false;
-            }, 2500);*/
+        },
+        showComment(){
+            this.commentId='';
+            this.isComment=true;
+            this.$refs.content.focus();
         },
         getComment(pageNo){
-            let id=this.projectId;
-            getCommentDetailList(id,{pageNo:pageNo}).then(res=>{
-                this.commentList=res.body.result;
+            let projectId=this.projectId;
+            getCommentDetailList(projectId,{pageNo:pageNo}).then(res=>{
+                if(this.loading){
+                    let lastComment=this.commentList;
+                    this.commentList=lastComment.concat(res.body.result);
+                    this.loading=false;
+                }else{
+                    this.commentList=res.body.result;
+                }
+                this.totalPage=res.body.totalPage;
+                this.pageNo=res.body.pageNo;
             });
         },
         subComment(){
             let projectId=this.projectId;
             let comment=this.comment;
             if(comment.trim()==''){
-               return  false;
+                return false;
             }
-           newReply({projectId:projectId,content:comment}).then(response=>{
+            this.isComment=false;
+            if(this.commentId==''){
+                newComment({projectId:projectId,content:comment}).then(response=>{
         /*this.$message({
           message: '买入成功',
           type: 'success'
-        });*/
+        });*/   
                 this.comment='';
+                this.commentList=[];
                 this.getComment(1);
-            });
+                });
+            }else{
+                let commentId=this.commentId;
+                let toWhomUserName=this.toWhomUserName;
+                let toWhomUserId=this.toWhomUserId;
+                let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
+                newReply(params).then(response=>{
+                    this.comment='';
+                    this.commentList=[];
+                    this.getComment(1);
+                });
+            }
         },
-        showComment(){
-            this.commentId='';
+        showReply(commentId,toWhomUserId,toWhomUserName){
+            this.commentId=commentId;
+            this.toWhomUserId=toWhomUserId;
+            this.toWhomUserName=toWhomUserName;
+            this.replyWho='回复@'+toWhomUserName;
             this.isComment=true;
         },
     }, 
@@ -102,6 +140,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+@import '../../common/loading.scss';
 .comment_list{
         line-height:1.6;
         display:flex;
@@ -153,6 +192,7 @@ export default {
     border-top: 1px solid #eee;
     box-sizing:border-box;
     align-items:center;
+    z-index:5;
     input{
         width:100%;
         padding:2px;
