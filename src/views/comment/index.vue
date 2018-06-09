@@ -1,6 +1,6 @@
 <template>
-	<div>
-        <div v-if='!commentList.length' class="noComment">还没有评论，快来评论吧~</div>
+	<div class='container'>
+        <div v-show='nocomment' class="noComment">还没有评论，快来评论吧~</div>
         <ul class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <li v-for='item in commentList' :key='item.index'>
                 <img src='../../common/images/logo.png' class='logo'/>
@@ -14,14 +14,15 @@
                         <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='goDetail(item.commentId,item)'>
                             <span>{{reply.userName}}<span v-if='reply.toWhomUserName!=item.userName'>回复{{reply.toWhomUserName}}</span></span>：{{reply.content}}
                         </li>
-                        <a href='javascript:void(0)' class='moreReply' v-if='item.replyTimes>3'>查看更多回复&nbsp;></a>
+                        <a href='javascript:void(0)' class='moreReply' v-if='item.replyTimes>4'>查看更多回复&nbsp;></a>
                     </ul>
                 </div>
             </li>
         </ul>
         <div class='loading' v-show='loading'>正在加载中<i class='el-icon-loading'></i></div>
-        <div class='comment_foot'>
-            <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont' @click='showComment'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
+        <div class='comment_foot'  @click='showComment'>
+            <span><img src='../../common/images/pinglun.png' class='icon-comment'/>&nbsp;评论</span>
+            <!-- <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont' @click='showComment'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span> -->
         </div>
         <mt-popup v-model="isComment" position="bottom">
         <div class='comment_send'>
@@ -47,6 +48,7 @@ export default {
             toWhomUserId:'',
             toWhomUserName:'',
             replyWho:'',
+            nocomment:false,
         }
     },
     created(){
@@ -63,9 +65,8 @@ export default {
     },
     methods:{
         loadMore() {
-            this.loading=false;
             if(this.pageNo<this.totalPage){
-                this.loading=true;
+                
                 this.getComment(this.pageNo+1);
             }
         },
@@ -76,6 +77,7 @@ export default {
         },
         getComment(pageNo){
             let projectId=this.projectId;
+            this.loading=true;
             getCommentList(projectId,{pageNo:pageNo}).then(res=>{
                 if(this.loading){
                     let lastComment=this.commentList;
@@ -83,7 +85,9 @@ export default {
                     this.loading=false;
                 }else{
                     this.commentList=res.body.result;
+                    this.loading=false;
                 }
+                if(res.body.totalCount==0)this.nocomment=true;
                 this.totalPage=res.body.totalPage;
                 this.pageNo=res.body.pageNo;
             });
@@ -146,6 +150,18 @@ export default {
     width:100%;
     text-align:center;
 }
+.icon-comment{
+    width:20px;
+    vertical-align: middle;
+}
+.loading{
+    padding:0.3rem 0;
+    text-align:center;
+    width:100%;
+}
+.container{
+    padding-bottom: 1rem;
+}
 .comment_list{
       line-height:1.8;
       >li{
@@ -190,7 +206,6 @@ export default {
             }
         }
     }
-    margin-bottom:1.2rem;
 }
 .mint-popup-bottom{
     width:100%;
@@ -220,6 +235,10 @@ export default {
         border:none;
         box-shadow:none;
     }
+}
+.comment_foot{
+    display: block;
+    line-height: 1rem;
 }
 .comment_send{
     height: auto;

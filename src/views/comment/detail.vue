@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class='container'>
         <div class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <img src='../../common/images/logo.png' class='logo'/>
             <div class='comment_container'>
@@ -17,7 +17,7 @@
                     <div>
                         <p class='user'>{{item.userName}}</p>
                         <p class='createTime'>{{item.createTime|changeTime}}</p>
-                        <p class="comment_first">{{item.content}}</p>
+                        <p class="comment_first"><span v-if='item.toWhomUserName!=maincontent.userName'>回复<span class='replyname'>{{item.toWhomUserName}}:</span></span>{{item.content}}</p>
                     </div>
                 </div>
             </li>
@@ -58,11 +58,11 @@ export default {
         if(this.$store.state.tabHidden) {
             this.$store.dispatch('tabHidden')
         };
-        // let maincontent=localStorage.getItem("comment");
-        // this.maincontent=JSON.parse(maincontent);
-        // localStorage.clear("comment");
-        // this.projectId=this.$route.params.id;
-        // this.getComment(1);
+        let maincontent=localStorage.getItem("comment");
+        this.maincontent=JSON.parse(maincontent);
+        localStorage.clear("comment");
+        this.projectId=this.$route.params.id;
+        this.getComment(1);
     },
     filters: {
         changeTime(value){
@@ -98,18 +98,16 @@ export default {
                 return false;
             }
             this.isComment=false;
-            if(this.commentId==''){
-                let commentId=this.commentId;
-                let toWhomUserName=this.toWhomUserName;
-                let toWhomUserId=this.toWhomUserId;
-                let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
-                newReply(params).then(response=>{
+            let commentId=this.commentId;
+            let toWhomUserName=this.toWhomUserName;
+            let toWhomUserId=this.toWhomUserId;
+            let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
+            newReply(params).then(response=>{
                     this.comment='';
                     this.commentId='';
                     this.commentList=[];
                     this.getComment(1);
-                });
-            }
+            });
         },
         showReply(commentId,toWhomUserId,toWhomUserName){
             this.commentId=commentId;
@@ -124,6 +122,14 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.container{
+    padding-bottom: 1rem;
+}
+.loading{
+    padding:0.3rem 0;
+    text-align:center;
+    width:100%;
+}
 .comment_list{
         line-height:1.6;
         display:flex;
@@ -152,6 +158,9 @@ export default {
           color: #9a9e9d;
           font-size: 0.2rem;
           line-height: 1;
+        }
+        .replyname{
+            color:#5d7ea1;
         }
 }
 .comment_item{

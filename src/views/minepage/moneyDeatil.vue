@@ -17,7 +17,7 @@
         </div>
          <div>
             <div @click="step" class="submit">充值</div>
-            <div @click="submit" class="submit1">提现</div>
+            <div @click="submit" class="submit1" :class='{withdraw:isActive}'>提现</div>
         </div>
       </div>
    </div>
@@ -32,6 +32,7 @@ export default {
   data () {
     return {
       coinData:{},
+      isActive:false,
     }
   },
   created() {
@@ -39,6 +40,7 @@ export default {
       this.$store.dispatch('tabHidden')
     }
     let coin=this.$route.params.tradeCoin; 
+    if(coin=='GXS')this.isActive=true;
     this.fetch(coin);
   },
   methods: {
@@ -56,11 +58,18 @@ export default {
         });
     },
     submit() {
+      if(this.coinData.coin=='GXS'){
+        this.$router.push({
+          name:'tixian',
+          params:{coin:this.coinData.coin,num:this.coinData.amount},
+        });
+      }else{
         Toast({
           message: '暂未开通',
           position: 'middle',
           duration: 3000
-      });
+        });
+      }      
     }
   }
 }
@@ -172,6 +181,10 @@ export default {
       border-radius:25px;;
       background-color:#CCCCCC;
       color:#fff;
+    }
+    .withdraw{
+      background-color:#39c784;
+      border-color:#39c784;
     }
   }
   

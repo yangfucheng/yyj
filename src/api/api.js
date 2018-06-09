@@ -55,7 +55,7 @@ export function record(params) {
 
 export function getMsgCode(params) {
   return fetch({
-    url: '/sms/send',
+    url: '/app/sms/send',
     method: 'get',
     params:params
   })
@@ -83,6 +83,15 @@ export function recharge(params) {
     url: '/app/user/recharge',
     method: 'post',
     data:JSON.stringify(params)
+  })
+}
+
+//提现
+export function withdraw(params) {
+  return fetch({
+    url: '/app/user/withdraw',
+    method: 'post',
+    data:params
   })
 }
 
