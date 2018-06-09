@@ -26,10 +26,11 @@
         <div class='comment_foot'>
             <input type="text" v-model="reply" placeholder="回复评论" @focus='showReply(maincontent.commentId,maincontent.userId,maincontent.userName)'/>
         </div>
-        <div class='comment_send' v-show='isComment'>
-            <textarea v-model='comment' class='comment' rows="3" maxlength="100" @blur='isComment=false' ref="content" @keyup.enter="subComment"></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
+        <mt-popup v-model="isComment" position="bottom">
+        <div class='comment_send'>
+            <textarea v-model='comment' class='comment' rows="3" maxlength="100" :placeholder='replyWho' ref="testfocus"></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
         </div>
-        <div class="background" v-show='isComment'></div>
+        </mt-popup>
 	</div>
 </template>
 
@@ -50,7 +51,6 @@ export default {
             toWhomUserId:'',
             toWhomUserName:'',
             replyWho:'',
-            focusStatus:false,
             loading:false,
         }
     },
@@ -117,14 +117,13 @@ export default {
             this.toWhomUserName=toWhomUserName;
             this.replyWho='回复@'+toWhomUserName;
             this.isComment=true;
-            this.$refs.content.focus();
+            this.$refs.testfocus.focus();
         },
     }, 
 }
 </script>
 
 <style lang='scss' scoped>
-@import '../../common/loading.scss';
 .comment_list{
         line-height:1.6;
         display:flex;
@@ -163,6 +162,9 @@ export default {
         font-size:0.34rem;
         border-bottom:1px solid #eee;
     }
+}
+.mint-popup-bottom{
+    width:100%;
 }
 .comment_foot,.comment_send{
     color:#888;

@@ -1,19 +1,20 @@
 <template>
 	<div>
+        <div v-if='!commentList.length' class="noComment">还没有评论，快来评论吧~</div>
         <ul class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <li v-for='item in commentList' :key='item.index'>
                 <img src='../../common/images/logo.png' class='logo'/>
                 <div class='comment_container'>
-                    <div>
-                        <p class='user' @click='showReply(item.commentId,item.userId,item.userName)'>{{item.userName}}</p>
+                    <div  @click='showReply(item.commentId,item.userId,item.userName)'>
+                        <p class='user'>{{item.userName}}</p>
                         <p class='createTime'>{{item.createTime | changeTime}}</p>
-                        <p class="comment_first" @click='showReply(item.commentId,item.userId,item.userName)'>{{item.content}}</p>
+                        <p class="comment_first">{{item.content}}</p>
                     </div>
                     <ul v-if='item.replyTimes>0'>
-                        <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='showReply(reply.commentId,reply.userId,reply.userName)'>
+                        <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='goDetail(item.commentId,item)'>
                             <span>{{reply.userName}}<span v-if='reply.toWhomUserName!=item.userName'>回复{{reply.toWhomUserName}}</span></span>：{{reply.content}}
                         </li>
-                        <a href='javascript:void(0)' class='moreReply' @click='goDetail(item.commentId,item)' v-if='item.replyTimes>4'>查看更多回复&nbsp;></a>
+                        <a href='javascript:void(0)' class='moreReply' v-if='item.replyTimes>3'>查看更多回复&nbsp;></a>
                     </ul>
                 </div>
             </li>
@@ -22,10 +23,11 @@
         <div class='comment_foot'>
             <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont' @click='showComment'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
         </div>
-        <div class='comment_send' v-show='isComment'>
-            <textarea v-model='comment' class='comment' rows="3" maxlength="100" :placeholder='replyWho' @blur='isComment=false' ref='content'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
+        <mt-popup v-model="isComment" position="bottom">
+        <div class='comment_send'>
+            <textarea v-model='comment' class='comment' rows="3" maxlength="100" :placeholder='replyWho' ref='content'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
         </div>
-        <div class="background" v-show='isComment'></div>
+        </mt-popup>
 	</div>
 </template>
 
@@ -122,6 +124,7 @@ export default {
             this.toWhomUserName=toWhomUserName;
             this.replyWho='回复@'+toWhomUserName;
             this.isComment=true;
+            this.$refs.content.focus();
         },
         goDetail(id,item){
             let comment=item;
@@ -138,7 +141,11 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '../../common/loading.scss';
+.noComment{
+    padding:1rem 0;
+    width:100%;
+    text-align:center;
+}
 .comment_list{
       line-height:1.8;
       >li{
@@ -184,6 +191,9 @@ export default {
         }
     }
     margin-bottom:1.2rem;
+}
+.mint-popup-bottom{
+    width:100%;
 }
 .comment_foot,.comment_send{
     color:#888;
