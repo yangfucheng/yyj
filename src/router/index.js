@@ -143,7 +143,8 @@ export default new Router({
       component: withDrawList,
       meta:{title:"提现记录"}
     },
-      path: '/myself/invite',
+    {
+      path:'/myself/invite',
       name: 'invite',
       component: invite,
       meta:{title:"邀请好友"}
