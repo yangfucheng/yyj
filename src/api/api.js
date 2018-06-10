@@ -112,6 +112,13 @@ export function getRank(params) {
   })
 }
 
+// export function guafen(params) {
+//   return fetch({
+//     url: '/app/rank/income/'+params,
+//     method: 'get',
+//   })
+// }
+
 //个人收益及排名
 export function getUserRank(params) {
   return fetch({
@@ -126,5 +133,30 @@ export function changeName(params) {
     url:'/app/user/updateUserName',
     method: 'post',
     data:JSON.stringify(params)
+  })
+}
+
+export function inviteCode(params) {
+  return fetch({
+    url:'/app/invite/save',
+    method: 'post',
+    data:JSON.stringify(params)
+  })
+}
+
+
+export function upload(params) {
+  return fetch({
+    url:'/app/user/update/photoe',
+    method: 'post',
+    data:params
+  })
+}
+
+export function invite(params) {
+  return fetch({
+    url:'/app/invite/info',
+    method: 'get',
+    params:params
   })
 }

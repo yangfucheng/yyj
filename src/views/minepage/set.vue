@@ -2,6 +2,18 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
+         <li>
+          <input class="file" name="file" type="file" accept="image/png,image/gif,image/jpeg" @change="update" /> 
+          <div class="name" >
+            <label>用户头像:</label>
+            <div class="icon1" >
+              <div class="icon-img">
+                <img :src="icon" alt="" width='36' height='36'>
+              </div>
+            </div>
+             <img src="../../../static/icon/jiantou.png" height="36" width="36" alt="" style="" class="jiantou">
+          </div>
+        </li>
         <li v-for="item in common" @click="step(item.type,item.text)">
           <!-- <div class="icon"><img :src="item.icon" height="22" width="22" alt=""></div> -->
           <div class="text">{{item.text}}</div>
@@ -15,11 +27,14 @@
 <script>
 import { info,changeName} from '../../api/api.js'
 import { Indicator ,MessageBox,Toast } from 'mint-ui';
+import axios from 'axios';
+import { getToken } from '../../untils/auth.js'
 
  var qs=require("qs");
 export default {
   data () {
     return {
+      icon:'../../../static/icon/yucec.png',
       common:[
       {
         icon:'../../static/icon/canyu.png',
@@ -65,12 +80,31 @@ export default {
         });
       }
     },
+    update(e){
+      console.log(e)
+      let file = e.target.files[0];             
+      let param = new FormData(); //创建form对象  
+      param.append('file',file,file.name);//通过append向form对象添加数据  
+      param.append('chunk','0');//添加form表单中其他数据  
+      let config = {  
+        headers:{'Content-Type':'multipart/form-data'},
+        token:getToken()
+      };  //添加请求头  
+      axios.post('/app/user/update/photo',param,config)  
+      .then(response=>{  
+        if(response.data && response.data.body.headPhoto){
+          this.icon = response.data.body.headPhoto;
+
+        }
+      })     
+    },
     fetch(){
       Indicator.open();
       info().then(response=>{
         Indicator.close();
-        this.common[0].textRight =response.body.userName;
-        this.common[1].textRight =response.body.telphone;
+        this.common[0].textRight =response.body.nickName;
+        this.common[1].textRight =response.body.account;
+        this.icon = response.body.headPhoto;
       })
     }
   }
@@ -89,9 +123,47 @@ export default {
     left:0;
     .content{
       // margin-top:1.2rem;
+
         li{
           // @include border-1px();
           height:1.2rem;
+        }
+        li:nth-child(1){
+          label{
+            position:absolute;
+            left:.3rem;
+            color:#97a0a6;
+            z-index:1;
+          }
+          .file{
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            opacity:0;
+            z-index:0;
+          }
+          height:1.5rem;
+          border-bottom:5px solid #eeeeee;
+          line-height:1.5rem;
+          .icon1{
+            position:absolute;
+            top:.2rem;
+            right:1rem;
+            height:1.2rem;
+            width:1rem;
+            .icon-img{
+              // border:1px solid #BBB;
+              // border-radius:50%;
+              width:1rem;
+              height:1rem;
+            }
+          }
+          .jiantou{
+             position:absolute;
+            top:.2rem;
+            right:.05rem;
+          }
         }
         li:nth-child(2n){
           // @include border-1px();
