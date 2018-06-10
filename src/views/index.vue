@@ -116,6 +116,7 @@ export default {
       bottomAllLoaded:false,
       pageArray:[true,false,false,false,false,false,false],
       bottomDistance:0,
+      isFix:false,
       navNameArray:[
         {
           id:1,
@@ -235,6 +236,9 @@ export default {
           this.isFix=true;
         }
         // this.$refs.content.style.color  = '1.5rem'
+      }else{
+        this.isFix=false;
+        this.isSwiper=true;
       }
     },
     _initScroll(){
@@ -296,8 +300,8 @@ export default {
 <style lang="scss" scoped>
 @import "../common/mixin.scss";
 @import "../common/style.scss";
-  
   .contain {
+    overflow: scroll;
     .clicle{
       border-radius:50%;
       width:1rem;
