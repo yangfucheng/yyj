@@ -74,14 +74,15 @@ export default {
         let smsCode=this.code;
         let params={tradeCoin:tradeCoin,amount:amount,smsCode:smsCode};
         withdraw(params).then(response=>{
-           
-        }).catch(function(err){
-          alert(err);
+          this.$router.push({
+            name:'money',
+          });
         });
       }
     },
     getCode(){
       this.isWait=true;
+      var self=this;
       getMsgCode({telphone:this.tel}).then(response=>{
         this.delay= 60;
         var auth_timetimer =  setInterval(()=>{
@@ -94,8 +95,8 @@ export default {
             this.msg='还剩'+this.delay+'s';
           }
         }, 1000);
-      }).catch(function(err){
-         alert(err);
+      }).catch(err=>{
+        this.isWait= false;
       });
     },
   }

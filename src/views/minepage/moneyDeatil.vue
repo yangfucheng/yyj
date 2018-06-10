@@ -18,6 +18,7 @@
          <div>
             <div @click="step" class="submit">充值</div>
             <div @click="submit" class="submit1" :class='{withdraw:isActive}'>提现</div>
+            <p v-if='coinData.coin=="GXS"' @click='goWithdraw' class='root submit'>提现记录</p>
         </div>
       </div>
    </div>
@@ -70,6 +71,11 @@ export default {
           duration: 3000
         });
       }      
+    },
+    goWithdraw(){
+      this.$router.push({
+        name:'tixianList',
+      });
     }
   }
 }
@@ -181,6 +187,12 @@ export default {
       border-radius:25px;;
       background-color:#CCCCCC;
       color:#fff;
+    }
+    .root{
+      bottom:3%;
+      background-color:#efeff4;
+      border:none;
+      color:#ff9500;
     }
     .withdraw{
       background-color:#39c784;

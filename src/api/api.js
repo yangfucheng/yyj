@@ -173,3 +173,12 @@ export function getCommentDetailList(id,params) {
     params:params
   })
 }
+
+//提现记录
+export function getWithDrawList(params) {
+  return fetch({
+    url:'/app/user/withdrawList',
+    method: 'get',
+    params:params
+  })
+}

@@ -14,7 +14,7 @@
                         <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='goDetail(item.commentId,item)'>
                             <span>{{reply.userName}}<span v-if='reply.toWhomUserName!=item.userName'>回复{{reply.toWhomUserName}}</span></span>：{{reply.content}}
                         </li>
-                        <a href='javascript:void(0)' class='moreReply' v-if='item.replyTimes>4'>查看更多回复&nbsp;></a>
+                        <a href='javascript:void(0)' class='moreReply' v-if='item.replyTimes>3' @click='goDetail(item.commentId,item)'>查看更多回复&nbsp;></a>
                     </ul>
                 </div>
             </li>
@@ -66,7 +66,6 @@ export default {
     methods:{
         loadMore() {
             if(this.pageNo<this.totalPage){
-                
                 this.getComment(this.pageNo+1);
             }
         },

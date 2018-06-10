@@ -109,28 +109,6 @@
           </mt-tab-container-item>
           <mt-tab-container-item id="comment">
             <commentList></commentList>
-            <!-- <ul class='comment_list'>
-              <li v-for='item in commentList' :key='item.index'>
-                <img src='../common/images/logo.png' class='logo'/>
-                <div class='comment_container'>
-                    <div>
-                        <p class='user'>{{item.userName}}</p>
-                        <p class='createTime'>{{item.createTime | changeTime}}</p>
-                        <p class="comment_first">{{item.content}}杨过也不亏啊，最好吧膺值平和小龙女的女儿给搞了。连本代理一起回来了。</p>
-                    </div>
-                    <ul>
-                        <li><span>钩子</span>：这从哪儿说起啊？</li>
-                        <li><span>钩子</span>：小龙女死了生了女儿然后编下去OK</li>
-                    </ul>
-                </div>
-              </li>
-            </ul>
-            <div class='comment_foot'>
-              <span><i class='icon-icon2 icon iconfont'></i>收藏</span><span><i class='icon-icon2 icon iconfont'></i>评论</span><span><i class='icon-icon2 icon iconfont'></i>收藏</span>
-            </div>
-            <div class='comment_send' v-show='isComment'>
-              <textarea v-model='comment' class='comment'></textarea><mt-button size="small" class='comment_btn' @click='subComment'>发送</mt-button>
-            </div> -->
           </mt-tab-container-item>
           </mt-tab-container>
         </div>
@@ -234,7 +212,7 @@ export default {
     this.projectId=this.$route.params.id;
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
-    }
+    };
     // alert(GetQueryString(id))
     // alert(this.$route.params.id);
     // this.dataArray=this.$route.params.dataArray;
@@ -243,6 +221,11 @@ export default {
     this.dataArray = [];
     this.fetch();
     this.initTime();
+  },
+  activated(){
+    if(this.$store.state.tabHidden) {
+      this.$store.dispatch('tabHidden')
+    };
   },
   filters: {
     changeTime(value){
@@ -254,6 +237,10 @@ export default {
     changeNum(value){
       return numTampTofloat(value)
     }
+  },
+  beforeRouteLeave(to, from, next) {  
+    from.meta.keepAlive = false;  
+    next();  
   },
   methods: {
     fetch(){

@@ -69,6 +69,14 @@ export default {
             return timestampToTime(value);
         },
     },
+    beforeRouteLeave(to, from, next) {  
+      if (to.path.substring(0,14)== "/index/details") {  
+        to.meta.keepAlive = true;
+      } else {  
+        to.meta.keepAlive = false;  
+      } 
+      next();  
+    },
     methods:{
         loadMore() {
             if(this.pageNo<this.totalPage){

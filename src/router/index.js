@@ -18,7 +18,7 @@ import error from '../404.vue'
 import login from '../views/login/login.vue'
 import banner1 from '../views/indexpage/banner.vue'
 import commentDetailList from '../views/comment/detail.vue'
-
+import withDrawList from '../views/minepage/tixianList.vue'
 
 Vue.use(Router)
 
@@ -77,7 +77,7 @@ export default new Router({
       path: '/index/details/:id',
       name: 'details',
       component: details,
-      meta:{title:"详情"}
+      meta:{title:"详情",keepAlive: true}
     },
     {
       path: '/myself/join',
@@ -132,6 +132,12 @@ export default new Router({
       name: 'moneyDeatil',
       component: moneyDeatil,
       meta:{title:"充值详情"}
-    }
+    },
+    {
+      path: '/myself/tixianList',
+      name: 'tixianList',
+      component: withDrawList,
+      meta:{title:"提现记录"}
+    },
   ]
 })
