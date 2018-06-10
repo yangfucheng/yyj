@@ -81,7 +81,7 @@ export default new Router({
       path: '/index/details/:id',
       name: 'details',
       component: details,
-      meta:{title:"详情",keepAlive: true}
+      meta:{title:"详情"}
     },
     {
       path: '/myself/join',

@@ -222,11 +222,6 @@ export default {
     this.fetch();
     this.initTime();
   },
-  activated(){
-    if(this.$store.state.tabHidden) {
-      this.$store.dispatch('tabHidden')
-    };
-  },
   filters: {
     changeTime(value){
       return timestampToTime(value)
@@ -237,10 +232,6 @@ export default {
     changeNum(value){
       return numTampTofloat(value)
     }
-  },
-  beforeRouteLeave(to, from, next) {  
-    from.meta.keepAlive = false;  
-    next();  
   },
   methods: {
     fetch(){

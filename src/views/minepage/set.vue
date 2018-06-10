@@ -3,12 +3,20 @@
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
          <li>
-          <input class="file" name="file" type="file" accept="image/png,image/gif,image/jpeg" @change="update" /> 
-          <div class="name" >
+           <el-upload
+            class="avatar-uploader"
+            action="/app/user/update/photo"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+          <!--   <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+            <i class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <div class="name">
             <label>用户头像:</label>
             <div class="icon1" >
               <div class="icon-img">
-                <img :src="icon" alt="" width='36' height='36'>
+                <img :src="icon" alt="" width='48' height='48' class="icon">
               </div>
             </div>
              <img src="../../../static/icon/jiantou.png" height="36" width="36" alt="" style="" class="jiantou">
@@ -80,23 +88,36 @@ export default {
         });
       }
     },
-    update(e){
-      console.log(e)
-      let file = e.target.files[0];             
-      let param = new FormData(); //创建form对象  
-      param.append('file',file,file.name);//通过append向form对象添加数据  
-      param.append('chunk','0');//添加form表单中其他数据  
-      let config = {  
-        headers:{'Content-Type':'multipart/form-data'},
-        token:getToken()
-      };  //添加请求头  
-      axios.post('/app/user/update/photo',param,config)  
-      .then(response=>{  
-        if(response.data && response.data.body.headPhoto){
-          this.icon = response.data.body.headPhoto;
+    // update(e){
+    //   console.log(e)
+    //   let file = e.target.files[0];             
+    //   let param = new FormData(); //创建form对象  
+    //   param.append('file',file,file.name);//通过append向form对象添加数据  
+    //   param.append('chunk','0');//添加form表单中其他数据  
+    //   let config = {  
+    //     headers:{'Content-Type':'multipart/form-data'},
+    //     token:getToken()
+    //   };  //添加请求头  
+    //   axios.post('/app/user/update/photo',param,config)  
+    //   .then(response=>{  
+    //     if(response.data && response.data.body.headPhoto){
+    //       this.icon = response.data.body.headPhoto;
 
+    //     }
+    //   })     
+    // },
+    beforeAvatarUpload(file){
+        Indicator.open();
+        const isJPG = (file.type === 'image/jpeg'||file.type ==='image/jpg'||file.type ==='image/png'||file.type ==='image/JPG'||file.type ==='image/PNG'||file.type ==='image/gif');
+        if (!isJPG) {
+            this.$message.error('上传图片只能是图片格式!');
+             Indicator.close();
         }
-      })     
+        return isJPG;
+    },
+    handleAvatarSuccess(res, file) {
+      this.icon = res.body.headPhoto;
+      Indicator.close();
     },
     fetch(){
       Indicator.open();
@@ -133,11 +154,20 @@ export default {
           height:1.2rem;
         }
         li:nth-child(1){
+          .avatar-uploader-icon{
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:1.5rem;
+            opacity:0;
+          }
           label{
             position:absolute;
             left:.3rem;
             color:#97a0a6;
             z-index:1;
+            top:0;
           }
           .file{
             position:absolute;
@@ -153,13 +183,20 @@ export default {
           line-height:1.5rem;
           .icon1{
             position:absolute;
-            top:.2rem;
-            right:1rem;
+            top:-.1rem;
+            right:1.5rem;
             height:1.2rem;
             width:1rem;
             .icon-img{
               // border:1px solid #BBB;
               // border-radius:50%;
+              .icon{
+                border:1px solid #fff;
+                border-raduis:50%;
+                height:1rem;
+                width:1rem;
+                border-radius:50%;
+              }
               width:1rem;
               height:1rem;
             }

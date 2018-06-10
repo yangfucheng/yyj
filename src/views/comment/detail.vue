@@ -17,7 +17,7 @@
                     <div>
                         <p class='user'>{{item.userName}}</p>
                         <p class='createTime'>{{item.createTime|changeTime}}</p>
-                        <p class="comment_first"><span v-if='item.toWhomUserName!=maincontent.userName'>回复<span class='replyname'>{{item.toWhomUserName}}:</span></span>{{item.content}}</p>
+                        <p class="comment_first">回复&nbsp;<span class='replyname'>{{item.toWhomUserName}}:</span>{{item.content}}</p>
                     </div>
                 </div>
             </li>
@@ -69,14 +69,6 @@ export default {
             return timestampToTime(value);
         },
     },
-    beforeRouteLeave(to, from, next) {  
-      if (to.path.substring(0,14)== "/index/details") {  
-        to.meta.keepAlive = true;
-      } else {  
-        to.meta.keepAlive = false;  
-      } 
-      next();  
-    },
     methods:{
         loadMore() {
             if(this.pageNo<this.totalPage){
@@ -111,7 +103,6 @@ export default {
             let toWhomUserName=this.toWhomUserName;
             let toWhomUserId=this.toWhomUserId;
             let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
-            this.reply='';
             newReply(params).then(response=>{
                     this.comment='';
                     this.commentId='';

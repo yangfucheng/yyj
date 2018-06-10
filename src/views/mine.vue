@@ -6,6 +6,7 @@
         <li @click="step('set')">
           <div class="icon" >
             <div class="icon-img" ref="iconImg"></div>
+             <img :src="icon" alt="" width='48' height='48' class="icon1">
             <!-- <input class="file" name="file" type="file" accept="image/png,image/gif,image/jpeg" @change="update"/>  -->
           </div>
           <div class="name" >
@@ -31,6 +32,7 @@ import { Indicator } from 'mint-ui';
 export default {
   data () {
     return {
+      icon:'../../../static/icon/yucec.png',
       common:[
       {
         icon:'iconfont icon-shouzhiliushui',
@@ -109,9 +111,8 @@ export default {
         Indicator.close();
         this.dataObj =response.body;
         this.common[6].isShow = this.dataObj.invite;
-        let iconDom = this.$refs.iconImg;
         if(this.dataObj.headPhoto){
-           iconDom.style.backgroundImage = 'url('+this.dataObj.headPhoto+')';
+          this.icon = this.dataObj.headPhoto;
         }else{
            // iconDom.style.backgroundImage = 'url(../../static/icon/yucec.png)'
         }
@@ -155,13 +156,9 @@ export default {
             line-height:2rem;
             text-align: center;
             .icon-img{
-              background-image: url('../../static/icon/yucec.png');
-              background-repeat:no-repeat;
-              // background-size:cover;
-              background-size:1.2rem;
-              background-position:center;
-              width:1.6rem;
-              height:1.6rem;
+              img{
+                width:2rem;
+              }
             }
             i{
               font-size:1rem;
