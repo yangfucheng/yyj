@@ -19,7 +19,7 @@
     </ul>
   </div>
   <div>
-    <img src='https://ydb.anydd.com/images/app/rank1.jpg' class='intro'/>
+    <img src='http://ydb.anydd.com/images/app/gf_introduce.jpg' class='intro'/>
   </div>
   </div>
 </template>

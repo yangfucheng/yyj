@@ -301,7 +301,7 @@ export default {
 @import "../common/mixin.scss";
 @import "../common/style.scss";
   .contain {
-    overflow: scroll;
+    // overflow: scroll;
     .clicle{
       border-radius:50%;
       width:1rem;

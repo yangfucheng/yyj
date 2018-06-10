@@ -99,7 +99,7 @@ export default {
         Indicator.close();
         this.dataObj =response.body;
         let iconDom = this.$refs.iconImg;
-        if(iconDom.style.backgroundImage){
+        if(this.dataObj.headPhoto){
            iconDom.style.backgroundImage = 'url('+this.dataObj.headPhoto+')';
         }else{
            // iconDom.style.backgroundImage = 'url(../../static/icon/yucec.png)'
@@ -146,8 +146,9 @@ export default {
             .icon-img{
               background-image: url('../../static/icon/yucec.png');
               background-repeat:no-repeat;
-              background-size:cover;
-              // background-position:center;
+              // background-size:cover;
+              background-size:1.2rem;
+              background-position:center;
               width:1.6rem;
               height:1.6rem;
             }

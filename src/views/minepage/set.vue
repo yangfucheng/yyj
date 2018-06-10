@@ -82,7 +82,6 @@ export default {
     },
     update(e){
       console.log(e)
-      alert(1);
       let file = e.target.files[0];             
       let param = new FormData(); //创建form对象  
       param.append('file',file,file.name);//通过append向form对象添加数据  
@@ -147,7 +146,7 @@ export default {
             width:100%;
             height:1.5rem;
             opacity:0;
-            z-index:0;
+            z-index:11;
           }
           height:1.5rem;
           border-bottom:5px solid #eeeeee;
