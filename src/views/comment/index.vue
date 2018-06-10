@@ -3,7 +3,7 @@
         <div v-show='nocomment' class="noComment">还没有评论，快来评论吧~</div>
         <ul class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
             <li v-for='item in commentList' :key='item.index'>
-                <img src='../../common/images/logo.png' class='logo'/>
+                <img :src='item.headPhoto?item.headPhoto:"https://ydb.anydd.com/images/app/logo.png"' class='logo'/>
                 <div class='comment_container'>
                     <div  @click='showReply(item.commentId,item.userId,item.userName)'>
                         <p class='user'>{{item.userName}}</p>
@@ -182,7 +182,7 @@ export default {
         .logo{
         width:0.6rem;
         height:0.6rem;
-        border:1px solid #ccc;
+        border:1px solid #e2e1e1;
         border-radius:50%;
         margin-right:0.2rem;
         }

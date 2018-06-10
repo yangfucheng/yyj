@@ -1,7 +1,7 @@
 <template>
 	<div class='container'>
         <div class='comment_list' v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-            <img src='../../common/images/logo.png' class='logo'/>
+            <img :src='maincontent.headPhoto?maincontent.headPhoto:"https://ydb.anydd.com/images/app/logo.png"' class='logo'/>
             <div class='comment_container'>
                 <div>
                     <p class='user'>{{maincontent.userName}}</p>
@@ -12,7 +12,7 @@
         </div>
         <ul>
             <li class="comment_list comment_item" v-for='item in commentList' @click='showReply(item.commentId,item.userId,item.userName)'>
-                <img src='../../common/images/logo.png' class='logo'/>
+                <img :src='item.headPhoto?item.headPhoto:"https://ydb.anydd.com/images/app/logo.png"' class='logo'/>
                 <div class='comment_container'> 
                     <div>
                         <p class='user'>{{item.userName}}</p>
@@ -148,7 +148,7 @@ export default {
         .logo{
         width:0.6rem;
         height:0.6rem;
-        border:1px solid #ccc;
+        border:1px solid #e2e1e1;
         border-radius:50%;
         margin-right:0.2rem;
         }
