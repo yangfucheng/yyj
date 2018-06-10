@@ -189,14 +189,14 @@ export default {
       color:#fff;
     }
     .root{
-      bottom:3%;
+      bottom:2%;
       background-color:#efeff4;
       border:none;
       color:#ff9500;
     }
     .withdraw{
-      background-color:#39c784;
-      border-color:#39c784;
+      background-color:#7298e9;
+      border-color:#7298e9;
     }
   }
   

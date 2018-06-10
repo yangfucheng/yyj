@@ -52,7 +52,7 @@ export default {
   },
   watch:{
     'count'(){
-      if(parseFloat(this.count)< parseFloat(this.num)&&parseFloat(this.count)>0){
+      if(parseFloat(this.count)<=parseFloat(this.num)&&parseFloat(this.count)>0){
         this.disabled = false;
       }else{
         this.disabled = true;

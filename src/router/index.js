@@ -165,7 +165,7 @@ export default new Router({
       path: '/myself/guafen',
       name: 'guafen',
       component: guafen,
-      meta:{title:"瓜分"}
+      meta:{title:"昨日瓜分排行榜"}
     }
   ]
 })

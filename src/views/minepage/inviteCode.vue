@@ -149,7 +149,7 @@ export default {
           width:30%;
         }
         p:nth-child(4){
-          padding-top:5%;
+          // padding-top:5%;
         }
 
       }

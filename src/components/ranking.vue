@@ -7,7 +7,7 @@
   <mt-tab-container v-model="selected">
   <mt-tab-container-item id="current">
   <div class='user'>
-    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user?user.userName:''}}</span></div>
+    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
     <div class='user_info'><p>我的收益值：{{userRank?(userRank.income?userRank.income:0):0}}</p><p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>&nbsp;名</p></div>
   </div>
   <div class='list'>

@@ -86,8 +86,8 @@
         </div>
         <div class="history">
           <mt-navbar v-model="selected">
-             <mt-tab-item id="historyList">历史买入记录</mt-tab-item>
-             <mt-tab-item id="comment">最新评论</mt-tab-item>
+            <mt-tab-item id="comment">最新评论</mt-tab-item>
+            <mt-tab-item id="historyList">历史买入记录</mt-tab-item>
           </mt-navbar>
           <!-- <div class="title">历史买入记录</div> -->
           <mt-tab-container v-model="selected">
@@ -192,7 +192,7 @@ export default {
       scaleA:0,
       scaleB:0,
       scaleC:0,
-      selected:'historyList',
+      selected:'comment',
       projectId:'',
     }
   },

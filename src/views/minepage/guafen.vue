@@ -2,13 +2,17 @@
   <div class="contain">
   <div class='user'>
     <div class='user_detail'><img src='../../common/images/logo.png' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
-    <div class='user_info'><p>我的收益值：{{userRank?(userRank.income?userRank.income:0):0}}</p><p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>&nbsp;名</p></div>
+    <div class='user_info'>
+      <p>昨日买入份数：{{userRank?(userRank.income?userRank.income:0):0}}</p>
+      <p>瓜分PPS：{{userRank?(userRank.bonus?userRank.bonus:0):0}}</p>
+      <p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>&nbsp;名</p>
+    </div>
   </div>
   <div class='list'>
     <ul class='rank_list'>
-      <li><ul class='thead'><li>名次</li><li>用户名</li><li>买入分数</li><li>瓜分PPS</li></ul></li>
+      <li><ul class='thead'><li>名次</li><li>用户名</li><li>买入份数</li><li>瓜分PPS</li></ul></li>
       <li v-for='item in dataObj' :key='item.id'>
-        <ul class="thead"><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li><li>{{item.bonus}}</li></ul>
+        <ul class="thead1"><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li><li>{{item.bonus}}</li></ul>
          <!-- <ul class="thead">
           <li><span :class="'rank' +item.rank">1</span></li>
           <li>2</li>
@@ -19,7 +23,7 @@
     </ul>
   </div>
   <div>
-    <img src='http://ydb.anydd.com/images/app/gf_introduce.jpg' class='intro'/>
+    <img src='http://ydb.anydd.com/images/app/gf_introduce2.jpg' class='intro'/>
   </div>
   </div>
 </template>
@@ -140,6 +144,7 @@ export default {
       }
       .user_detail{
         width:55%;
+        margin-top:.5rem;
       }
       .logo,.uname{
         vertical-align:middle;
@@ -161,7 +166,7 @@ export default {
       }
     }
     .rank_list>li:nth-child(2),.last_rank_list>li:nth-child(2){
-        margin-top:36px;
+        // margin-top:36px;
       }
     .rank_list,.last_rank_list{
       max-height:415px;
@@ -179,8 +184,20 @@ export default {
         // position: absolute;
         display:flex;
         justify-content:space-between;
-        background:#2bb8ae;
+        background:#fb5c56;
         color:#fff;
+        border-bottom:none;
+        li{
+          width:25%;
+        }
+      }
+      .thead1{
+        // width: 100%;
+        // position: absolute;
+        display:flex;
+        justify-content:space-between;
+        background:#FFF;
+        color:#000;
         border-bottom:none;
         li{
           width:25%;

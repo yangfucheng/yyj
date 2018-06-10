@@ -86,6 +86,7 @@ export default {
         getComment(pageNo){
             let projectId=this.projectId;
             this.loading=true;
+            this.reply='';
             getCommentDetailList(projectId,{pageNo:pageNo}).then(res=>{
                 if(this.loading){
                     let lastComment=this.commentList;
@@ -102,6 +103,7 @@ export default {
         subComment(){
             let projectId=this.projectId;
             let comment=this.comment;
+            this.reply='';
             if(comment.trim()==''){
                 return false;
             }
@@ -118,6 +120,7 @@ export default {
             });
         },
         showReply(commentId,toWhomUserId,toWhomUserName){
+            this.reply='';
             this.commentId=commentId;
             this.toWhomUserId=toWhomUserId;
             this.toWhomUserName=toWhomUserName;
@@ -173,7 +176,7 @@ export default {
 }
 .comment_item{
     line-height:1.2;
-    background:#fafafa;
+    background:#f4f8fb;
     padding:0.2rem 0.5rem;
     .comment_first{
         font-size:0.34rem;
@@ -191,14 +194,14 @@ export default {
     position: fixed;
     bottom: 0;
     background: #f5f5f5;
-    padding: 0.15rem;
+    padding: 0.2rem;
     border-top: 1px solid #eee;
     box-sizing:border-box;
     align-items:center;
     z-index:5;
     input{
         width:100%;
-        padding:2px;
+        padding:0.1rem;
         border:none;
     }
     textarea{

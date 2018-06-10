@@ -4,7 +4,7 @@
    <!--  <div class="search">
       <span class="text"><i class="iconfont icon-sousuo"></i>搜索商品 分类 功效 用户</span>
     </div> -->
-     <div class="clicle" @click="stepRank()">
+     <div class="clicle" @click="stepRank('ranking')">
     
      </div>
      <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"  :auto-fill="false" ref="loadmore1" :bottom-method='loadBottom'   :bottomAllLoaded='bottomAllLoaded'>
@@ -17,7 +17,7 @@
               <!-- <router-link to="/error"></router-link> -->
             </mt-swipe-item> 
             <mt-swipe-item >
-              <img src="https://ydb.anydd.com/images/app/banner5.jpg" width="100%" height="100%" @click='stepRank("ranking")'>
+              <img src="https://ydb.anydd.com/images/app/banner5.jpg" width="100%" height="100%" @click='stepRank("")'>
               <!-- <router-link to="/error"></router-link> -->
             </mt-swipe-item>
             <mt-swipe-item >

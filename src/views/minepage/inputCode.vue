@@ -4,7 +4,7 @@
    <router-link to="/" class="skip">跳过</router-link>
     <div class="wrap">
       <form action="#">
-        <input type="text" placeholder="请输入邀请码" @change="search()" v-model="value">
+        <input type="text" placeholder="请输入邀请码" @change="search()" v-model="inviteCode">
       </form>
     </div>
     <div class="button" @click="search()">确定</div>
@@ -24,7 +24,8 @@ import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
-      value:''
+      value:'',
+      inviteCode:''
     }
   },
   created() {

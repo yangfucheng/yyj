@@ -14,7 +14,7 @@
           <div class="idcard">预言家的第{{dataObj.userId}}位居民</div>
            <div class="jiantou"><i class="iconfont icon-jiantou1"></i></div>
         </li>
-        <li v-for="item in common" @click="step(item.route,item.type)">
+        <li v-for="item in common" @click="step(item.route,item.type)" v-show='item.isShow'>
           <div class="icon"><i :class="item.icon"></i></div>
           <div class="text">{{item.text}}</div>
           <div class="into"><i class="iconfont icon-jiantou1"></i></div>
@@ -36,19 +36,22 @@ export default {
         icon:'iconfont icon-shouzhiliushui',
         text:'流水记录',
         route:'business',
-        type:''
+        type:'',
+        isShow:true
       },
       {
         icon:'iconfont icon-wocanyude',
         text:'我参与的',
         route:'join',
-        type:''
+        type:'',
+        isShow:true
       },
       {
         icon:'iconfont icon-tixian',
         text:'我的钱包',
         route:'money',
-        type:''
+        type:'',
+        isShow:true
       },
       // {
       //   icon:'iconfont icon-shezhi',
@@ -58,21 +61,30 @@ export default {
 
       // },
       {
+        icon:'iconfont icon-web-icon-',
+        text:'邀请好友',
+        route:'invite',
+        isShow:true
+      },
+      {
         icon:'iconfont icon-wode',
         text:'联系我们',
         route:'connect',
-        type:''
+        type:'',
+        isShow:true
       },
       {
         icon:'iconfont icon-weixin1',
         text:'关注微信',
         route:'connect',
-        type:'wai'
+        type:'wai',
+        isShow:true
       },
       {
         icon:'iconfont icon-web-icon-',
-        text:'邀请好友',
-        route:'invite',
+        text:'输入邀请码',
+        route:'inputCode',
+        isShow:true
       },
       ],
       dataObj:{}
@@ -82,7 +94,6 @@ export default {
     this.fetch();
   },
   methods: {
-
     step(route,type) {
       if(type=="wai"){
         window.location.href ="http://vip.wxtolink.com/wx/?i=1280";
@@ -92,12 +103,12 @@ export default {
         })
       }
     },
-    
     fetch(){
       Indicator.open();
       info().then(response=>{
         Indicator.close();
         this.dataObj =response.body;
+        this.common[6].isShow = this.dataObj.invite;
         let iconDom = this.$refs.iconImg;
         if(this.dataObj.headPhoto){
            iconDom.style.backgroundImage = 'url('+this.dataObj.headPhoto+')';

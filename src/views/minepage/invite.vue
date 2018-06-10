@@ -13,22 +13,22 @@
        <div class="wrap">
           <div class="num">
             <div>邀请好友数量：</div>
-            <div>1</div>
+            <div>{{dataObj.inviteMount}}</div>
           </div>
           <div class="moeny">
             <div>累计获得PPS：</div>
-            <div>100</div>
+            <div>{{dataObj.amount}}</div>
           </div>
         </div>
          <div class="content">
            <p>奖励规则</p>
-           <p>1、每邀请一个好友且该好友完成“预言家”应用授权登陆（授权登陆时，填写您的邀请码），您就可以获得100PPS奖励；</p>
+           <p>1、每邀请一个好友并填入您的邀请码，且该好友参与过预测话题买入，您就可以获得10PPS的奖励。</p>
            <p>2、预言家拥有法律范围内对活动的最终解释权，并将严查虚假邀请行为，一经发现将取消奖励资格。</p>
          </div>
      </div>
    </div>
    <div class="footer" @click="step()">
-     <p>生 成 邀 请 卡</p>
+     <p style="font-size:.4rem">生 成 邀 请 卡</p>
      <p>截 图 发 给 好 友 并 叮 嘱 其 注 册 时 填 写 邀 请 码</p>
    </div>
    </div>
@@ -60,6 +60,14 @@ export default {
       invite().then(response=>{
         Indicator.close();
         this.dataObj=response.body;
+        if(!this.dataObj.amount){
+          this.dataObj.amount=0;
+        }
+
+        if(!this.dataObj.inviteMount){
+          this.dataObj.inviteMount=0;
+        }
+
         this.inviteCode = this.dataObj.inviteCode;
       })
     },
@@ -109,7 +117,7 @@ export default {
       background-repeat:no-repeat;
       z-index:-10;
     .header{
-      height:20%;
+      height:25%;
       text-align: center;
       color:#FFF;
       z-index:1;
@@ -117,13 +125,13 @@ export default {
       
       border-bottom:8px solid #eeeeef;
       .invitation-title{
-        padding-top:6%;
+        padding-top:10%;
         font-size:.35rem;
       }
       .invitation-code{
         margin-top:.1rem;
         font-size:.6rem;
-        margin-bottom:.4rem;
+        margin-bottom:.5rem;
       }
       .copy{
         border:1px solid #FFF;
@@ -135,7 +143,7 @@ export default {
     .middle{  
       width:100%;
       background:#FFF;
-      height:70%;
+      height:65%;
       .middle-wrap{
         width:90%;
         margin:0 auto;
@@ -144,7 +152,7 @@ export default {
           text-align: center;
           color:#51C9D2;
           font-weight:400;
-          border-bottom:1px solid #BBBBBB;
+          border-bottom:1px solid #eee;
           font-size:.5rem;
         }
         .wrap{
@@ -152,7 +160,7 @@ export default {
           text-align: center;
           justify-content:space-around;
           padding:.5rem 0;
-          border-bottom:1px solid #BBBBBB;
+          border-bottom:1px solid #eee;
           color:#6587DC;
           .num{
             font-size:.35rem;
