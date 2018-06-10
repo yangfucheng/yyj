@@ -24,7 +24,7 @@
         </ul>
         <div class='loading' v-show='loading'>正在加载中<i class='el-icon-loading'></i></div>
         <div class='comment_foot'>
-            <input type="text" v-model="reply" placeholder="回复评论" @focus='showReply(maincontent.commentId,maincontent.userId,maincontent.userName)'/>
+            <input type="text" v-model="reply" placeholder="回复评论" @click='showReply(maincontent.commentId,maincontent.userId,maincontent.userName)'/>
         </div>
         <mt-popup v-model="isComment" position="bottom">
         <div class='comment_send'>
