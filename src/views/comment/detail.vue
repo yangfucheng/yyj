@@ -94,7 +94,6 @@ export default {
                     this.loading=false;
                 }else{
                     this.commentList=res.body.result;
-                    this.loading=false;
                 }
                 this.totalPage=res.body.totalPage;
                 this.pageNo=res.body.pageNo;
@@ -112,6 +111,7 @@ export default {
             let toWhomUserName=this.toWhomUserName;
             let toWhomUserId=this.toWhomUserId;
             let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
+            this.reply='';
             newReply(params).then(response=>{
                     this.comment='';
                     this.commentId='';
@@ -201,7 +201,7 @@ export default {
     z-index:5;
     input{
         width:100%;
-        padding:0.1rem;
+        padding:0.2rem;
         border:none;
     }
     textarea{
