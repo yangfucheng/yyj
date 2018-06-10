@@ -17,7 +17,8 @@ import ranking from '../components/ranking.vue'
 import error from '../404.vue'
 import login from '../views/login/login.vue'
 import banner1 from '../views/indexpage/banner.vue'
-
+import commentDetailList from '../views/comment/detail.vue'
+import withDrawList from '../views/minepage/tixianList.vue'
 
 Vue.use(Router)
 
@@ -40,6 +41,12 @@ export default new Router({
       name: 'ranking',
       component: ranking,
       meta:{title:"排行榜"}
+    },
+    {
+      path: '/comment/detail/:id',
+      name: 'detail',
+      component: commentDetailList,
+      meta:{title:"评论详情"}
     },
     {
       path: '/index/banner1',
@@ -70,7 +77,7 @@ export default new Router({
       path: '/index/details/:id',
       name: 'details',
       component: details,
-      meta:{title:"详情"}
+      meta:{title:"详情",keepAlive: true}
     },
     {
       path: '/myself/join',
@@ -125,6 +132,12 @@ export default new Router({
       name: 'moneyDeatil',
       component: moneyDeatil,
       meta:{title:"充值详情"}
-    }
+    },
+    {
+      path: '/myself/tixianList',
+      name: 'tixianList',
+      component: withDrawList,
+      meta:{title:"提现记录"}
+    },
   ]
 })

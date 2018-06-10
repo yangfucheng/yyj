@@ -55,7 +55,7 @@ export function record(params) {
 
 export function getMsgCode(params) {
   return fetch({
-    url: '/sms/send',
+    url: '/app/sms/send',
     method: 'get',
     params:params
   })
@@ -83,6 +83,15 @@ export function recharge(params) {
     url: '/app/user/recharge',
     method: 'post',
     data:JSON.stringify(params)
+  })
+}
+
+//提现
+export function withdraw(params) {
+  return fetch({
+    url: '/app/user/withdraw',
+    method: 'post',
+    data:params
   })
 }
 
@@ -126,5 +135,50 @@ export function changeName(params) {
     url:'/app/user/updateUserName',
     method: 'post',
     data:JSON.stringify(params)
+  })
+}
+
+//评论列表
+export function getCommentList(id,params) {
+  return fetch({
+    url:'/app/project/comment/'+id,
+    method: 'get',
+    params:params
+  })
+}
+
+//新增评论
+export function newComment(params) {
+  return fetch({
+    url:'/app/project/comment',
+    method: 'post',
+    data:params
+  })
+}
+
+//添加某一评论的回复
+export function newReply(params) {
+  return fetch({
+    url:'/app/project/reply',
+    method: 'post',
+    data:params
+  })
+}
+
+//回复列表
+export function getCommentDetailList(id,params) {
+  return fetch({
+    url:'/app/project/reply/'+id,
+    method: 'get',
+    params:params
+  })
+}
+
+//提现记录
+export function getWithDrawList(params) {
+  return fetch({
+    url:'/app/user/withdrawList',
+    method: 'get',
+    params:params
   })
 }

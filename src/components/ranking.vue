@@ -127,7 +127,6 @@ export default {
     text-decoration: none;
   }
   .rank1,.rank2,.rank3{
-    color: #fff;
     display: inline-block;
     width: 16px;
   }

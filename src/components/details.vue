@@ -78,14 +78,20 @@
                 <div v-if="dataArray.optionC"><i class="iconfont icon-29"></i><span style="margin-left:.1rem;">{{dataArray.optionCQuantity | changeNum}}{{dataArray.tradeCoin}}</span></div>
             </div>
             <div class="single">
-              
+    
               <span>单次最高投注:&nbsp&nbsp <span style="color:#000"> <span>{{dataArray.maxBet}}</span>份</span></span>
               <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{getcishu}}</span>
             </div>
           </div>
         </div>
         <div class="history">
-          <div class="title">历史买入记录</div>
+          <mt-navbar v-model="selected">
+             <mt-tab-item id="historyList">历史买入记录</mt-tab-item>
+             <mt-tab-item id="comment">最新评论</mt-tab-item>
+          </mt-navbar>
+          <!-- <div class="title">历史买入记录</div> -->
+          <mt-tab-container v-model="selected">
+          <mt-tab-container-item id="historyList">
           <table>
             <tr>
               <th>买入选项</th>
@@ -100,6 +106,11 @@
               <td>{{item.createTime | changeTime}}</td>
             </tr>
           </table>
+          </mt-tab-container-item>
+          <mt-tab-container-item id="comment">
+            <commentList></commentList>
+          </mt-tab-container-item>
+          </mt-tab-container>
         </div>
       </mt-loadmore>
       <mt-popup v-model="popupVisible" position="bottom">
@@ -140,7 +151,6 @@
           <span>当前获胜倍数:<span class="label-red">{{ nowOdd }}</span></span>
           <span>预计猜对获得: <span class="label-red">{{ getAllMoney }}</span> <span>{{dataArray.tradeCoin}}</span></span>
         </div>
-
         <div class="footer">
           <span class="text" style="color:red">当前获胜倍数仅供参考以结束时获胜倍数为准</span>
           <div class="button">
@@ -154,6 +164,7 @@
 
 <script>
 import zkTimeDown from '../components/Countdown.vue'
+import commentList from '../views/comment/index.vue'
 import {getDetial,bet,refresh} from '../api/api.js'
 import {timestampToTime,timestampTodate,numTampTofloat} from '../../src/untils/enums.js'
 import { Indicator,Toast } from 'mint-ui';
@@ -161,7 +172,8 @@ import {GetQueryString} from '../untils/enums.js'
 var qs=require("qs");
 export default {
   components : {
-      zkTimeDown
+      zkTimeDown,
+      commentList
   },
   data () {
     return {
@@ -180,10 +192,9 @@ export default {
       scaleA:0,
       scaleB:0,
       scaleC:0,
+      selected:'historyList',
+      projectId:'',
     }
-  },
-  mounted() {
-    
   },
   computed:{
     getAllMoney(){
@@ -198,9 +209,10 @@ export default {
     }
   },
   created() {
+    this.projectId=this.$route.params.id;
     if(this.$store.state.tabHidden) {
       this.$store.dispatch('tabHidden')
-    }
+    };
     // alert(GetQueryString(id))
     // alert(this.$route.params.id);
     // this.dataArray=this.$route.params.dataArray;
@@ -209,6 +221,11 @@ export default {
     this.dataArray = [];
     this.fetch();
     this.initTime();
+  },
+  activated(){
+    if(this.$store.state.tabHidden) {
+      this.$store.dispatch('tabHidden')
+    };
   },
   filters: {
     changeTime(value){
@@ -221,11 +238,15 @@ export default {
       return numTampTofloat(value)
     }
   },
+  beforeRouteLeave(to, from, next) {  
+    from.meta.keepAlive = false;  
+    next();  
+  },
   methods: {
     fetch(){
       Indicator.open('Loading...');
       var params = {
-        projectId:this.$route.params.id
+        projectId:this.projectId
       }
       getDetial(params).then(response=>{
         Indicator.close();
@@ -242,6 +263,12 @@ export default {
         Indicator.close();
       })
     },
+    /*getComment(pageNo){
+      let projectId=this.projectId;
+      getCommentList(projectId,{pageNo:pageNo}).then(res=>{
+        this.commentList=res.body.result;
+      });
+    },*/
     charge(){
       this.$router.push({
         name:'moneyDeatil',
@@ -400,7 +427,19 @@ export default {
       this.allMoney = 0;
       this.rangeValue = 0;
       this.buttonMoeny = 0;
-    }
+    },
+    /*subComment(){
+      let projectId=this.projectId;
+      let comment=this.comment;
+      newComment({projectId:projectId,content:comment}).then(response=>{
+        this.$message({
+          message: '买入成功',
+          type: 'success'
+        });
+        this.comment='';
+        this.getComment(1);
+      });
+    }*/
   },
   watch: {
     'rangeValue'() {
@@ -415,8 +454,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "../common/iconfont/iconfont.css";
 @import "../common/mixin.scss";
 @import "../common/style.scss";
+.mint-navbar .mint-tab-item.is-selected{
+  border-bottom-color:#1ac5bb;
+  color:#1ac5bb;
+}
 .contianer {
 
   .mt-wrap{
@@ -677,6 +721,47 @@ export default {
         border-bottom:1px solid #ccc;
       }
     }
+    /* .comment_list{
+      line-height:1.8;
+      >li{
+        display:flex;
+        width:100%;
+        padding:0.3rem 0.5rem;
+        box-sizing:border-box;
+        .comment_first{
+          font-size: 0.4rem;
+          color:#444;
+          padding:0.2rem 0;
+        }
+        .comment_container{
+            flex:1;
+        }
+        .logo{
+        width:0.6rem;
+        height:0.6rem;
+        border:1px solid #ccc;
+        border-radius:50%;
+        margin-right:0.2rem;
+        }
+        .user{
+          color:#888888;
+        }
+        .createTime{
+          color: #9a9e9d;
+          font-size: 0.2rem;
+        }
+        ul{
+            margin-top:0.2rem;
+            background:#f4f8fb;
+            color:#666a69;
+            padding:0.3rem;
+            font-size: 0.36rem;
+            span{
+              color:#5d7ea1;
+            }
+        }
+      }
+    } */
   }
   .mint-popup-bottom{
     width:100%;
