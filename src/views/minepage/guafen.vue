@@ -6,9 +6,9 @@
   </div>
   <div class='list'>
     <ul class='rank_list'>
-      <li><ul class='thead'><li>名次</li><li>用户名</li><li>收益值</li></ul></li>
+      <li><ul class='thead'><li>名次</li><li>用户名</li><li>买入分数</li><li>瓜分PPS</li></ul></li>
       <li v-for='item in dataObj' :key='item.id'>
-        <ul><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li></ul>
+        <ul class="thead"><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li><li>{{item.income}}</li></ul>
       </li>
     </ul>
   </div>
@@ -169,11 +169,16 @@ export default {
         clear:both;
       }
       .thead{
-        width: 100%;
-        position: absolute;
+        // width: 100%;
+        // position: absolute;
+        display:flex;
+        justify-content:space-between;
         background:#2bb8ae;
         color:#fff;
         border-bottom:none;
+        li{
+          width:25%;
+        }
       }
       ul{
         border-bottom:1px solid #eee;
