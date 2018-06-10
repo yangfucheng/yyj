@@ -20,7 +20,7 @@
                       <el-option label="买入支付" value="bet"></el-option>
                       <el-option label="空投奖励" value="air_drop"></el-option>
                       <el-option label="充值" value="recharge"></el-option>
-                      <el-option label="提现" value="tixian"></el-option>
+                      <el-option label="提现" value="withdraw"></el-option>
                     </el-select>
                 </span>
               </div>
@@ -100,7 +100,7 @@ export default {
     fetch(){
       Indicator.open();
       var params={
-          coin:this.value,
+          coin:this.value1,
           pageNo:this.page,
           tag:this.tag
        }
