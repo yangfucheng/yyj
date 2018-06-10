@@ -7,7 +7,7 @@
   <mt-tab-container v-model="selected">
   <mt-tab-container-item id="current">
   <div class='user'>
-    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
+    <div class='user_detail'><img :src='user.headPhoto?user.headPhoto:"https://ydb.anydd.com/images/app/logo.png"' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
     <div class='user_info'><p>我的收益值：{{userRank?(userRank.income?userRank.income:0):0}}</p><p>排名：<span class='rank'>{{userRank!=null?userRank.rank:''}}</span>&nbsp;名</p></div>
   </div>
   <div class='list'>
@@ -21,7 +21,7 @@
   </mt-tab-container-item>
   <mt-tab-container-item id="last">
   <div class='user'>
-    <div class='user_detail'><img src='../common/images/logo.png' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
+    <div class='user_detail'><img :src='user.headPhoto?user.headPhoto:"https://ydb.anydd.com/images/app/logo.png"' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
     <div class='user_info'><p>我的收益值：{{lastRank?(lastRank.income?lastRank.income:0):0}}</p><p>排名：<span class='rank'>{{lastRank!=null?lastRank.rank:''}}</span>&nbsp;名</p></div>
   </div>
   <div class='list'>
@@ -179,6 +179,7 @@ export default {
       }
       .logo{
         width:1.6rem;
+        height: 1.6rem;
         border-radius:50%;
         border:1px solid #e5e5e5;
         margin-right: 0.2rem;
