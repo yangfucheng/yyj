@@ -32,7 +32,7 @@ import { Indicator } from 'mint-ui';
 export default {
   data () {
     return {
-      icon:'../../../static/icon/yucec.png',
+      icon:'',
       common:[
       {
         icon:'iconfont icon-shouzhiliushui',
@@ -114,6 +114,7 @@ export default {
         if(this.dataObj.headPhoto){
           this.icon = this.dataObj.headPhoto;
         }else{
+          this.icon ='../../../static/icon/yucec.png'
            // iconDom.style.backgroundImage = 'url(../../static/icon/yucec.png)'
         }
       })
@@ -151,14 +152,17 @@ export default {
             width:1.6rem;
             height:1.6rem;
             border-radius:50%;
-            border:1px solid #cccccc;
+            // border:1px solid #cccccc;
             background-color:#fff;
             line-height:2rem;
             text-align: center;
-            .icon-img{
-              img{
-                width:2rem;
+             img{
+                width: 1.6rem;
+                height: 1.6rem;
+                border-radius: 50%;
               }
+            .icon-img{
+
             }
             i{
               font-size:1rem;

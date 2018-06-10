@@ -47,7 +47,7 @@ export default {
             commentId:'',
             toWhomUserId:'',
             toWhomUserName:'',
-            replyWho:'',
+            replyWho:'请输入评论',
             nocomment:false,
         }
     },

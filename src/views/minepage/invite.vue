@@ -44,7 +44,10 @@ import Clipboard from 'clipboard'
 export default {
   data () {
     return {
-      dataObj:null,
+      dataObj:{
+          amount:0,
+          inviteMount:0
+      },
       inviteCode:''
     }
   },
@@ -60,11 +63,11 @@ export default {
       invite().then(response=>{
         Indicator.close();
         this.dataObj=response.body;
-        if(!this.dataObj.amount){
+        if(this.dataObj && !this.dataObj.amount){
           this.dataObj.amount=0;
         }
 
-        if(!this.dataObj.inviteMount){
+        if(this.dataObj && !this.dataObj.inviteMount){
           this.dataObj.inviteMount=0;
         }
 
@@ -192,7 +195,7 @@ export default {
       width:90%;
       margin:0 auto;
       text-align: center;
-      padding:3% 0;
+      padding:2.5% 0;
       p:nth-child(2){
         margin-top:.1rem; 
       }

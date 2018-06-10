@@ -141,12 +141,13 @@ export default {
       }
       .wrap2{
         margin-top:.6rem;
+        text-align: center;
         p:nth-child(1){
           margin:1px 0;
         }
         p:nth-child(3){
           margin:1rem auto;
-          width:30%;
+          width:110px;
         }
         p:nth-child(4){
           // padding-top:5%;

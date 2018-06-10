@@ -21,6 +21,7 @@
                       <el-option label="空投奖励" value="air_drop"></el-option>
                       <el-option label="充值" value="recharge"></el-option>
                       <el-option label="提现" value="withdraw"></el-option>
+                      <el-option label="邀请奖励" value="invite"></el-option>
                     </el-select>
                 </span>
               </div>

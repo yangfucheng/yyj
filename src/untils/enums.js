@@ -24,8 +24,9 @@ export const recodeDec= {
   Award:{id:1,name:'award',text:'获胜奖励'},
   AirDrop:{id:2,name:'air_drop',text:'空投奖励'},
   Recharge:{id:3,name:'recharge',text:'充值'},
-  TiXian:{id:4,name:'tixian',text:'提现'},
-  ZuoFei:{id:5,name:'bet_back',text:'买入返还'}
+  TiXian:{id:4,name:'withdraw',text:'提现'},
+  ZuoFei:{id:5,name:'bet_back',text:'买入返还'},
+  invite:{id:5,name:'invite',text:'邀请奖励'}
 }
 
 

@@ -20,7 +20,7 @@ import { Toast } from 'mint-ui';
 
 
 
-
+ var qs=require("qs");
 export default {
   data () {
     return {
@@ -98,11 +98,13 @@ export default {
       }
       input{
         width:80%;
-        margin-left:25%;
+        margin-left:30%;
         height:1rem;
         outline:none;
         border:none;
         background-color: transparent;
+        color:#FFF;
+        font-size:.5rem;
       }
     }
     .button{
