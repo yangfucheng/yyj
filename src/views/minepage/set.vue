@@ -82,6 +82,7 @@ export default {
     },
     update(e){
       console.log(e)
+      alert(1);
       let file = e.target.files[0];             
       let param = new FormData(); //创建form对象  
       param.append('file',file,file.name);//通过append向form对象添加数据  
@@ -104,7 +105,12 @@ export default {
         Indicator.close();
         this.common[0].textRight =response.body.nickName;
         this.common[1].textRight =response.body.account;
-        this.icon = response.body.headPhoto;
+        if(response.body && response.body.headPhoto){
+           this.icon = response.body.headPhoto;
+         }else{
+            this.icon = '../../../static/icon/yucec.png';
+         }
+       
       })
     }
   }
@@ -123,7 +129,6 @@ export default {
     left:0;
     .content{
       // margin-top:1.2rem;
-
         li{
           // @include border-1px();
           height:1.2rem;
@@ -140,6 +145,7 @@ export default {
             top:0;
             left:0;
             width:100%;
+            height:1.5rem;
             opacity:0;
             z-index:0;
           }

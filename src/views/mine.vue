@@ -99,7 +99,11 @@ export default {
         Indicator.close();
         this.dataObj =response.body;
         let iconDom = this.$refs.iconImg;
-        iconDom.style.backgroundImage = 'url('+this.dataObj.headPhoto+')';
+        if(iconDom.style.backgroundImage){
+           iconDom.style.backgroundImage = 'url('+this.dataObj.headPhoto+')';
+        }else{
+           // iconDom.style.backgroundImage = 'url(../../static/icon/yucec.png)'
+        }
       })
     }
   },
