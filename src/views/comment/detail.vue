@@ -110,6 +110,7 @@ export default {
             let toWhomUserName=this.toWhomUserName;
             let toWhomUserId=this.toWhomUserId;
             let params={commentId:commentId,toWhomUserId:toWhomUserId,toWhomUserName:toWhomUserName,content:comment};
+            this.reply='';
             newReply(params).then(response=>{
                     this.comment='';
                     this.commentId='';
@@ -118,6 +119,7 @@ export default {
             });
         },
         showReply(commentId,toWhomUserId,toWhomUserName){
+            this.reply='';
             this.commentId=commentId;
             this.toWhomUserId=toWhomUserId;
             this.toWhomUserName=toWhomUserName;
@@ -191,14 +193,14 @@ export default {
     position: fixed;
     bottom: 0;
     background: #f5f5f5;
-    padding: 0.15rem;
+    padding: 0.2rem;
     border-top: 1px solid #eee;
     box-sizing:border-box;
     align-items:center;
     z-index:5;
     input{
         width:100%;
-        padding:2px;
+        padding:0.2rem;
         border:none;
     }
     textarea{

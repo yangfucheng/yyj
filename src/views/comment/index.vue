@@ -86,7 +86,11 @@ export default {
                     this.commentList=res.body.result;
                     this.loading=false;
                 }
-                if(res.body.totalCount==0)this.nocomment=true;
+                if(res.body.totalCount==0){
+                    this.nocomment=true;
+                }else{
+                    this.nocomment=false;
+                }
                 this.totalPage=res.body.totalPage;
                 this.pageNo=res.body.pageNo;
             });
