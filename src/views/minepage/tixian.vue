@@ -74,6 +74,10 @@ export default {
         let smsCode=this.code;
         let params={tradeCoin:tradeCoin,amount:amount,smsCode:smsCode};
         withdraw(params).then(response=>{
+          this.$message({
+            message: '提现成功,待管理员审核',
+            type: 'success'
+          });
           this.$router.push({
             name:'money',
           });
