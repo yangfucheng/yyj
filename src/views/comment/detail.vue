@@ -71,14 +71,13 @@ export default {
     },
     methods:{
         loadMore() {
-            this.loading=false;
             if(this.pageNo<this.totalPage){
-                this.loading=true;
                 this.getComment(this.pageNo+1);
             }
         },
         getComment(pageNo){
             let projectId=this.projectId;
+            this.loading=true;
             getCommentDetailList(projectId,{pageNo:pageNo}).then(res=>{
                 if(this.loading){
                     let lastComment=this.commentList;
@@ -86,6 +85,7 @@ export default {
                     this.loading=false;
                 }else{
                     this.commentList=res.body.result;
+                    this.loading=false;
                 }
                 this.totalPage=res.body.totalPage;
                 this.pageNo=res.body.pageNo;
