@@ -19,6 +19,10 @@ import login from '../views/login/login.vue'
 import banner1 from '../views/indexpage/banner.vue'
 import commentDetailList from '../views/comment/detail.vue'
 import withDrawList from '../views/minepage/tixianList.vue'
+import invite from '@/views/minepage/invite.vue'
+import inviteCode from '@/views/minepage/inviteCode.vue'
+import inputCode from '@/views/minepage/inputCode.vue'
+import guafen from '@/views/minepage/guafen.vue'
 
 Vue.use(Router)
 
@@ -139,5 +143,28 @@ export default new Router({
       component: withDrawList,
       meta:{title:"提现记录"}
     },
+      path: '/myself/invite',
+      name: 'invite',
+      component: invite,
+      meta:{title:"邀请好友"}
+    },
+    {
+      path: '/myself/inviteCode',
+      name: 'inviteCode',
+      component: inviteCode,
+      meta:{title:"邀请卡"}
+    },
+    {
+      path: '/myself/inputCode',
+      name: 'inputCode',
+      component: inputCode,
+      meta:{title:"邀请卡"}
+    },
+    {
+      path: '/myself/guafen',
+      name: 'guafen',
+      component: guafen,
+      meta:{title:"瓜分"}
+    }
   ]
 })

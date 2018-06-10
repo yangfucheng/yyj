@@ -2,14 +2,16 @@
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
       <ul class="content">
+
         <li @click="step('set')">
-          <div class="icon">
-            <div class="icon-img"></div>
+          <div class="icon" >
+            <div class="icon-img" ref="iconImg"></div>
+            <!-- <input class="file" name="file" type="file" accept="image/png,image/gif,image/jpeg" @change="update"/>  -->
           </div>
           <div class="name" >
-            <label>用户名:<span style="color:#000;margin-left:.2rem">{{dataObj.userName}}</span> </label>
-          </div>
-          <div class="idcard">预言家的第{{dataObj.id}}位居民</div>
+            <label>用户名:<span style="color:#000;margin-left:.2rem">{{dataObj.nickName}}</span> </label>
+          </div>  
+          <div class="idcard">预言家的第{{dataObj.userId}}位居民</div>
            <div class="jiantou"><i class="iconfont icon-jiantou1"></i></div>
         </li>
         <li v-for="item in common" @click="step(item.route,item.type)">
@@ -22,8 +24,9 @@
 </template>
 
 <script>
-import { info } from '../api/api.js'
+import { info,upload } from '../api/api.js'
 import { Indicator } from 'mint-ui';
+
 
 export default {
   data () {
@@ -66,6 +69,11 @@ export default {
         route:'connect',
         type:'wai'
       },
+      {
+        icon:'iconfont icon-web-icon-',
+        text:'邀请好友',
+        route:'invite',
+      },
       ],
       dataObj:{}
     }
@@ -84,11 +92,14 @@ export default {
         })
       }
     },
+    
     fetch(){
       Indicator.open();
       info().then(response=>{
         Indicator.close();
         this.dataObj =response.body;
+        let iconDom = this.$refs.iconImg;
+        iconDom.style.backgroundImage = 'url('+this.dataObj.headPhoto+')';
       })
     }
   },
@@ -132,6 +143,7 @@ export default {
               background-image: url('../../static/icon/yucec.png');
               background-repeat:no-repeat;
               background-size:cover;
+              // background-position:center;
               width:1.6rem;
               height:1.6rem;
             }

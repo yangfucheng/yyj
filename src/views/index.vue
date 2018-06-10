@@ -11,9 +11,13 @@
 
       <div class="wrapper"  ref="viewBox" >
         <div class="swiper"  v-show="isSwiper" ref="swiper">
-          <mt-swipe  :auto="5000"> 
+          <mt-swipe  :auto="5000">
             <mt-swipe-item >
-              <img src="https://ydb.anydd.com/images/app/banner5.jpg" width="100%" height="100%" @click='stepRank()'>
+              <img src="https://ydb.anydd.com/images/app/banner6.jpg" width="100%" height="100%" @click='stepRank("guafen")'>
+              <!-- <router-link to="/error"></router-link> -->
+            </mt-swipe-item> 
+            <mt-swipe-item >
+              <img src="https://ydb.anydd.com/images/app/banner5.jpg" width="100%" height="100%" @click='stepRank("ranking")'>
               <!-- <router-link to="/error"></router-link> -->
             </mt-swipe-item>
             <mt-swipe-item >
@@ -212,9 +216,9 @@ export default {
         name:'banner1'
       })
     },
-    stepRank(){
+    stepRank(name){
       this.$router.push({
-        name:'ranking'
+        name:name
       })
     },
     handleScroll (scrollTop) {

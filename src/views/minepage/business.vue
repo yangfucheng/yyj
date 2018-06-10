@@ -86,7 +86,7 @@ export default {
     }
   },
   watch:{
-    'value'(){
+    'value1'(){
       this.items =[];
       this.fetch();
     },
