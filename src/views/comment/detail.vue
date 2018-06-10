@@ -93,7 +93,6 @@ export default {
                     this.loading=false;
                 }else{
                     this.commentList=res.body.result;
-                    this.loading=false;
                 }
                 this.totalPage=res.body.totalPage;
                 this.pageNo=res.body.pageNo;
@@ -175,7 +174,7 @@ export default {
 }
 .comment_item{
     line-height:1.2;
-    background:#fafafa;
+    background:#f4f8fb;
     padding:0.2rem 0.5rem;
     .comment_first{
         font-size:0.34rem;

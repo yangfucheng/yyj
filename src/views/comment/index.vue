@@ -12,7 +12,7 @@
                     </div>
                     <ul v-if='item.replyTimes>0'>
                         <li v-for='reply in item.repliesContent' :key='item.repliesContent.index' @click='goDetail(item.commentId,item)'>
-                            <span>{{reply.userName}}<span v-if='reply.toWhomUserName!=item.userName'>回复{{reply.toWhomUserName}}</span></span>：{{reply.content}}
+                            <span>{{reply.userName}}<span v-if='reply.toWhomUserName!=item.userName'><span style='color:#888'>回复</span>{{reply.toWhomUserName}}</span></span>：{{reply.content}}
                         </li>
                         <a href='javascript:void(0)' class='moreReply' v-if='item.replyTimes>3' @click='goDetail(item.commentId,item)'>查看更多回复&nbsp;></a>
                     </ul>
@@ -84,7 +84,6 @@ export default {
                     this.loading=false;
                 }else{
                     this.commentList=res.body.result;
-                    this.loading=false;
                 }
                 if(res.body.totalCount==0){
                     this.nocomment=true;

@@ -86,8 +86,8 @@
         </div>
         <div class="history">
           <mt-navbar v-model="selected">
-             <mt-tab-item id="historyList">历史买入记录</mt-tab-item>
-             <mt-tab-item id="comment">最新评论</mt-tab-item>
+            <mt-tab-item id="comment">最新评论</mt-tab-item>
+            <mt-tab-item id="historyList">历史买入记录</mt-tab-item>
           </mt-navbar>
           <!-- <div class="title">历史买入记录</div> -->
           <mt-tab-container v-model="selected">
@@ -192,7 +192,7 @@ export default {
       scaleA:0,
       scaleB:0,
       scaleC:0,
-      selected:'historyList',
+      selected:'comment',
       projectId:'',
     }
   },
@@ -721,47 +721,6 @@ export default {
         border-bottom:1px solid #ccc;
       }
     }
-    /* .comment_list{
-      line-height:1.8;
-      >li{
-        display:flex;
-        width:100%;
-        padding:0.3rem 0.5rem;
-        box-sizing:border-box;
-        .comment_first{
-          font-size: 0.4rem;
-          color:#444;
-          padding:0.2rem 0;
-        }
-        .comment_container{
-            flex:1;
-        }
-        .logo{
-        width:0.6rem;
-        height:0.6rem;
-        border:1px solid #ccc;
-        border-radius:50%;
-        margin-right:0.2rem;
-        }
-        .user{
-          color:#888888;
-        }
-        .createTime{
-          color: #9a9e9d;
-          font-size: 0.2rem;
-        }
-        ul{
-            margin-top:0.2rem;
-            background:#f4f8fb;
-            color:#666a69;
-            padding:0.3rem;
-            font-size: 0.36rem;
-            span{
-              color:#5d7ea1;
-            }
-        }
-      }
-    } */
   }
   .mint-popup-bottom{
     width:100%;

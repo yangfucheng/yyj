@@ -64,7 +64,7 @@ export default {
       let qrcode = new QRCode('qrcode', {  
         width: 110,  
         height: 110, // 高度  
-        text: '56663159' // 二维码内容  
+        text: 'https://blockcity.gxb.io/download/' // 二维码内容  
         // render: 'canvas' // 设置渲染方式（有两种方式 table和canvas，默认是canvas）  
         // background: '#f0f'  
         // foreground: '#ff0'  
@@ -149,7 +149,7 @@ export default {
           width:30%;
         }
         p:nth-child(4){
-          margin-top:20%;
+          padding-top:5%;
         }
 
       }

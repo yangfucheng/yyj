@@ -104,7 +104,12 @@ export default {
         Indicator.close();
         this.common[0].textRight =response.body.nickName;
         this.common[1].textRight =response.body.account;
-        this.icon = response.body.headPhoto;
+        if(response.body && response.body.headPhoto){
+           this.icon = response.body.headPhoto;
+         }else{
+            this.icon = '../../../static/icon/yucec.png';
+         }
+       
       })
     }
   }
@@ -123,7 +128,6 @@ export default {
     left:0;
     .content{
       // margin-top:1.2rem;
-
         li{
           // @include border-1px();
           height:1.2rem;
@@ -140,8 +144,9 @@ export default {
             top:0;
             left:0;
             width:100%;
+            height:1.5rem;
             opacity:0;
-            z-index:0;
+            z-index:11;
           }
           height:1.5rem;
           border-bottom:5px solid #eeeeee;

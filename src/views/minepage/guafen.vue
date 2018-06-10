@@ -8,12 +8,18 @@
     <ul class='rank_list'>
       <li><ul class='thead'><li>名次</li><li>用户名</li><li>买入分数</li><li>瓜分PPS</li></ul></li>
       <li v-for='item in dataObj' :key='item.id'>
-        <ul class="thead"><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li><li>{{item.income}}</li></ul>
+        <ul class="thead"><li><span :class="'rank' +item.rank">{{item.rank}}</span></li><li>{{item.username | changeTel}}</li><li>{{item.income}}</li><li>{{item.bonus}}</li></ul>
+         <!-- <ul class="thead">
+          <li><span :class="'rank' +item.rank">1</span></li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+        </ul> -->
       </li>
     </ul>
   </div>
   <div>
-    <img src='https://ydb.anydd.com/images/app/rank1.jpg' class='intro'/>
+    <img src='http://ydb.anydd.com/images/app/gf_introduce.jpg' class='intro'/>
   </div>
   </div>
 </template>
