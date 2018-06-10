@@ -53,7 +53,16 @@ export default {
   watch:{
     'count'(){
       if(parseFloat(this.count)< parseFloat(this.num)&&parseFloat(this.count)>0){
-        this.disabled = false;
+        if(this.count.indexOf(".")>=0){
+          let arr=this.count.split(".");
+          if(arr[1].length>8){
+            this.disabled=true;
+          }else{
+            this.disabled=false;
+          }
+        }else{
+          this.disabled=false;
+        }
       }else{
         this.disabled = true;
       }
