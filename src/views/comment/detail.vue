@@ -205,4 +205,7 @@ export default {
         box-shadow:none;
     }
 }
+.comment_send{
+    padding:0.15rem 0.15rem 1rem;
+}
 </style>

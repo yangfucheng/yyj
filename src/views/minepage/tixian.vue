@@ -55,7 +55,7 @@ export default {
       if(parseFloat(this.count)<= parseFloat(this.num)&&parseFloat(this.count)>0){
         if(this.count.indexOf(".")>=0){
           let arr=this.count.split(".");
-          if(arr[1].length>8){
+          if(arr[1].length>5){
             this.disabled=true;
           }else{
             this.disabled=false;

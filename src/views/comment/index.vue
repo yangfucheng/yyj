@@ -244,6 +244,6 @@ export default {
 }
 .comment_send{
     height: auto;
-    padding: 0.15rem;
+    padding: 0.15rem 0.15rem 1rem;
 }
 </style>
