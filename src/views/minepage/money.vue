@@ -52,6 +52,12 @@ export default {
           duration: 2000
         });
       }
+      // this.$router.push({
+      //   name:'moneyDeatil',
+      //   params:{
+      //     tradeCoin:tradeCoin
+      //   }
+      // })
     }
   }
 }

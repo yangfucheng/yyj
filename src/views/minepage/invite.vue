@@ -147,6 +147,7 @@ export default {
       width:100%;
       background:#FFF;
       height:65%;
+      overflow:auto;
       .middle-wrap{
         width:90%;
         margin:0 auto;
@@ -183,7 +184,7 @@ export default {
         .content{
           color:#6F6C6C;
           line-height:.8rem;
-          margin:1.8rem 0;
+          margin:.5rem 0;
           p:nth-child(1){
 
           }
@@ -195,7 +196,8 @@ export default {
       width:90%;
       margin:0 auto;
       text-align: center;
-      padding:2.5% 0;
+      margin-top:2%;
+      // padding:.3rem 0;
       p:nth-child(2){
         margin-top:.1rem; 
       }

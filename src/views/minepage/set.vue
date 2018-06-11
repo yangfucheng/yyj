@@ -1,6 +1,7 @@
 <template>
    <div class="contain">
    <!--    <div class="nav-bar">个人中心</div> -->
+     
       <ul class="content">
          <li>
            <el-upload
@@ -9,17 +10,17 @@
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
-          <!--   <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div class="name">
-            <label>用户头像:</label>
+            <label>用户头像</label>
             <div class="icon1" >
               <div class="icon-img">
                 <img :src="icon" alt="" width='48' height='48' class="icon">
               </div>
             </div>
-             <img src="../../../static/icon/jiantou.png" height="36" width="36" alt="" style="" class="jiantou">
+             <img src="../../../static/icon/jiantou.png" height="22" width="22" alt="" style="" class="jiantou">
           </div>
         </li>
         <li v-for="item in common" @click="step(item.type,item.text)">
@@ -42,7 +43,10 @@ import { getToken } from '../../untils/auth.js'
 export default {
   data () {
     return {
-      icon:'../../../static/icon/yucec.png',
+      icon:'',
+      imageUrl:'',
+      ruleForm1:null,
+      loading2:'',
       common:[
       {
         icon:'../../static/icon/canyu.png',
@@ -89,35 +93,53 @@ export default {
       }
     },
     // update(e){
+    //   alert(1);
     //   console.log(e)
     //   let file = e.target.files[0];             
     //   let param = new FormData(); //创建form对象  
-    //   param.append('file',file,file.name);//通过append向form对象添加数据  
-    //   param.append('chunk','0');//添加form表单中其他数据  
-    //   let config = {  
-    //     headers:{'Content-Type':'multipart/form-data'},
-    //     token:getToken()
-    //   };  //添加请求头  
-    //   axios.post('/app/user/update/photo',param,config)  
-    //   .then(response=>{  
-    //     if(response.data && response.data.body.headPhoto){
-    //       this.icon = response.data.body.headPhoto;
-
-    //     }
-    //   })     
+    //   if(file){
+    //     param.append('file',file,file.name);//通过append向form对象添加数据  
+    //     param.append('chunk','0');//添加form表单中其他数据  
+    //     let config = {  
+    //       headers:{'Content-Type':'multipart/form-data'},
+    //       token:getToken()
+    //     };  //添加请求头  
+    //     axios.post('/app/user/update/photo',param,config)  
+    //     .then(response=>{  
+    //       if(response.data && response.data.body.headPhoto){
+    //         this.icon = response.data.body.headPhoto;
+    //       }
+    //     })
+    //    }  
     // },
     beforeAvatarUpload(file){
-        Indicator.open();
+
+        
         const isJPG = (file.type === 'image/jpeg'||file.type ==='image/jpg'||file.type ==='image/png'||file.type ==='image/JPG'||file.type ==='image/PNG'||file.type ==='image/gif');
+
+         const isLt2M = file.size / 1024 / 1024 < 1;
         if (!isJPG) {
-            this.$message.error('上传图片只能是图片格式!');
-             Indicator.close();
+          this.$message.error('上传图片只能是图片格式!');
+          Indicator.close();
+        }else if(!isLt2M){
+            this.$message.error('上传头像图片大小不能超过 1MB!');
+            Indicator.close();
+        }else{
+           Indicator.open();
         }
-        return isJPG;
+
+
+        return isJPG && isLt2M;
     },
     handleAvatarSuccess(res, file) {
-      this.icon = res.body.headPhoto;
       Indicator.close();
+      if(res){
+         this.icon = res.body.headPhoto;
+         this.imageUrl =res.body.headPhoto;
+      }else{
+         this.$message.error('上传失败!');
+      }
+     
     },
     fetch(){
       Indicator.open();
@@ -140,6 +162,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   // @import "../common/style.scss";
+
+  
   .contain{
     position:absolute;
     background-color:rgb(239, 239, 244);
@@ -149,18 +173,34 @@ export default {
     left:0;
     .content{
       // margin-top:1.2rem;
+      // margin-top:5rem;
         li{
           // @include border-1px();
           height:1.2rem;
         }
         li:nth-child(1){
+          .avatar{
+            width:10rem;
+            height:1.5rem;
+          }
           .avatar-uploader-icon{
             position:absolute;
             top:0;
             left:0;
             width:100%;
+            font-size:50px;
             height:1.5rem;
             opacity:0;
+          }
+          .avatar-uploader{
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 1.5rem;
+              opacity: 0;
+              z-index: 11;
+              // border:1px solid;
           }
           label{
             position:absolute;
@@ -203,8 +243,8 @@ export default {
           }
           .jiantou{
              position:absolute;
-            top:.2rem;
-            right:.05rem;
+            top:.5rem;
+            right:.3rem;
           }
         }
         li:nth-child(2n){

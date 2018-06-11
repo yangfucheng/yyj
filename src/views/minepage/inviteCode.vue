@@ -146,7 +146,7 @@ export default {
           margin:1px 0;
         }
         p:nth-child(3){
-          margin:1rem auto;
+          margin:.8rem auto;
           width:110px;
         }
         p:nth-child(4){

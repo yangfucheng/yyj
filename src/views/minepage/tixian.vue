@@ -2,7 +2,7 @@
   <div class="contain">
       <ul class="content">
         <li>
-          <label>提现金额</label><input type='num' v-model='count' :placeholder='holder'/><a href='javascript:void(0)' @click='count=num' class='all'>全部</a>
+          <label>提现金额</label><input type='num' v-model='count' :placeholder='holder'/><a href='javascript:void(0)' @click='all' class='all'>全部</a>
         </li>
         <li>
           <label>验证码</label><input type='text' v-model='code' placeholder='请输入验证码'><button @click='getCode' :disabled='isWait' class='getcode'>{{msg}}</button>
@@ -52,7 +52,7 @@ export default {
   },
   watch:{
     'count'(){
-      if(parseFloat(this.count)< parseFloat(this.num)&&parseFloat(this.count)>0){
+      if(parseFloat(this.count)<= parseFloat(this.num)&&parseFloat(this.count)>0){
         if(this.count.indexOf(".")>=0){
           let arr=this.count.split(".");
           if(arr[1].length>8){
@@ -74,7 +74,11 @@ export default {
         this.tel=response.body.account;
       })
     },
+    all(){
+      this.count =this.num.toString() ;
+    },
     submit(){
+
       if(this.code.trim()==''){
         this.$message.error('请填写完整');
       }else{
@@ -83,12 +87,12 @@ export default {
         let smsCode=this.code;
         let params={tradeCoin:tradeCoin,amount:amount,smsCode:smsCode};
         withdraw(params).then(response=>{
+          this.$router.push({
+            name:'money',
+          });
           this.$message({
             message: '提现成功,待管理员审核',
             type: 'success'
-          });
-          this.$router.push({
-            name:'money',
           });
         });
       }

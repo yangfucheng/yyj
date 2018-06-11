@@ -4,7 +4,7 @@
    <router-link to="/" class="skip">跳过</router-link>
     <div class="wrap">
       <form action="#">
-        <input type="text" placeholder="请输入邀请码" @change="search()" v-model="inviteCode">
+        <input type="text" placeholder="请输入邀请码"  v-model="inviteCode">
       </form>
     </div>
     <div class="button" @click="search()">确定</div>
@@ -56,11 +56,17 @@ export default {
       var params={
         inviteCode:this.inviteCode
       }
+      var self = this;
       inviteCode(params).then(res=>{
-       this.$router.push({
-          name:'index',
-        })
-      })
+       this.$message({
+          message: '提交成功,2秒后跳转到我的',
+          type: 'success'
+        });
+       this.inviteCode = '';
+       setTimeout(function(){self.$router.push({name:'myslef',})},2000);
+      }).catch(function(err){
+          console.log(err)
+      });
    }
   }
 }
@@ -98,13 +104,14 @@ export default {
       }
       input{
         width:80%;
-        margin-left:30%;
+        margin-left:10%;
         height:1rem;
         outline:none;
         border:none;
         background-color: transparent;
         color:#FFF;
         font-size:.5rem;
+        text-align: center;
       }
     }
     .button{
