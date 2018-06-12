@@ -236,9 +236,6 @@ export default {
           this.isFix=true;
         }
         // this.$refs.content.style.color  = '1.5rem'
-      }else{
-        this.isFix=false;
-        this.isSwiper=true;
       }
     },
     _initScroll(){
@@ -309,7 +306,7 @@ export default {
       color:#fff;
       line-height:1rem;
       position:fixed;
-      bottom:1.8rem;;
+      bottom:1.8rem;
       z-index:9999;
       right:.2rem;
       // border:1px solid $mainColor;

@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
   <div class='user'>
-    <div class='user_detail'><img src='../../common/images/logo.png' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
+    <div class='user_detail'><img :src='icon' class='logo'><span class='uname'>{{user?user.nickName:''}}</span></div>
     <div class='user_info'>
       <p>昨日买入份数：{{userRank?(userRank.income?userRank.income:0):0}}</p>
       <p>瓜分PPS：{{userRank?(userRank.bonus?userRank.bonus:0):0}}</p>
@@ -37,6 +37,7 @@ export default {
     return {
       selected:'current',
       user:'',
+      icon:'',
       dataObj:{},
       userRank:{},
       lastObj:'',
@@ -77,6 +78,11 @@ export default {
     getUserInfo(){
       info().then(response=>{
         this.user =response.body;
+         if(this.user.headPhoto){
+            this.icon = this.user.headPhoto;
+         }else{
+             this.icon = 'https://ydb.anydd.com/images/app/logo.png'
+         }
       })
     },
     getMineRank(type){
@@ -151,6 +157,7 @@ export default {
       }
       .logo{
         width:1.6rem;
+        height:1.6rem;
         border-radius:50%;
         border:1px solid #e5e5e5;
         margin-right: 0.2rem;
