@@ -17,7 +17,7 @@
               <!-- <router-link to="/error"></router-link> -->
             </mt-swipe-item> 
             <mt-swipe-item >
-              <img src="https://ydb.anydd.com/images/app/banner5.jpg" width="100%" height="100%" @click='stepRank("")'>
+              <img src="https://ydb.anydd.com/images/app/banner7.jpg" width="100%" height="100%" @click='stepRank("ranking")'>
               <!-- <router-link to="/error"></router-link> -->
             </mt-swipe-item>
             <mt-swipe-item >
