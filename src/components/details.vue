@@ -80,7 +80,7 @@
             <div class="single">
               
               <span>单次最高投注:&nbsp&nbsp <span style="color:#000"> <span>{{dataArray.maxBet}}</span>份</span></span>
-              <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{getcishu}}</span>
+              <span style="margin-left:.5rem;"><i class="iconfont icon-wode"></i>&nbsp&nbsp{{betAll/dataArray.minBet | forNum}}</span>
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@
 <script>
 import zkTimeDown from '../components/Countdown.vue'
 import {getDetial,bet,refresh} from '../api/api.js'
-import {timestampToTime,timestampTodate,numTampTofloat} from '../../src/untils/enums.js'
+import {timestampToTime,timestampTodate,numTampTofloat,numToZheng} from '../../src/untils/enums.js'
 import { Indicator,Toast } from 'mint-ui';
 import {GetQueryString} from '../untils/enums.js'
 var qs=require("qs");
@@ -177,14 +177,13 @@ export default {
       option:'',
       nowOdd:'',
       maxValue:0,
-      scaleA:0,
-      scaleB:0,
-      scaleC:0,
+      betAll:0
     }
   },
   mounted() {
     
   },
+
   computed:{
     getAllMoney(){
       return parseFloat((this.nowOdd * this.allMoney * this.dataArray.minBet).toFixed(7))
@@ -206,9 +205,9 @@ export default {
     // this.dataArray=this.$route.params.dataArray;
     // this.endTime =this.dataArray.betEndTime || '';
     // this.maxValue = this.dataArray.maxBet;
-    this.dataArray = [];
-    this.fetch();
-    this.initTime();
+    this.dataArray = this.$route.params.dataArray;
+    // this.fetch();
+    // this.initTime();
   },
   filters: {
     changeTime(value){
@@ -219,6 +218,9 @@ export default {
     },
     changeNum(value){
       return numTampTofloat(value)
+    },
+    forNum(value){
+      return numToZheng(value)
     }
   },
   methods: {
@@ -232,6 +234,11 @@ export default {
         this.dataArray = response.body;
         this.endTime =response.body.betEndTime || '';
         this.maxValue = response.body.maxBet;
+        var betAll=0;
+        for(var i = 0;i<this.dataArray.options.length;i++){
+          betAll+=this.dataArray.options[i].betQuantity;
+        }
+        this.betAll = betAll
         this.$nextTick(function () {
         // DOM 更新了
           this.getJSON();
@@ -249,8 +256,8 @@ export default {
       
     },
     loadTop(){
-      this.fetch()
-      this.$refs.loadmore.onTopLoaded();
+      // this.fetch()
+      // this.$refs.loadmore.onTopLoaded();
     },
     initTime(){
       // self =this;
