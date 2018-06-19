@@ -16,8 +16,9 @@ const service = axios.create({
 
 
 service.interceptors.request.use(config => {
-  if (getToken()) {
-    config.headers['Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+  let token ="82d7a1e3335547b5962f6feb5e98b2ad";
+  if (token) {
+    config.headers['Token'] = token// 让每个请求携带自定义token 请根据实际情况自行修改
   }
   return config
 }, error => {
@@ -38,6 +39,9 @@ service.interceptors.response.use(
         message: res.message,
         type: 'error',
         duration: 1 * 1000
+      })
+      this.$router.push({
+        name:'moneyDeatil',
       })
       // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
       // if (res.code === 2001 || res.code === 2002 || res.code === 1002) {

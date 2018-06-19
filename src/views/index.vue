@@ -31,7 +31,7 @@
             <div class="wrapper" ref="wrapper">
               <ul>
                 <li>
-                  <end v-for="item in dataArray" :dataProp='item' class="Route"></end>
+                  <carousel v-for="item in dataArray" :dataProp='item' class="Route"></carousel>
                 </li> 
               </ul>
             </div>
@@ -149,7 +149,7 @@ export default {
       this.dataArray = null;
       var params ={}
        params={
-          type:'end',
+          type:'tag',
           pageNo:this.page,
           tag:this.tag
        }
@@ -257,11 +257,11 @@ export default {
               
               }else{
                 // this.$refs.swiper.style.display = 'none'
-                
+               
                 this.$refs.swiper.style.opacity =0;
                 this.$refs.navs.style.opacity=1;
                 // this.$refs.navs.style.position = 'fixed';
-                this.$refs.navs.style.top=-100 +'px';
+                this.$refs.navs.style.top=-2.8 +'rem';
 
                 this.$refs.wrapper.style.top = 1.2 +'rem'
                 // this.$refs.swiper.style.marginTop = '-200px'
@@ -405,7 +405,7 @@ export default {
           width: 100%;
           position:absolute;
           top: 6.5rem;;
-          bottom: 50px;
+          bottom: 2rempx;
           overflow: hidden;
           z-index: 1;
           .Router{
