@@ -30,8 +30,9 @@
           <transition :name="transitionName">
             <div class="wrapper" ref="wrapper">
               <ul>
+                <div class="refresh" v-show="refresh">{{refreshMsg}}</div>
                 <li>
-                  <carousel v-for="item in dataArray" :dataProp='item' class="Route"></carousel>
+                  <carousel v-for="item in dataArray" :dataProp='item'  :key="item.index"   class="Route"></carousel>
                 </li> 
               </ul>
             </div>
@@ -66,6 +67,8 @@ import { Loadmore } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 import BScroll from "better-scroll";
 
+
+
 export default {
   data () {
     return {
@@ -80,37 +83,16 @@ export default {
       navs: ['热门','区块链','金融','体育','其他','我的','已结束'],
       transitionName: 'slide-right',
       chooseItem: 0,
-      // navNameArray:[
-      //   {
-      //     id:1,
-      //     name:"热门"
-      //   },
-      //   {
-      //     id:4,
-      //     name:"区块链"
-      //   },
-      //   {
-      //     id:2,
-      //     name:"金融"
-      //   },
-      //   {
-      //     id:3,
-      //     name:"体育"
-      //   },
-        
-      //   {
-      //     id:5,
-      //     name:"其他"
-      //   },
-      //   {
-      //     id:6,
-      //     name:"我的"
-      //   },
-      //   {
-      //     id:7,
-      //     name:"已结束"
-      //   },
-      //   ],
+      refresh:false,
+      pullup:{  
+        type:Boolean,  
+        default:false  
+      },  
+       pulldown:{  
+        type:Boolean,  
+        default:true  
+      },  
+      refreshMsg:'下拉刷新',
       dataArray:[],
       topStatus:'',
       allLoaded:false,
@@ -230,45 +212,47 @@ export default {
           click:true,
           probeType: 3
         });
-
-        // this.Allscroll = new BScroll(this.$refs.allWraper, {
-        //   scrollY: true,
-        //   click:true,
-        //   probeType: 3
-        // });
         var count = 0;
         this.scroll.on('scroll', (pos) => {
               //scrollY接收变量
+             
               this.scrollY = Math.abs(Math.round(pos.y));
+              
               count++;
-              console.log(Math.abs(Math.round(pos.y)));
               if(Math.round(pos.y) > -220 && Math.round(pos.y) < 200  && count < 170){
                 count = this.scrollY
-                console.log('')
-                console.log(Math.round(pos.y))
                 let wrapperDom = this.$refs.wrapper;
                 wrapperDom.style.top = (250 - this.scrollY) +'px';
                 wrapperDom.style.paddingTop  = (this.scrollY) +'px';
-                if(Math.round(pos.y) < 0){
+                if(Math.round(pos.y) < -10){
                     this.$refs.swiper.style.top=-(this.scrollY) +'px';
                     this.$refs.swiper.style.opacity =1-(this.scrollY/200);  
                     this.$refs.navs.style.top=(95 - this.scrollY) +'px';           
                 }
-              
               }else{
-                // this.$refs.swiper.style.display = 'none'
-               
-                this.$refs.swiper.style.opacity =0;
+                this.$refs.swiper.style.opacity =0;//让
                 this.$refs.navs.style.opacity=1;
-                // this.$refs.navs.style.position = 'fixed';
                 this.$refs.navs.style.top=-2.8 +'rem';
-
                 this.$refs.wrapper.style.top = 1.2 +'rem'
-                // this.$refs.swiper.style.marginTop = '-200px'
-                this.$refs.wrapper.style.paddingTop = 0 +'px'
+                this.$refs.wrapper.style.paddingTop = 0 +'px'  
               }
-              
+              // console.log(pos.y);
+              if(pos.y > 20){
+                console.log('yfch');
+                this.refresh = true;
+                this.refreshMsg ='释放刷新'
+                this.scroll.on('touchEnd',()=>{
+                  this.fetch();
+                  this.refresh = false;
+                })
+              }
         })
+
+        // this.scroll.on('pullingUp',()=>{
+
+        // })
+
+         
 
     },
 
@@ -402,10 +386,14 @@ export default {
         }
 
         .wrapper{
+          .refresh{
+            width:100%;
+            text-align: center;
+          }
           width: 100%;
           position:absolute;
           top: 6.5rem;;
-          bottom: 2rempx;
+          bottom: 2rem  ;
           overflow: hidden;
           z-index: 1;
           .Router{
